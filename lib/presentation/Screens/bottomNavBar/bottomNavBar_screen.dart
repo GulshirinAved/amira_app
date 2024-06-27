@@ -1,5 +1,6 @@
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/presentation/Screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
@@ -36,7 +37,7 @@ class BottomNavBar extends StatelessWidget {
   Widget getScreenForIndex(int index) {
     switch (index) {
       case 0:
-        return Container();
+        return const HomeScreen();
       case 1:
         return Container();
       case 2:
