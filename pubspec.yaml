@@ -14,6 +14,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   persistent_bottom_nav_bar_v2: ^5.2.3
   flutter_svg: ^2.0.10+1
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -23,3 +24,12 @@ flutter:
   uses-material-design: true
   assets:
       - assets/icons/
+      - assets/images/
+      - assets/products/
+  fonts:
+    - family: Gilroy
+      fonts:
+        - asset: assets/fonts/Gilroy.ttf
+    - family: PeaceSans
+      fonts:
+        - asset: assets/fonts/PeaceSans.ttf

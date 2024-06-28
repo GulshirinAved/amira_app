@@ -1,3 +1,4 @@
+import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/presentation/Screens/bottomNavBar/bottomNavBar_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ void main() {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.whiteColor),
           scaffoldBackgroundColor: AppColors.lightGreyColor,
+          fontFamily: fontGilroy,
           useMaterial3: true,
         ),
         home: const BottomNavBar(),
