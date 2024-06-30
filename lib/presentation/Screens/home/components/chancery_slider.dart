@@ -21,7 +21,7 @@ class ChancerySlider extends StatelessWidget {
         ),
       ),
       margin: EdgeInsets.symmetric(vertical: 6.h),
-      padding: EdgeInsets.symmetric(horizontal: 5.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         children: [
           const TopTitle(

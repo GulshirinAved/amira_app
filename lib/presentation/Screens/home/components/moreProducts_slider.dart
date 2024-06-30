@@ -18,6 +18,7 @@ class MoreProductsSlider extends StatelessWidget {
         ),
       ),
       margin: EdgeInsets.symmetric(vertical: 6.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -83,8 +83,9 @@ class ProductSmallCard extends StatelessWidget {
             ),
           ),
 
-          const Button(
-            width: 120,
+          Button.iconButton(
+            120.w,
+            () {},
           ),
         ],
       ),

@@ -92,9 +92,10 @@ class ProductLargeCard extends StatelessWidget {
           ),
           Row(
             children: [
-              const Expanded(
-                child: Button(
-                  width: 120,
+              Expanded(
+                child: Button.iconButton(
+                  120.w,
+                  () {},
                 ),
               ),
               Container(
