@@ -17,6 +17,8 @@ const String userBoldIcon = 'assets/icons/userBold.svg';
 const String mapPinIcon = 'assets/icons/mapPin.svg';
 const String arrowRightIcon = 'assets/icons/arrowRight.svg';
 const String searchIcon = 'assets/icons/search.svg';
+const String filterIcon = 'assets/icons/filter.svg';
+
 //images
 const String bannerImage = 'assets/images/banner.png';
 const String banner1Image = 'assets/images/banner1.png';
@@ -399,3 +401,4 @@ List<Map<String, dynamic>> zooProducts = [
     'desc': 'Сочные и сладкие яблоки.',
   },
 ];
+final List filtername = ['Овощи и фрукты', 'Бренд', 'Цена'];

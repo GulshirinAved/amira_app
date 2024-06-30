@@ -8,13 +8,20 @@ class SearchField extends StatelessWidget {
   final bool? needPrefix;
   final Color? backgroundColor;
   final Function(String)? onFieldSubmitted;
-  final TextEditingController textController;
+  final Function(String)? onChanged;
+  final VoidCallback? onTap;
+  final bool? autofocus;
+
+  final TextEditingController? textController;
   const SearchField({
     required this.hintText,
     required this.needPrefix,
-    required this.onFieldSubmitted,
-    required this.textController,
+    this.textController,
     this.backgroundColor,
+    this.onFieldSubmitted,
+    this.onChanged,
+    this.onTap,
+    this.autofocus = false,
     super.key,
   });
 
@@ -22,10 +29,15 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: textController,
+      autofocus: autofocus!,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: AppBorders.borderRadius10,
           borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: AppBorders.borderRadius10,
+          borderSide: BorderSide(color: AppColors.purpleColor),
         ),
         filled: true,
         fillColor: backgroundColor ?? AppColors.whiteColor,
@@ -42,7 +54,9 @@ class SearchField extends StatelessWidget {
           color: AppColors.greyColor,
         ),
       ),
+      onTap: onTap,
       onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
     );
   }
 }

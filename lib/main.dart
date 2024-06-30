@@ -25,6 +25,11 @@ void main() async {
           useMaterial3: true,
         ),
         home: const BottomNavBar(),
+        builder: (context, child) => MediaQuery(
+          data:
+              MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+          child: child!,
+        ),
       ),
     ),
   );

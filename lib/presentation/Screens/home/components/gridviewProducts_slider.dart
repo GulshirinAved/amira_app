@@ -1,11 +1,17 @@
-import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
-import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class MoreProductsSlider extends StatelessWidget {
-  const MoreProductsSlider({super.key});
+import 'package:amira_app/config/constants/constants.dart';
+import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
+
+class GridviewProductsSlider extends StatelessWidget {
+  final String topTitle;
+  const GridviewProductsSlider({
+    required this.topTitle,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class MoreProductsSlider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Еще товары',
+            topTitle,
             style: TextStyle(
               color: AppColors.blackColor,
               fontFamily: fontPeaceSans,

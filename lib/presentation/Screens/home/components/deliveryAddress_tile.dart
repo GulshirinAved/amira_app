@@ -1,4 +1,4 @@
-import 'package:amira_app/blocs/bloc/location_add_bloc.dart';
+import 'package:amira_app/blocs/addDeliveryLocation/location_add_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
@@ -39,7 +39,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
       title: BlocBuilder<LocationAddBloc, LocationAddState>(
         builder: (context, state) {
           return Text(
-            state.savedLocation ?? '',
+            state.savedLocation,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: AppFonts.fontSize14,
@@ -74,6 +74,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                     fontSize: AppFonts.fontSize22,
                   ),
                 ),
+                //botton for writing address
                 GestureDetector(
                   onTap: () => bottomsheetSelectionAddress(context),
                   child: Container(
@@ -94,6 +95,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                     ),
                   ),
                 ),
+                //close button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Button.textButton('Закрыть', () {
@@ -131,6 +133,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                     fontSize: AppFonts.fontSize22,
                   ),
                 ),
+                //text fields for writing address
                 BlocBuilder<LocationAddBloc, LocationAddState>(
                   builder: (context, state) {
                     return Padding(
@@ -152,6 +155,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                     );
                   },
                 ),
+                // writen addreses
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: BlocBuilder<LocationAddBloc, LocationAddState>(
@@ -196,6 +200,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                     },
                   ),
                 ),
+                //save button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: BlocBuilder<LocationAddBloc, LocationAddState>(
@@ -203,12 +208,12 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                       return Button.textButton(
                         'Применить',
                         () {
-                          context
-                              .read<LocationAddBloc>()
-                              .add(OnButtonPressedAddressEvent(
-                                state.locationList[state.selectedIndex!],
-                                state.locationList,
-                              ));
+                          context.read<LocationAddBloc>().add(
+                                OnButtonPressedAddressEvent(
+                                  state.locationList[state.selectedIndex!],
+                                  state.locationList,
+                                ),
+                              );
 
                           Navigator.pop(context);
                         },
