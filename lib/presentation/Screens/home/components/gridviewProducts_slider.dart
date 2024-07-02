@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amira_app/data/models/cart_model.dart';
+import 'package:amira_app/data/models/fav_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,6 +50,24 @@ class GridviewProductsSlider extends StatelessWidget {
             itemBuilder: (context, index) {
               return ProductLargeCard(
                 index: index,
+                cartItem: CartItem(
+                  id: saleProducts[index].id,
+                  name: saleProducts[index].name,
+                  image: saleProducts[index].image,
+                  price: saleProducts[index].price,
+                  prevPrice: saleProducts[index].prevPrice,
+                  discount: saleProducts[index].discount,
+                  desc: saleProducts[index].desc,
+                ),
+                favItem: FavItem(
+                  id: saleProducts[index].id,
+                  name: saleProducts[index].name,
+                  image: saleProducts[index].image,
+                  price: saleProducts[index].price,
+                  prevPrice: saleProducts[index].prevPrice,
+                  discount: saleProducts[index].discount,
+                  desc: saleProducts[index].desc,
+                ),
               );
             },
           ),

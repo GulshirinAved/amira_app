@@ -21,6 +21,10 @@ void main() async {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.whiteColor),
           scaffoldBackgroundColor: AppColors.lightGreyColor,
+          appBarTheme: AppBarTheme(
+            backgroundColor: AppColors.whiteColor,
+            surfaceTintColor: AppColors.whiteColor,
+          ),
           fontFamily: fontGilroy,
           useMaterial3: true,
         ),

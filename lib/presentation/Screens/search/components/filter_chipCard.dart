@@ -1,6 +1,8 @@
+import 'package:amira_app/blocs/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FilterChipCard extends StatelessWidget {
@@ -26,13 +28,18 @@ class FilterChipCard extends StatelessWidget {
         borderRadius: AppBorders.borderRadius10,
         color: index == 0 ? AppColors.blackColor : AppColors.lightGreyColor,
       ),
-      child: Text(
-        filtername[index],
-        style: TextStyle(
-          color: index == 0 ? AppColors.whiteColor : AppColors.blackColor,
-          fontWeight: FontWeight.w500,
-          fontSize: AppFonts.fontSize14,
-        ),
+      child: BlocBuilder<CategoryRadioButtonSelectionBloc,
+          CategoryRadioButtonSelectionState>(
+        builder: (context, state) {
+          return Text(
+            index == 0 ? state.title ?? filtername[0] : filtername[index],
+            style: TextStyle(
+              color: index == 0 ? AppColors.whiteColor : AppColors.blackColor,
+              fontWeight: FontWeight.w500,
+              fontSize: AppFonts.fontSize14,
+            ),
+          );
+        },
       ),
     );
   }

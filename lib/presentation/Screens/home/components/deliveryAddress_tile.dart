@@ -2,7 +2,7 @@ import 'package:amira_app/blocs/addDeliveryLocation/location_add_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
-import 'package:amira_app/presentation/Screens/home/components/search_field.dart';
+import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +39,9 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
       title: BlocBuilder<LocationAddBloc, LocationAddState>(
         builder: (context, state) {
           return Text(
-            state.savedLocation,
+            state.savedLocation == ''
+                ? 'Укажите место доставки'
+                : state.savedLocation,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: AppFonts.fontSize14,
@@ -98,9 +100,12 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                 //close button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Button.textButton('Закрыть', () {
-                    Navigator.pop(context);
-                  }),
+                  child: Button.textButton(
+                    text: 'Закрыть',
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
               ],
             ),
@@ -138,11 +143,9 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                   builder: (context, state) {
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: SearchField(
-                        textController: addressController,
-                        needPrefix: false,
+                      child: CustomTextField.normal(
+                        controller: addressController,
                         hintText: 'Введите улицу и номер дома',
-                        backgroundColor: AppColors.lightGreyColor,
                         onFieldSubmitted: (value) {
                           context
                               .read<LocationAddBloc>()
@@ -151,6 +154,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                               .read<LocationAddBloc>()
                               .add(ShowSavedAddressEvent(value));
                         },
+                        backColor: AppColors.lightGreyColor,
                       ),
                     );
                   },
@@ -206,8 +210,8 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                   child: BlocBuilder<LocationAddBloc, LocationAddState>(
                     builder: (context, state) {
                       return Button.textButton(
-                        'Применить',
-                        () {
+                        text: 'Применить',
+                        onTap: () {
                           context.read<LocationAddBloc>().add(
                                 OnButtonPressedAddressEvent(
                                   state.locationList[state.selectedIndex!],

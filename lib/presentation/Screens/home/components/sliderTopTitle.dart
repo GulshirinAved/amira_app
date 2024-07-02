@@ -1,30 +1,40 @@
-import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'package:amira_app/config/constants/constants.dart';
+import 'package:amira_app/config/theme/theme.dart';
+
 class TopTitle extends StatelessWidget {
   final String title;
-  const TopTitle({required this.title, super.key});
+  final VoidCallback? onTap;
+  const TopTitle({
+    required this.title,
+    super.key,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 5.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: AppColors.blackColor,
-              fontFamily: fontPeaceSans,
-              fontSize: AppFonts.fontSize22,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 5.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                color: AppColors.blackColor,
+                fontFamily: fontPeaceSans,
+                fontSize: AppFonts.fontSize22,
+              ),
             ),
-          ),
-          SvgPicture.asset(arrowRightIcon),
-        ],
+            SvgPicture.asset(arrowRightIcon),
+          ],
+        ),
       ),
     );
   }

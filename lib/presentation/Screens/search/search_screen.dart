@@ -1,15 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:amira_app/blocs/searchShpwProducts/search_show_products_bloc.dart';
+import 'package:amira_app/blocs/searchShowProducts/search_show_products_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/data/models/cart_model.dart';
+import 'package:amira_app/data/models/fav_model.dart';
+import 'package:amira_app/presentation/CustomWidgets/filter_tile.dart';
 import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
 import 'package:amira_app/presentation/Screens/home/components/gridviewProducts_slider.dart';
-import 'package:amira_app/presentation/Screens/home/components/search_field.dart';
-import 'package:amira_app/presentation/Screens/search/components/filter_chipCard.dart';
+import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({
@@ -42,6 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
         builder: (context) {
           return SafeArea(
             child: Scaffold(
+              resizeToAvoidBottomInset: false,
               body: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ListView(
@@ -50,11 +52,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     Row(
                       children: [
                         Expanded(
-                          child: SearchField(
-                            hintText: 'Поиск',
-                            needPrefix: true,
-                            textController: searchController,
-                            autofocus: true,
+                          child: CustomTextField.search(
+                            autoFocus: true,
+                            controller: searchController,
                             onChanged: (value) {
                               context.read<SearchShowProductsBloc>().add(
                                     SearchShowProductsEvent(
@@ -91,12 +91,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       builder: (context, state) {
                         final List options = saleProducts
                             .where(
-                              (product) =>
-                                  product['name'].toLowerCase().contains(
-                                        searchController.text.toLowerCase(),
-                                      ),
+                              (product) => product.name!.toLowerCase().contains(
+                                    searchController.text.toLowerCase(),
+                                  ),
                             )
-                            .map((product) => product['name'] as String)
+                            .map((product) => product.name! as String)
                             .toList();
                         return
                             //no text
@@ -126,47 +125,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                               padding: EdgeInsets.symmetric(
                                                 vertical: 3.h,
                                               ),
-                                              child: Row(
-                                                children: [
-                                                  //filter icon
-                                                  Container(
-                                                    height: 34.h,
-                                                    width: 34.w,
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors
-                                                          .lightGreyColor,
-                                                      borderRadius: AppBorders
-                                                          .borderRadius10,
-                                                    ),
-                                                    child: SvgPicture.asset(
-                                                      filterIcon,
-                                                      fit: BoxFit.scaleDown,
-                                                    ),
-                                                  ),
-                                                  //filter cards
-                                                  SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width -
-                                                            75.w,
-                                                    height: 38.h,
-                                                    child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount:
-                                                          filtername.length,
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              FilterChipCard(
-                                                        index: index,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
+                                              child: FilterTile(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    75.w,
                                               ),
                                             ),
+                                            //products
                                             GridView.builder(
                                               shrinkWrap: true,
                                               physics:
@@ -181,6 +147,40 @@ class _SearchScreenState extends State<SearchScreen> {
                                               itemBuilder: (context, index) {
                                                 return ProductLargeCard(
                                                   index: index,
+                                                  cartItem: CartItem(
+                                                    id: saleProducts[index].id,
+                                                    name: saleProducts[index]
+                                                        .name,
+                                                    image: saleProducts[index]
+                                                        .image,
+                                                    price: saleProducts[index]
+                                                        .price,
+                                                    prevPrice:
+                                                        saleProducts[index]
+                                                            .prevPrice,
+                                                    discount:
+                                                        saleProducts[index]
+                                                            .discount,
+                                                    desc: saleProducts[index]
+                                                        .desc,
+                                                  ),
+                                                  favItem: FavItem(
+                                                    id: saleProducts[index].id,
+                                                    name: saleProducts[index]
+                                                        .name,
+                                                    image: saleProducts[index]
+                                                        .image,
+                                                    price: saleProducts[index]
+                                                        .price,
+                                                    prevPrice:
+                                                        saleProducts[index]
+                                                            .prevPrice,
+                                                    discount:
+                                                        saleProducts[index]
+                                                            .discount,
+                                                    desc: saleProducts[index]
+                                                        .desc,
+                                                  ),
                                                 );
                                               },
                                             ),
