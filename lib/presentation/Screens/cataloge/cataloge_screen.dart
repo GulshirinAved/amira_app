@@ -29,13 +29,13 @@ class CatelogeScreen extends StatelessWidget {
             ),
             //veg tile
             CategoryProductsSlider(
-              topTitle: 'Офощи и фрукты',
+              topTitle: 'Овощи и фрукты',
               categoryProductList: vegCategory,
               onTap: () {
                 pushScreenWithNavBar(
                   context,
                   CategoryProfileScreen(
-                    topTitle: 'Офощи и фрукты',
+                    topTitle: 'Овощи и фрукты',
                     categoryProductList: vegCategory,
                   ),
                 );

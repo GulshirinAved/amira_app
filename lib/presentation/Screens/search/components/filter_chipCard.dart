@@ -32,7 +32,9 @@ class FilterChipCard extends StatelessWidget {
           CategoryRadioButtonSelectionState>(
         builder: (context, state) {
           return Text(
-            index == 0 ? state.title ?? filtername[0] : filtername[index],
+            index == 0
+                ? state.selectedTitle ?? filtername[0]
+                : filtername[index],
             style: TextStyle(
               color: index == 0 ? AppColors.whiteColor : AppColors.blackColor,
               fontWeight: FontWeight.w500,

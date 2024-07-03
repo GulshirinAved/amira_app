@@ -48,7 +48,8 @@ class LocationAddBloc extends Bloc<LocationAddEvent, LocationAddState> {
       final List<String> addresses = List<String>.from(
         addressBox.get('addressList', defaultValue: <String>[]),
       );
-      final String savedDeliveryLocation = addressBox.get('savedAddress');
+      final String savedDeliveryLocation =
+          addressBox.get('savedAddress', defaultValue: '');
       emit(
         SaveAddressState(
           -1,
@@ -60,7 +61,8 @@ class LocationAddBloc extends Bloc<LocationAddEvent, LocationAddState> {
 
     on<SelectAddressEvent>((event, emit) async {
       final Box addressBox = await Hive.openBox('addressBox');
-      final String savedDeliveryLocation = addressBox.get('savedAddress');
+      final String savedDeliveryLocation =
+          addressBox.get('savedAddress', defaultValue: '');
       emit(
         SaveAddressState(
           event.index,

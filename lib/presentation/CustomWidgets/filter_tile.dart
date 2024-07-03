@@ -79,10 +79,14 @@ class _FilterTileState extends State<FilterTile> {
       showDragHandle: true,
       isScrollControlled: true,
       backgroundColor: AppColors.lightGreyColor,
-      builder: (contextt) => BlocProvider.value(
-        value: BlocProvider.of<PriceRangeSelectionBloc>(
-          context,
-        ),
+      builder: (contextt) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: BlocProvider.of<PriceRangeSelectionBloc>(
+              context,
+            ),
+          ),
+        ],
         child: Container(
           margin: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -101,14 +105,23 @@ class _FilterTileState extends State<FilterTile> {
                       fontSize: AppFonts.fontSize22,
                     ),
                   ),
-                  const PriceRangeFieldAndCard(),
+                  const PriceRangeFieldAndCard(
+                    bottomSheet: 3,
+                  ),
                   Padding(
                     padding: EdgeInsets.only(
                       bottom: kBottomNavigationBarHeight,
                       left: 10.w,
                       right: 10.w,
                     ),
-                    child: Button.textButton(text: 'Закрыть', onTap: () {}),
+                    child: Button.textButton(
+                      text: 'Применить',
+                      onTap: () {
+                        context
+                            .read<PriceRangeSelectionBloc>()
+                            .add(const ApplyPriceEvent(bottomSheet: 3));
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -147,7 +160,9 @@ class _FilterTileState extends State<FilterTile> {
                 color: AppColors.whiteColor,
                 borderRadius: AppBorders.borderRadius10,
               ),
-              child: const BrandCards(),
+              child: const BrandCards(
+                bottomSheet: 2,
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -155,7 +170,14 @@ class _FilterTileState extends State<FilterTile> {
                 left: 10.w,
                 right: 10.w,
               ),
-              child: Button.textButton(text: 'Применить', onTap: () {}),
+              child: Button.textButton(
+                text: 'Применить',
+                onTap: () {
+                  context
+                      .read<BrandSelectionBloc>()
+                      .add(const ApplyBrandEvent(bottomSheet: 2));
+                },
+              ),
             ),
           ],
         ),
@@ -230,14 +252,14 @@ class _FilterTileState extends State<FilterTile> {
                                     CustomRadioButton(
                                       title: filterCatgeories[index],
                                       value: filterCatgeories[index],
-                                      groupValue:
-                                          state.title ?? filterCatgeories[0],
+                                      groupValue: state.tempSelectedTitle ??
+                                          filterCatgeories[0],
                                       onChanged: (value) {
                                         context
                                             .read<
                                                 CategoryRadioButtonSelectionBloc>()
                                             .add(
-                                              CategoryRadioButtonSelectionEvent(
+                                              SelectRadioButtonEvent(
                                                 value ?? filterCatgeories[0],
                                               ),
                                             );
@@ -280,11 +302,12 @@ class _FilterTileState extends State<FilterTile> {
                                       fontSize: AppFonts.fontSize14,
                                     ),
                                   ),
-                                  value: state.isLight,
+                                  value: state.tempIsLight ?? false,
                                   onChanged: (value) {
+                                    print(value);
                                     context
                                         .read<SwitcherBloc>()
-                                        .add(SwitcherEvent(value));
+                                        .add(ToggleSwitchEvent(!value));
                                   },
                                 );
                               },
@@ -310,7 +333,9 @@ class _FilterTileState extends State<FilterTile> {
                                       fontSize: AppFonts.fontSize14,
                                     ),
                                   ),
-                                  const BrandCards(),
+                                  const BrandCards(
+                                    bottomSheet: 1,
+                                  ),
                                 ],
                               ),
                             ),
@@ -320,7 +345,9 @@ class _FilterTileState extends State<FilterTile> {
 
                       //thirt tile
                       //price range textfield and price range card
-                      const PriceRangeFieldAndCard(),
+                      const PriceRangeFieldAndCard(
+                        bottomSheet: 1,
+                      ),
                       //save button
                       Padding(
                         padding: EdgeInsets.only(
@@ -328,8 +355,34 @@ class _FilterTileState extends State<FilterTile> {
                           left: 10.w,
                           right: 10.w,
                         ),
-                        child:
-                            Button.textButton(text: 'Применить', onTap: () {}),
+                        child: BlocBuilder<PriceRangeSelectionBloc,
+                            PriceRangeSelectionState>(
+                          builder: (context, state) {
+                            return BlocBuilder<BrandSelectionBloc,
+                                BrandSelectionState>(
+                              builder: (context, state) {
+                                return Button.textButton(
+                                  text: 'Применить',
+                                  onTap: () {
+                                    context.read<BrandSelectionBloc>().add(
+                                          const ApplyBrandEvent(bottomSheet: 1),
+                                        );
+                                    context.read<PriceRangeSelectionBloc>().add(
+                                          const ApplyPriceEvent(bottomSheet: 1),
+                                        );
+                                    context
+                                        .read<
+                                            CategoryRadioButtonSelectionBloc>()
+                                        .add(ApplyRadioButtonEvent());
+                                    context
+                                        .read<SwitcherBloc>()
+                                        .add(ApplySwitcherEvent());
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

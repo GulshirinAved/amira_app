@@ -1,8 +1,5 @@
+import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-
-part 'brand_selection_event.dart';
-part 'brand_selection_state.dart';
 
 class BrandSelectionBloc
     extends Bloc<BrandSelectionEvent, BrandSelectionState> {

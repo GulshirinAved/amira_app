@@ -1,14 +1,18 @@
-import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
-import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
+import 'package:amira_app/config/constants/constants.dart';
+import 'package:amira_app/config/theme/theme.dart';
+
 class BrandCards extends StatelessWidget {
+  final int bottomSheet;
   const BrandCards({
-    super.key,
-  });
+    required this.bottomSheet,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +29,19 @@ class BrandCards extends StatelessWidget {
       ),
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {
-          context.read<BrandSelectionBloc>().add(BrandSelectionEvent(index));
+          context
+              .read<BrandSelectionBloc>()
+              .add(SelectBrand(bottomSheet, index));
         },
         child: BlocBuilder<BrandSelectionBloc, BrandSelectionState>(
           builder: (context, state) {
+            bool isSelected = (bottomSheet == 1
+                    ? state.selectedBrandBottomSheet1
+                    : state.selectedBrandBottomSheet2) ==
+                index;
             return Container(
               decoration: BoxDecoration(
-                color: state.selectedIndex == index
+                color: isSelected
                     ? AppColors.blackColor
                     : AppColors.lightGreyColor,
                 borderRadius: AppBorders.borderRadius10,
@@ -44,9 +54,8 @@ class BrandCards extends StatelessWidget {
                 brands[index],
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: state.selectedIndex == index
-                      ? AppColors.whiteColor
-                      : AppColors.blackColor,
+                  color:
+                      isSelected ? AppColors.whiteColor : AppColors.blackColor,
                   fontWeight: FontWeight.w500,
                   fontSize: AppFonts.fontSize14,
                 ),

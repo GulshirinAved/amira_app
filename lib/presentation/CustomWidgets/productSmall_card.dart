@@ -32,6 +32,8 @@ class ProductSmallCard extends StatelessWidget {
           context,
           ProductProfileScreen(
             favItem: favItem,
+            cartItem: cartItem,
+            index: index,
           )),
       child: Container(
         width: 120.w,

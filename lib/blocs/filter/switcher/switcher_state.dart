@@ -1,19 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'switcher_bloc.dart';
 
-class SwitcherState extends Equatable {
+class SwitcherState {
   final bool isLight;
+  final bool? tempIsLight;
 
-  const SwitcherState(this.isLight);
+  SwitcherState(this.isLight, {this.tempIsLight});
 
-  @override
-  List<Object> get props => [isLight];
-
-  SwitcherState copyWith({
-    bool? isLight,
-  }) {
+  SwitcherState copyWith({bool? isLight, bool? tempIsLight}) {
     return SwitcherState(
       isLight ?? this.isLight,
+      tempIsLight: tempIsLight ?? this.tempIsLight,
     );
   }
 }

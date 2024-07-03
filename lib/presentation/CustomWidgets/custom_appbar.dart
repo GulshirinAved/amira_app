@@ -12,8 +12,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? favActiveColor;
 
   const CustomAppBar({
-    Key? key,
     required this.topTitle,
+    Key? key,
     this.iconTitle,
     this.onTap,
     this.favActiveColor,
@@ -46,7 +46,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onTap: onTap,
             child: SvgPicture.asset(
               iconTitle!,
-              colorFilter: ColorFilter.mode(favActiveColor!, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                favActiveColor ?? AppColors.darkGreyColor,
+                BlendMode.srcIn,
+              ),
               fit: BoxFit.cover,
             ),
           ),

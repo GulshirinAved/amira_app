@@ -1,4 +1,5 @@
 import 'package:amira_app/blocs/filter/priceRangeSelection/price_range_selection_bloc.dart';
+
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
@@ -6,10 +7,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PriceRangeFieldAndCard extends StatelessWidget {
+class PriceRangeFieldAndCard extends StatefulWidget {
+  final int bottomSheet;
   const PriceRangeFieldAndCard({
+    required this.bottomSheet,
     super.key,
   });
+
+  @override
+  State<PriceRangeFieldAndCard> createState() => _PriceRangeFieldAndCardState();
+}
+
+class _PriceRangeFieldAndCardState extends State<PriceRangeFieldAndCard> {
+  late TextEditingController fromPriceController;
+  late TextEditingController toPriceController;
+
+  @override
+  void initState() {
+    super.initState();
+    fromPriceController = TextEditingController();
+    toPriceController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    fromPriceController.dispose();
+    toPriceController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +69,8 @@ class PriceRangeFieldAndCard extends StatelessWidget {
                   child: CustomTextField.normal(
                     hintText: 'от',
                     backColor: AppColors.lightGreyColor,
+                    controller: fromPriceController,
+                    onFieldSubmitted: (value) {},
                   ),
                 ),
                 SizedBox(
@@ -53,8 +80,9 @@ class PriceRangeFieldAndCard extends StatelessWidget {
                   child: CustomTextField.normal(
                     hintText: 'до',
                     backColor: AppColors.lightGreyColor,
+                    controller: toPriceController,
                   ),
-                ),
+                )
               ],
             ),
             Padding(
@@ -77,13 +105,20 @@ class PriceRangeFieldAndCard extends StatelessWidget {
                 itemBuilder: (context, index) => BlocBuilder<
                     PriceRangeSelectionBloc, PriceRangeSelectionState>(
                   builder: (context, state) {
+                    bool isSelected = (widget.bottomSheet == 1
+                            ? state.selectedPriceBottomSheet1
+                            : state.selectedPriceBottomSheet2) ==
+                        index;
                     return GestureDetector(
-                      onTap: () => context
-                          .read<PriceRangeSelectionBloc>()
-                          .add(PriceRangeSelectionEvent(index)),
+                      onTap: () => context.read<PriceRangeSelectionBloc>().add(
+                            SelectPrice(
+                              bottomSheet: widget.bottomSheet,
+                              pressedPriceIndex: index,
+                            ),
+                          ),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: state.selectedIndex == index
+                          color: isSelected
                               ? AppColors.blackColor
                               : AppColors.lightGreyColor,
                           borderRadius: AppBorders.borderRadius10,
@@ -97,7 +132,7 @@ class PriceRangeFieldAndCard extends StatelessWidget {
                           priceRange[index],
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: state.selectedIndex == index
+                            color: isSelected
                                 ? AppColors.whiteColor
                                 : AppColors.blackColor,
                             fontWeight: FontWeight.w500,

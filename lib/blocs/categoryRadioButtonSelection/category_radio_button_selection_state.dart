@@ -1,20 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'category_radio_button_selection_bloc.dart';
 
-class CategoryRadioButtonSelectionState extends Equatable {
-  final String? title;
-  const CategoryRadioButtonSelectionState(
-    this.title,
-  );
+class CategoryRadioButtonSelectionState {
+  final String? selectedTitle;
+  final String? tempSelectedTitle;
 
-  @override
-  List<Object> get props => [title ?? ''];
+  CategoryRadioButtonSelectionState({
+    this.selectedTitle,
+    this.tempSelectedTitle,
+  });
 
   CategoryRadioButtonSelectionState copyWith({
-    String? title,
+    String? selectedTitle,
+    String? tempSelectedTitle,
   }) {
     return CategoryRadioButtonSelectionState(
-      title ?? this.title,
+      selectedTitle: selectedTitle ?? this.selectedTitle,
+      tempSelectedTitle: tempSelectedTitle ?? this.tempSelectedTitle,
     );
   }
 }

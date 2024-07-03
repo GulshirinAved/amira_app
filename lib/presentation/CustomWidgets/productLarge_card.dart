@@ -33,6 +33,8 @@ class ProductLargeCard extends StatelessWidget {
         context,
         ProductProfileScreen(
           favItem: favItem,
+          cartItem: cartItem,
+          index: index,
         ),
       ),
       child: Container(

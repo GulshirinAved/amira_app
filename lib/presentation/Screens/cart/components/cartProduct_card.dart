@@ -62,7 +62,7 @@ class CartProductCard extends StatelessWidget {
                           width: 6.w,
                         ),
                         Text(
-                          cartItem.prevPrice!,
+                          cartItem.prevPrice ?? '',
                           style: TextStyle(
                             color: AppColors.greyColor,
                             fontFamily: fontPeaceSans,

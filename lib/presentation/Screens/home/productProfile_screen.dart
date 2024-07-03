@@ -1,6 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amira_app/blocs/cart/cartButton/cart_button_bloc.dart';
 import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
+import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
+import 'package:amira_app/presentation/CustomWidgets/button.dart';
+import 'package:amira_app/presentation/CustomWidgets/cartAmount_button.dart';
 import 'package:amira_app/presentation/Screens/home/components/discount_card.dart';
 import 'package:amira_app/presentation/Screens/home/components/gridviewProducts_slider.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +21,15 @@ import 'package:flutter_svg/svg.dart';
 
 class ProductProfileScreen extends StatefulWidget {
   final FavItem favItem;
-  const ProductProfileScreen({required this.favItem, super.key});
+  final CartItem cartItem;
+  final int index;
+
+  const ProductProfileScreen({
+    required this.favItem,
+    required this.index,
+    required this.cartItem,
+    super.key,
+  });
 
   @override
   State<ProductProfileScreen> createState() => _ProductProfileScreenState();
@@ -73,7 +85,9 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                         borderRadius: AppBorders.borderRadius10,
                       ),
                       padding: EdgeInsets.symmetric(
-                          horizontal: 16.w, vertical: 16.h),
+                        horizontal: 16.w,
+                        vertical: 16.h,
+                      ),
                       child: Column(
                         children: [
                           //image slider
@@ -159,6 +173,41 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                       ),
                     ),
                     const GridviewProductsSlider(topTitle: 'Рекомендуем'),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: SizedBox(
+                        height: 34.h,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child:
+                                  BlocBuilder<CartButtonBloc, CartButtonState>(
+                                builder: (context, state) {
+                                  final isItemInCart = state.cartList.any(
+                                      (item) => item.id == widget.cartItem.id);
+                                  return !isItemInCart
+                                      ? Button.iconButton(
+                                          width: 120.w,
+                                          onTap: () {
+                                            context.read<CartButtonBloc>().add(
+                                                AddCartEvent(widget.cartItem));
+                                            context.read<CartButtonBloc>().add(
+                                                SumProductEvent(
+                                                    widget.cartItem));
+                                          },
+                                        )
+                                      : CartAmountButton(
+                                          index: widget.index,
+                                          cartItem: widget.cartItem,
+                                          height: 34.w,
+                                        );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               );

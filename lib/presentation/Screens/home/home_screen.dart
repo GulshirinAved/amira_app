@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:amira_app/presentation/Screens/home/components/listviewProducts_slider.dart';
 
 import 'package:amira_app/presentation/Screens/home/components/gridviewProducts_slider.dart';
@@ -58,36 +57,7 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
               child: Image.asset(bannerImage),
             ),
-            //tabars
-            // TabBar(
-            //   padding: EdgeInsetsDirectional.zero,
-            //   indicatorPadding: EdgeInsetsDirectional.zero,
-            //   labelPadding: EdgeInsets.zero,
-            //   indicator: BoxDecoration(
-            //     color: AppColors.blackColor,
-            //     borderRadius: AppBorders.borderRadius10,
-            //   ),
-            //   unselectedLabelColor: AppColors.blackColor,
-            //   labelColor: AppColors.whiteColor,
-            //   labelStyle: TextStyle(
-            //     fontWeight: FontWeight.w500,
-            //     fontSize: AppFonts.fontSize14,
-            //   ),
-            //   unselectedLabelStyle: TextStyle(
-            //     fontWeight: FontWeight.w500,
-            //     fontSize: AppFonts.fontSize14,
-            //   ),
-            //   tabAlignment: TabAlignment.start,
-            //   isScrollable: true,
-            //   dividerColor: Colors.transparent,
-            //   tabs: List.generate(
-            //     tabbarName.length,
-            //     (index) => Container(
-            //       padding: const EdgeInsets.all(10),
-            //       child: Text(tabbarName[index]['name']),
-            //     ),
-            //   ),
-            // ),
+
             //products
             Column(
               children: [

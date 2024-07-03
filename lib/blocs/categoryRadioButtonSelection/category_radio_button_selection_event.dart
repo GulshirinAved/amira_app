@@ -1,9 +1,11 @@
 part of 'category_radio_button_selection_bloc.dart';
 
-class CategoryRadioButtonSelectionEvent extends Equatable {
-  final String pressedTitle;
-  const CategoryRadioButtonSelectionEvent(this.pressedTitle);
+class CategoryRadioButtonSelectionEvent {}
 
-  @override
-  List<Object> get props => [pressedTitle];
+class SelectRadioButtonEvent extends CategoryRadioButtonSelectionEvent {
+  final String pressedTitle;
+
+  SelectRadioButtonEvent(this.pressedTitle);
 }
+
+class ApplyRadioButtonEvent extends CategoryRadioButtonSelectionEvent {}
