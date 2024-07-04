@@ -1,5 +1,4 @@
 //fonts
-
 import 'package:amira_app/data/models/products_model.dart';
 
 const String fontGilroy = 'Gilroy';
@@ -23,11 +22,14 @@ const String searchIcon = 'assets/icons/search.svg';
 const String filterIcon = 'assets/icons/filter.svg';
 const String settingsIcon = 'assets/icons/settings.svg';
 const String trashIcon = 'assets/icons/trash.svg';
+const String loginIcon = 'assets/icons/login.svg';
 
 //images
 const String bannerImage = 'assets/images/banner.png';
 const String banner1Image = 'assets/images/banner1.png';
 const String logo1Image = 'assets/images/logo1.png';
+const String ruFlagImage = 'assets/images/ruFlag.png';
+const String tmFlagImage = 'assets/images/tmFlag.png';
 
 //products
 const String sale1Image = 'assets/products/sale1.png';
@@ -54,6 +56,9 @@ const String milkCat4Image = 'assets/products/milkCat4.png';
 const String milkCat5Image = 'assets/products/milkCat5.png';
 const String milkCat6Image = 'assets/products/milkCat6.png';
 const String appleImage = 'assets/products/apple.png';
+
+//urls
+const String url = 'https://kip.tm/magaz/';
 
 List<Map<String, dynamic>> bottomNavBarItems = [
   {
@@ -657,6 +662,17 @@ final List helpTiles = [
 final List settingHinTexts = [
   '+993 61 31 24 54',
   'Введите почту',
-  'Дату рождения'
+  'Дату рождения',
 ];
 final List paymentMethod = ['Картой', 'Наличными'];
+//languages
+List<Map<String, dynamic>> languageList = [
+  {
+    'image': tmFlagImage,
+    'title': 'Türkmençe',
+  },
+  {
+    'image': ruFlagImage,
+    'title': 'Русский',
+  }
+];

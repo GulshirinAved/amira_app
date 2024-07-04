@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:amira_app/blocs/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
+import 'package:amira_app/blocs/filter/filter/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/priceRangeSelection/price_range_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/switcher/switcher_bloc.dart';

@@ -90,17 +90,20 @@ class CartPaymentScreen extends StatelessWidget {
                       ),
                     ),
                     CustomTextField.normal(
+                      context: context,
                       hintText: 'Имя',
                       backColor: AppColors.lightGreyColor,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.h),
                       child: CustomTextField.normal(
+                        context: context,
                         hintText: 'Гарашсызлык 15',
                         backColor: AppColors.lightGreyColor,
                       ),
                     ),
                     CustomTextField.normal(
+                      context: context,
                       hintText: '+993 (61) 87 67 98',
                       backColor: AppColors.lightGreyColor,
                     ),

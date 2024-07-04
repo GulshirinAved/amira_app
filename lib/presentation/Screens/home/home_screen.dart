@@ -19,112 +19,118 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: ListView(
-          children: [
-            //delivery address
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: const DeliveryAddressTile(),
-            ),
-            //search bar
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Container(
-                height: 46.h,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 7,
-                      offset: const Offset(0, 3),
-                      color: AppColors.purple1Color.withOpacity(0.4),
-                    ),
-                  ],
-                ),
-                child: CustomTextField.search(
-                  onTap: () {
-                    pushScreenWithNavBar(
-                      context,
-                      const SearchScreen(),
-                    );
-                  },
+      child: PopScope(
+        onPopInvoked: (value) {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: ListView(
+            children: [
+              //delivery address
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: const DeliveryAddressTile(),
+              ),
+              //search bar
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Container(
+                  height: 46.h,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 7,
+                        offset: const Offset(0, 3),
+                        color: AppColors.purple1Color.withOpacity(0.4),
+                      ),
+                    ],
+                  ),
+                  child: CustomTextField.search(
+                    context: context,
+                    onTap: () {
+                      pushScreenWithNavBar(
+                        context,
+                        const SearchScreen(),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            //banner
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
-              child: Image.asset(bannerImage),
-            ),
+              //banner
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
+                child: Image.asset(bannerImage),
+              ),
 
-            //products
-            Column(
-              children: [
-                //sale slilder
-                ListviewProductsSlider(
-                  topTitle: 'Скидки и акции',
-                  productsList: saleProducts,
-                ),
-                //veg slider
-                ListviewProductsSlider(
-                  topTitle: 'Овощи и фрукты',
-                  productsList: vegProducts,
-                ),
-                //banner
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Image.asset(banner1Image),
-                ),
-                //meat slider
-                ListviewProductsSlider(
-                  topTitle: 'Мясо',
-                  productsList: meatProducts,
-                ),
-                //milk slider
-                ListviewProductsSlider(
-                  topTitle: 'Молочка',
-                  productsList: milkProducts,
-                ),
+              //products
+              Column(
+                children: [
+                  //sale slilder
+                  ListviewProductsSlider(
+                    topTitle: 'Скидки и акции',
+                    productsList: saleProducts,
+                  ),
+                  //veg slider
+                  ListviewProductsSlider(
+                    topTitle: 'Овощи и фрукты',
+                    productsList: vegProducts,
+                  ),
+                  //banner
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Image.asset(banner1Image),
+                  ),
+                  //meat slider
+                  ListviewProductsSlider(
+                    topTitle: 'Мясо',
+                    productsList: meatProducts,
+                  ),
+                  //milk slider
+                  ListviewProductsSlider(
+                    topTitle: 'Молочка',
+                    productsList: milkProducts,
+                  ),
 
-                //cosmetics slider
-                ListviewProductsSlider(
-                  topTitle: 'Касметика',
-                  productsList: cosmeticsProducts,
-                ),
-                //hygiene slider
-                ListviewProductsSlider(
-                  topTitle: 'Гигиена',
-                  productsList: hygieneProducts,
-                ),
-                //house slider
-                ListviewProductsSlider(
-                  topTitle: 'Дом',
-                  productsList: houseProducts,
-                ),
-                //child slider
-                ListviewProductsSlider(
-                  topTitle: 'Детям',
-                  productsList: childProducts,
-                ),
-                //chancerySlider
-                ListviewProductsSlider(
-                  topTitle: 'Концелярия',
-                  productsList: chanceryProducts,
-                ),
+                  //cosmetics slider
+                  ListviewProductsSlider(
+                    topTitle: 'Касметика',
+                    productsList: cosmeticsProducts,
+                  ),
+                  //hygiene slider
+                  ListviewProductsSlider(
+                    topTitle: 'Гигиена',
+                    productsList: hygieneProducts,
+                  ),
+                  //house slider
+                  ListviewProductsSlider(
+                    topTitle: 'Дом',
+                    productsList: houseProducts,
+                  ),
+                  //child slider
+                  ListviewProductsSlider(
+                    topTitle: 'Детям',
+                    productsList: childProducts,
+                  ),
+                  //chancerySlider
+                  ListviewProductsSlider(
+                    topTitle: 'Концелярия',
+                    productsList: chanceryProducts,
+                  ),
 
-                //zoo slider
-                ListviewProductsSlider(
-                  topTitle: 'Зоотовары',
-                  productsList: zooProducts,
-                ),
-                //more gridview
-                const GridviewProductsSlider(
-                  topTitle: 'Еще товары',
-                ),
-              ],
-            ),
-          ],
+                  //zoo slider
+                  ListviewProductsSlider(
+                    topTitle: 'Зоотовары',
+                    productsList: zooProducts,
+                  ),
+                  //more gridview
+                  const GridviewProductsSlider(
+                    topTitle: 'Еще товары',
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

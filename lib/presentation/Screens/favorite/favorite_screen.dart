@@ -19,7 +19,9 @@ class FavoriteScreen extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
-              child: CustomTextField.search(),
+              child: CustomTextField.search(
+                context: context,
+              ),
             ),
             BlocBuilder<FavButtonBloc, FavButtonState>(
               builder: (context, state) {

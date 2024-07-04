@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/searchShowProducts/search_show_products_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
@@ -54,6 +55,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         Expanded(
                           child: CustomTextField.search(
                             autoFocus: true,
+                            context: context,
                             controller: searchController,
                             onChanged: (value) {
                               context.read<SearchShowProductsBloc>().add(
@@ -77,7 +79,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                 );
                           },
                           child: Text(
-                            'Отмена',
+                            AppLocalization.of(context)
+                                    .getTransatedValues('cancel') ??
+                                '',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: AppFonts.fontSize14,

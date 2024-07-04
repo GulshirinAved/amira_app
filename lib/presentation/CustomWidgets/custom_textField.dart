@@ -1,6 +1,8 @@
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
 enum TextFieldStyle { search, withUnderLine, normal }
@@ -14,11 +16,13 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final bool? autofocus;
   final TextFieldStyle? textFieldStyle;
+  final BuildContext context;
 
   final TextEditingController? textController;
   const CustomTextField({
     required this.hintText,
     required this.needPrefix,
+    required this.context,
     this.textController,
     this.backgroundColor,
     this.onFieldSubmitted,
@@ -30,6 +34,7 @@ class CustomTextField extends StatelessWidget {
   });
   const CustomTextField._({
     required this.hintText,
+    required this.context,
     this.needPrefix,
     this.backgroundColor,
     this.onFieldSubmitted,
@@ -39,22 +44,24 @@ class CustomTextField extends StatelessWidget {
     this.textController,
     this.textFieldStyle,
   });
-  factory CustomTextField.search({
-    bool? autoFocus,
-    VoidCallback? onTap,
-    TextEditingController? controller,
-    final Function(String)? onChanged,
-  }) {
+  factory CustomTextField.search(
+      {required final BuildContext context,
+      bool? autoFocus,
+      VoidCallback? onTap,
+      TextEditingController? controller,
+      final Function(String)? onChanged}) {
     return CustomTextField._(
-      hintText: 'Поиск',
+      hintText: AppLocalization.of(context).getTransatedValues('search') ?? '',
       needPrefix: true,
       autofocus: autoFocus ?? false,
       onTap: onTap,
       textController: controller,
       onChanged: onChanged,
+      context: context,
     );
   }
   factory CustomTextField.normal({
+    required final BuildContext context,
     final String? hintText,
     Color? backColor,
     final Function(String)? onFieldSubmitted,
@@ -67,9 +74,11 @@ class CustomTextField extends StatelessWidget {
       needPrefix: false,
       onFieldSubmitted: onFieldSubmitted,
       textController: controller,
+      context: context,
     );
   }
   factory CustomTextField.withUnderLine({
+    required final BuildContext context,
     final String? hintText,
     TextEditingController? controller,
     final Color? color,
@@ -78,6 +87,7 @@ class CustomTextField extends StatelessWidget {
       hintText: hintText!,
       autofocus: false,
       needPrefix: false,
+      context: context,
       textController: controller,
       textFieldStyle: TextFieldStyle.withUnderLine,
       backgroundColor: Colors.transparent,
@@ -119,6 +129,8 @@ class CustomTextField extends StatelessWidget {
       onTap: onTap,
       onFieldSubmitted: onFieldSubmitted,
       onChanged: onChanged,
+      onTapOutside: (event) =>
+          FocusScope.of(context).requestFocus(new FocusNode()),
     );
   }
 }

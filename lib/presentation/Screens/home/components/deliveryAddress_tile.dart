@@ -1,3 +1,4 @@
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/addDeliveryLocation/location_add_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
@@ -40,7 +41,9 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
         builder: (context, state) {
           return Text(
             state.savedLocation == ''
-                ? 'Укажите место доставки'
+                ? AppLocalization.of(context)
+                        .getTransatedValues('showDeliveryAddress') ??
+                    ''
                 : state.savedLocation,
             style: TextStyle(
               fontWeight: FontWeight.w500,
@@ -69,7 +72,9 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Адрес доставки',
+                  AppLocalization.of(context)
+                          .getTransatedValues('deliveryAddress') ??
+                      '',
                   style: TextStyle(
                     fontFamily: fontPeaceSans,
                     fontWeight: FontWeight.w400,
@@ -89,7 +94,9 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                     ),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Введите улицу и номер дома',
+                      AppLocalization.of(context)
+                              .getTransatedValues('showStreetAndHouseNumber') ??
+                          '',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: AppFonts.fontSize14,
@@ -101,7 +108,9 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Button.textButton(
-                    text: 'Закрыть',
+                    text: AppLocalization.of(context)
+                            .getTransatedValues('close') ??
+                        '',
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -131,7 +140,9 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Адрес доставки',
+                  AppLocalization.of(context)
+                          .getTransatedValues('deliveryAddress') ??
+                      '',
                   style: TextStyle(
                     fontFamily: fontPeaceSans,
                     fontWeight: FontWeight.w400,
@@ -144,8 +155,13 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: CustomTextField.normal(
+                        context: context,
                         controller: addressController,
-                        hintText: 'Введите улицу и номер дома',
+                        hintText:
+                            AppLocalization.of(context).getTransatedValues(
+                                  'showStreetAndHouseNumber',
+                                ) ??
+                                '',
                         onFieldSubmitted: (value) {
                           context
                               .read<LocationAddBloc>()
@@ -210,7 +226,10 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                   child: BlocBuilder<LocationAddBloc, LocationAddState>(
                     builder: (context, state) {
                       return Button.textButton(
-                        text: 'Применить',
+                        text: AppLocalization.of(context).getTransatedValues(
+                              'apply',
+                            ) ??
+                            '',
                         onTap: () {
                           context.read<LocationAddBloc>().add(
                                 OnButtonPressedAddressEvent(

@@ -1,4 +1,4 @@
-import 'package:amira_app/blocs/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
+import 'package:amira_app/blocs/filter/filter/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:flutter/material.dart';

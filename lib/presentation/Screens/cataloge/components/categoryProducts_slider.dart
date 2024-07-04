@@ -1,18 +1,22 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
+import 'package:amira_app/presentation/Screens/cataloge/components/categoryProduct_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:amira_app/config/theme/theme.dart';
-import 'package:amira_app/presentation/Screens/cataloge/components/categoryProduct_card.dart';
 import 'package:amira_app/presentation/Screens/home/components/sliderTopTitle.dart';
 
 class CategoryProductsSlider extends StatelessWidget {
   final String topTitle;
   final List categoryProductList;
+  final String categoryId;
   final VoidCallback? onTap;
   const CategoryProductsSlider({
     required this.categoryProductList,
     required this.topTitle,
+    required this.categoryId,
     this.onTap,
     super.key,
   });
@@ -37,15 +41,43 @@ class CategoryProductsSlider extends StatelessWidget {
           ),
           SizedBox(
             height: 154.h,
-            child: ListView.builder(
-              itemCount: categoryProductList.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return CategoryProductCard(
-                  index: index,
-                  categoryProductList: categoryProductList,
-                );
+            child: BlocBuilder<AllProductsBloc, AllProductsState>(
+              builder: (context, state) {
+                if (state is AllProductsError) {
+                  return Center(
+                    child: Text('it is ${state.error}'),
+                  );
+                } else if (state is AllProductsInitial) {
+                  return const Center(
+                    child: Text('It is initial'),
+                  );
+                } else if (state is AllProductsLoading) {
+                  return const Center(
+                    child: Text('It is loading'),
+                  );
+                } else if (state is AllProductsLoaded) {
+                  if (state.allProductsList.isEmpty) {
+                    return const Center(
+                      child: Text('It is empty'),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: state.allProductsList.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return CategoryProductCard(
+                          index: index,
+                          categoryProductList: state.allProductsList,
+                        );
+                      },
+                    );
+                  }
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
               },
             ),
           ),

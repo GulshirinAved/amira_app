@@ -1,0 +1,10 @@
+{
+    "settings": "Настройки",
+    "showDeliveryAddress": "Укажите место доставки",
+    "deliveryAddress": "Адрес доставки",
+    "showStreetAndHouseNumber": "Введите улицу и номер дома",
+    "close": "Закрыть",
+    "apply": "Применить",
+    "searсh": "Поиск",
+    "cancel": "Отмена"
+}

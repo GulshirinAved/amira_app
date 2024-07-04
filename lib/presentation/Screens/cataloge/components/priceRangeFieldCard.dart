@@ -67,6 +67,7 @@ class _PriceRangeFieldAndCardState extends State<PriceRangeFieldAndCard> {
               children: [
                 Expanded(
                   child: CustomTextField.normal(
+                    context: context,
                     hintText: 'от',
                     backColor: AppColors.lightGreyColor,
                     controller: fromPriceController,
@@ -78,6 +79,7 @@ class _PriceRangeFieldAndCardState extends State<PriceRangeFieldAndCard> {
                 ),
                 Expanded(
                   child: CustomTextField.normal(
+                    context: context,
                     hintText: 'до',
                     backColor: AppColors.lightGreyColor,
                     controller: toPriceController,

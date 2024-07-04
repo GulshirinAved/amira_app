@@ -10,6 +10,7 @@ sealed class FavButtonEvent extends Equatable {
   List<Object> get props => [item];
 }
 
+// ignore: must_be_immutable
 class ToggleFavEvent extends FavButtonEvent {
   ToggleFavEvent({required super.item});
 }

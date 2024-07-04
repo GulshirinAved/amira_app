@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amira_app/config/constants/constants.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -26,13 +28,17 @@ class CategoryProductCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            categoryProductList[index]['image'],
-            height: 106.h,
-            width: 106.w,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ExtendedImage.network(
+              '$url${categoryProductList[index].images[0].url}',
+              height: 106.h,
+              width: 106.w,
+              fit: BoxFit.cover,
+            ),
           ),
           Text(
-            categoryProductList[index]['name'],
+            categoryProductList[index].name,
             style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: AppFonts.fontSize14,
