@@ -17,7 +17,7 @@ class CustomTextField extends StatelessWidget {
   final bool? autofocus;
   final TextFieldStyle? textFieldStyle;
   final BuildContext context;
-
+  final bool? isTextNumber;
   final TextEditingController? textController;
   const CustomTextField({
     required this.hintText,
@@ -30,6 +30,7 @@ class CustomTextField extends StatelessWidget {
     this.onTap,
     this.autofocus = false,
     this.textFieldStyle,
+    this.isTextNumber = false,
     super.key,
   });
   const CustomTextField._({
@@ -43,13 +44,15 @@ class CustomTextField extends StatelessWidget {
     this.autofocus,
     this.textController,
     this.textFieldStyle,
+    this.isTextNumber,
   });
-  factory CustomTextField.search(
-      {required final BuildContext context,
-      bool? autoFocus,
-      VoidCallback? onTap,
-      TextEditingController? controller,
-      final Function(String)? onChanged}) {
+  factory CustomTextField.search({
+    required final BuildContext context,
+    bool? autoFocus,
+    VoidCallback? onTap,
+    TextEditingController? controller,
+    final Function(String)? onChanged,
+  }) {
     return CustomTextField._(
       hintText: AppLocalization.of(context).getTransatedValues('search') ?? '',
       needPrefix: true,
@@ -58,6 +61,7 @@ class CustomTextField extends StatelessWidget {
       textController: controller,
       onChanged: onChanged,
       context: context,
+      isTextNumber: false,
     );
   }
   factory CustomTextField.normal({
@@ -66,6 +70,8 @@ class CustomTextField extends StatelessWidget {
     Color? backColor,
     final Function(String)? onFieldSubmitted,
     TextEditingController? controller,
+    final bool? isTextNumber,
+    final bool? isObscure,
   }) {
     return CustomTextField._(
       hintText: hintText!,
@@ -75,6 +81,7 @@ class CustomTextField extends StatelessWidget {
       onFieldSubmitted: onFieldSubmitted,
       textController: controller,
       context: context,
+      isTextNumber: isTextNumber,
     );
   }
   factory CustomTextField.withUnderLine({
@@ -82,6 +89,7 @@ class CustomTextField extends StatelessWidget {
     final String? hintText,
     TextEditingController? controller,
     final Color? color,
+    final bool? isTextNumber,
   }) {
     return CustomTextField._(
       hintText: hintText!,
@@ -91,6 +99,7 @@ class CustomTextField extends StatelessWidget {
       textController: controller,
       textFieldStyle: TextFieldStyle.withUnderLine,
       backgroundColor: Colors.transparent,
+      isTextNumber: isTextNumber,
     );
   }
   @override
@@ -98,6 +107,8 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       controller: textController,
       autofocus: autofocus ?? false,
+      keyboardType:
+          isTextNumber == true ? TextInputType.phone : TextInputType.text,
       decoration: InputDecoration(
         border: textFieldStyle == TextFieldStyle.withUnderLine
             ? const UnderlineInputBorder()

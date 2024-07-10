@@ -5,6 +5,7 @@ import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/cartAmount_button.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,13 +30,20 @@ class CartProductCard extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: AppBorders.borderRadius10,
-            child: Image.asset(
-              cartItem.image!,
-              height: 75.h,
-              width: 75.h,
-            ),
-          ),
+              borderRadius: AppBorders.borderRadius10,
+              child: cartItem.image![0] is Map<String, dynamic>
+                  ? ExtendedImage.network(
+                      'https://kip.tm/magaz/' + cartItem.image![0]['url']!,
+                      height: 75.h,
+                      width: 75.h,
+                      fit: BoxFit.cover,
+                    )
+                  : ExtendedImage.network(
+                      'https://kip.tm/magaz/' + cartItem.image![0].url,
+                      height: 75.h,
+                      width: 75.h,
+                      fit: BoxFit.cover,
+                    )),
           SizedBox(
             width: 10.w,
           ),
@@ -51,7 +59,7 @@ class CartProductCard extends StatelessWidget {
                       children: [
                         // Prices
                         Text(
-                          cartItem.price!,
+                          (cartItem.price).toString(),
                           style: TextStyle(
                             fontFamily: fontPeaceSans,
                             fontWeight: FontWeight.w400,
@@ -109,9 +117,12 @@ class CartProductCard extends StatelessWidget {
                   children: [
                     // Trash icon
                     GestureDetector(
-                      onTap: () => context
-                          .read<CartButtonBloc>()
-                          .add(RemoveCartEvent(cartItem)),
+                      onTap: () {
+                        context
+                            .read<CartButtonBloc>()
+                            .add(RemoveCartEvent(cartItem));
+                        context.read<CartButtonBloc>().add(SumProductEvent());
+                      },
                       child: SvgPicture.asset(trashIcon),
                     ),
                     const Spacer(),

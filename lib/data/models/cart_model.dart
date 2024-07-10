@@ -1,12 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+
+import 'package:amira_app/data/models/product_model.dart';
+
 class CartItem {
-  final int id;
+  final String id;
   final String? name;
-  final String? image;
-  final String? price;
+  final List<dynamic>? image;
+  final int? price;
   final String? prevPrice;
   final String? discount;
   final String? desc;
+  final String? shopid;
   int quantity;
 
   CartItem({
@@ -17,17 +25,54 @@ class CartItem {
     this.prevPrice,
     this.discount,
     this.desc,
+    this.shopid,
     this.quantity = 1,
   });
 
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'image': image,
+      'price': price,
+      'prevPrice': prevPrice,
+      'discount': discount,
+      'desc': desc,
+      'shopid': shopid,
+      'quantity': quantity,
+    };
+  }
+
+  factory CartItem.fromMap(Map<String, dynamic> map) {
+    return CartItem(
+      id: map['id'] as String,
+      name: map['name'] != null ? map['name'] as String : null,
+      image: map['image'] != null
+          ? List<dynamic>.from((map['image'] as List<dynamic>))
+          : [],
+      price: map['price'] != null ? map['price'] as int : null,
+      prevPrice: map['prevPrice'] != null ? map['prevPrice'] as String : null,
+      discount: map['discount'] != null ? map['discount'] as String : null,
+      desc: map['desc'] != null ? map['desc'] as String : null,
+      shopid: map['shopid'] != null ? map['shopid'] as String : null,
+      quantity: map['quantity'] as int,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory CartItem.fromJson(String source) =>
+      CartItem.fromMap(json.decode(source) as Map<String, dynamic>);
+
   CartItem copyWith({
-    int? id,
+    String? id,
     String? name,
-    String? image,
-    String? price,
+    List<Image>? image,
+    int? price,
     String? prevPrice,
     String? discount,
     String? desc,
+    String? shopid,
     int? quantity,
   }) {
     return CartItem(
@@ -38,6 +83,7 @@ class CartItem {
       prevPrice: prevPrice ?? this.prevPrice,
       discount: discount ?? this.discount,
       desc: desc ?? this.desc,
+      shopid: shopid ?? this.shopid,
       quantity: quantity ?? this.quantity,
     );
   }
@@ -48,11 +94,12 @@ class CartItem {
 
     return other.id == id &&
         other.name == name &&
-        other.image == image &&
+        listEquals(other.image, image) &&
         other.price == price &&
         other.prevPrice == prevPrice &&
         other.discount == discount &&
         other.desc == desc &&
+        other.shopid == shopid &&
         other.quantity == quantity;
   }
 
@@ -65,6 +112,7 @@ class CartItem {
         prevPrice.hashCode ^
         discount.hashCode ^
         desc.hashCode ^
+        shopid.hashCode ^
         quantity.hashCode;
   }
 }

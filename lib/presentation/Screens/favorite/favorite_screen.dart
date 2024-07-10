@@ -1,7 +1,9 @@
 import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
+import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
+import 'package:amira_app/presentation/CustomWidgets/animations.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +28,22 @@ class FavoriteScreen extends StatelessWidget {
             BlocBuilder<FavButtonBloc, FavButtonState>(
               builder: (context, state) {
                 if (state is FavButtonInitial || state.favList.isEmpty) {
-                  return const Center(
-                    child: Text('There is no favorites'),
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Animations.empty,
+                        Text(
+                          'There is no products ',
+                          style: TextStyle(
+                            fontFamily: fontPeaceSans,
+                            fontSize: AppFonts.fontSize18,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 } else {
                   return Container(
@@ -59,6 +75,7 @@ class FavoriteScreen extends StatelessWidget {
                             prevPrice: favList.prevPrice,
                             discount: favList.discount,
                             desc: favList.desc,
+                            shopid: favList.shopid,
                           ),
                           favItem: FavItem(
                             id: favList.id,
@@ -68,6 +85,7 @@ class FavoriteScreen extends StatelessWidget {
                             prevPrice: favList.prevPrice,
                             discount: favList.discount,
                             desc: favList.desc,
+                            shopid: favList.shopid,
                           ),
                         );
                       },

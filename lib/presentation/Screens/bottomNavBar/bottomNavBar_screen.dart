@@ -21,10 +21,10 @@ class BottomNavBar extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => FavButtonBloc(),
+          create: (context) => FavButtonBloc()..add(LoadFavEvent()),
         ),
         BlocProvider(
-          create: (context) => CartButtonBloc()..add(SumProductEvent(null)),
+          create: (context) => CartButtonBloc()..add(LoadCartEvent()),
         ),
         BlocProvider(
           create: (context) =>

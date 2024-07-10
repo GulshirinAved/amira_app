@@ -24,12 +24,16 @@ class TopTitle extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: AppColors.blackColor,
-                fontFamily: fontPeaceSans,
-                fontSize: AppFonts.fontSize22,
+            Expanded(
+              child: Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: AppColors.blackColor,
+                  fontFamily: fontPeaceSans,
+                  fontSize: AppFonts.fontSize22,
+                ),
               ),
             ),
             SvgPicture.asset(arrowRightIcon),

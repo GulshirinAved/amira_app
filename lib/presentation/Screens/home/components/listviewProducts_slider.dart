@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amira_app/data/models/cart_model.dart';
+import 'package:amira_app/data/models/fav_model.dart';
+import 'package:amira_app/presentation/CustomWidgets/productSmall_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:amira_app/config/theme/theme.dart';
-import 'package:amira_app/data/models/cart_model.dart';
-import 'package:amira_app/data/models/fav_model.dart';
-import 'package:amira_app/presentation/CustomWidgets/productSmall_card.dart';
+
 import 'package:amira_app/presentation/Screens/home/components/sliderTopTitle.dart';
 
 class ListviewProductsSlider extends StatelessWidget {
@@ -42,23 +43,23 @@ class ListviewProductsSlider extends StatelessWidget {
                 return ProductSmallCard(
                   index: index,
                   cartItem: CartItem(
-                    id: productsList[index].id,
-                    name: productsList[index].name,
-                    image: productsList[index].image,
-                    price: productsList[index].price,
-                    prevPrice: productsList[index].prevPrice,
-                    discount: productsList[index].discount,
-                    desc: productsList[index].desc,
-                  ),
+                      id: productsList[index].id,
+                      name: productsList[index].name,
+                      image: productsList[index].images,
+                      price: productsList[index].price,
+                      prevPrice: '',
+                      discount: null,
+                      desc: '',
+                      shopid: productsList[index].shopId),
                   favItem: FavItem(
-                    id: productsList[index].id,
-                    name: productsList[index].name,
-                    image: productsList[index].image,
-                    price: productsList[index].price,
-                    prevPrice: productsList[index].prevPrice,
-                    discount: productsList[index].discount,
-                    desc: productsList[index].desc,
-                  ),
+                      id: productsList[index].id,
+                      name: productsList[index].name,
+                      image: productsList[index].images,
+                      price: productsList[index].price,
+                      prevPrice: '',
+                      discount: null,
+                      desc: '',
+                      shopid: productsList[index].shopId),
                 );
               },
             ),

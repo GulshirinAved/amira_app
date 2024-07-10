@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:amira_app/blocs/cart/cartButton/cart_button_bloc.dart';
 import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
+import 'package:amira_app/blocs/home/getOneProduct/get_one_product_bloc.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
+import 'package:amira_app/presentation/CustomWidgets/animations.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:amira_app/presentation/CustomWidgets/cartAmount_button.dart';
 import 'package:amira_app/presentation/Screens/home/components/discount_card.dart';
@@ -59,6 +61,10 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
         BlocProvider(
           create: (context) => DotIndicatorBloc(),
         ),
+        BlocProvider(
+          create: (context) =>
+              GetOneProductBloc()..add(GetOneProduct(id: widget.favItem.id)),
+        ),
       ],
       child: Builder(
         builder: (context) {
@@ -68,7 +74,7 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                   state.favList.any((item) => item.id == widget.favItem.id);
               return Scaffold(
                 appBar: CustomAppBar(
-                  topTitle: 'Органические яблоки',
+                  topTitle: widget.favItem.name ?? '',
                   iconTitle: isFav ? heartBoldIcon : heartIcon,
                   favActiveColor:
                       isFav ? AppColors.purpleColor : AppColors.darkGreyColor,
@@ -92,7 +98,10 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                         children: [
                           //image slider
 
-                          ImageSlider(pageController: _pageController),
+                          ImageSlider(
+                            imageList: widget.favItem.image!,
+                            pageController: _pageController,
+                          ),
                           //discount cards
                           widget.favItem.discount == null
                               ? const SizedBox.shrink()
@@ -125,54 +134,117 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //brand name
-                          ListTile(
-                            leading: Image.asset(logo1Image),
-                            title: Text(
-                              'Alma production',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: AppFonts.fontSize14,
-                              ),
-                            ),
-                            subtitle: Text(
-                              'Бренд',
-                              style: TextStyle(
-                                color: AppColors.greyColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: AppFonts.fontSize14,
-                              ),
-                            ),
-                            trailing: SvgPicture.asset(arrowRightIcon),
-                          ),
-                          //seller
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Мерген Джумаев',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: AppFonts.fontSize14,
+                      child: BlocBuilder<GetOneProductBloc, GetOneProductState>(
+                        builder: (context, state) {
+                          if (state is GetOneProductError) {
+                            return Center(
+                              child: Text(state.error.toString()),
+                            );
+                          } else if (state is GetOneProductInitial) {
+                            return const Center(
+                              child: Text('It is initial'),
+                            );
+                          } else if (state is GetOneProductLoading) {
+                            return Animations.loading;
+                          } else if (state is GetOneProductLoaded) {
+                            if (state.getOneProductList.product == null) {
+                              return const Center(
+                                child: Text('it is empty'),
+                              );
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //brand name
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: ClipRRect(
+                                    borderRadius: AppBorders.borderRadius10,
+                                    child: Image.asset(
+                                      appleImage,
+                                      height: 42.h,
+                                      width: 83.w,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    state.getOneProductList.product!.brand!
+                                        .name!,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: AppFonts.fontSize14,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    'Бренд',
+                                    style: TextStyle(
+                                      color: AppColors.greyColor,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: AppFonts.fontSize14,
+                                    ),
+                                  ),
+                                  trailing: SvgPicture.asset(arrowRightIcon),
                                 ),
-                              ),
-                              Text(
-                                'Продавец',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: AppFonts.fontSize14,
-                                  color: AppColors.greyColor,
+                                //seller
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Мерген Джумаев',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: AppFonts.fontSize14,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Продавец',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: AppFonts.fontSize14,
+                                        color: AppColors.greyColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            );
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
                       ),
                     ),
-                    const GridviewProductsSlider(topTitle: 'Рекомендуем'),
+                    BlocBuilder<GetOneProductBloc, GetOneProductState>(
+                      builder: (context, state) {
+                        if (state is GetOneProductError) {
+                          return Center(
+                            child: Text(state.error.toString()),
+                          );
+                        } else if (state is GetOneProductInitial) {
+                          return const Center(
+                            child: Text('It is initial'),
+                          );
+                        } else if (state is GetOneProductLoading) {
+                          return Animations.loading;
+                        } else if (state is GetOneProductLoaded) {
+                          if (state
+                              .getOneProductList.similaryProducts!.isEmpty) {
+                            return const Center(
+                              child: Text('it is empty'),
+                            );
+                          }
+                          return GridviewProductsSlider(
+                            topTitle: 'Рекомендуем',
+                            productList:
+                                state.getOneProductList.similaryProducts!,
+                          );
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: SizedBox(
@@ -191,9 +263,9 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                                           onTap: () {
                                             context.read<CartButtonBloc>().add(
                                                 AddCartEvent(widget.cartItem));
-                                            context.read<CartButtonBloc>().add(
-                                                SumProductEvent(
-                                                    widget.cartItem));
+                                            context
+                                                .read<CartButtonBloc>()
+                                                .add(SumProductEvent());
                                           },
                                         )
                                       : CartAmountButton(

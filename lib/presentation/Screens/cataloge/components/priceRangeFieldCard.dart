@@ -1,40 +1,23 @@
-import 'package:amira_app/blocs/filter/priceRangeSelection/price_range_selection_bloc.dart';
-
-import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
-import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PriceRangeFieldAndCard extends StatefulWidget {
+import 'package:amira_app/blocs/filter/priceRangeSelection/price_range_selection_bloc.dart';
+import 'package:amira_app/config/constants/constants.dart';
+import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
+
+class PriceRangeFieldAndCard extends StatelessWidget {
   final int bottomSheet;
+  final TextEditingController fromPriceController;
+  final TextEditingController toPriceController;
   const PriceRangeFieldAndCard({
     required this.bottomSheet,
+    required this.fromPriceController,
+    required this.toPriceController,
     super.key,
   });
-
-  @override
-  State<PriceRangeFieldAndCard> createState() => _PriceRangeFieldAndCardState();
-}
-
-class _PriceRangeFieldAndCardState extends State<PriceRangeFieldAndCard> {
-  late TextEditingController fromPriceController;
-  late TextEditingController toPriceController;
-
-  @override
-  void initState() {
-    super.initState();
-    fromPriceController = TextEditingController();
-    toPriceController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    fromPriceController.dispose();
-    toPriceController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +54,7 @@ class _PriceRangeFieldAndCardState extends State<PriceRangeFieldAndCard> {
                     hintText: 'от',
                     backColor: AppColors.lightGreyColor,
                     controller: fromPriceController,
+                    isTextNumber: true,
                     onFieldSubmitted: (value) {},
                   ),
                 ),
@@ -83,8 +67,9 @@ class _PriceRangeFieldAndCardState extends State<PriceRangeFieldAndCard> {
                     hintText: 'до',
                     backColor: AppColors.lightGreyColor,
                     controller: toPriceController,
+                    isTextNumber: true,
                   ),
-                )
+                ),
               ],
             ),
             Padding(
@@ -107,14 +92,14 @@ class _PriceRangeFieldAndCardState extends State<PriceRangeFieldAndCard> {
                 itemBuilder: (context, index) => BlocBuilder<
                     PriceRangeSelectionBloc, PriceRangeSelectionState>(
                   builder: (context, state) {
-                    bool isSelected = (widget.bottomSheet == 1
+                    bool isSelected = (bottomSheet == 1
                             ? state.selectedPriceBottomSheet1
                             : state.selectedPriceBottomSheet2) ==
                         index;
                     return GestureDetector(
                       onTap: () => context.read<PriceRangeSelectionBloc>().add(
                             SelectPrice(
-                              bottomSheet: widget.bottomSheet,
+                              bottomSheet: bottomSheet,
                               pressedPriceIndex: index,
                             ),
                           ),

@@ -1,9 +1,11 @@
+import 'package:amira_app/blocs/cateloge/getOneCataloge/get_one_cateloge_bloc.dart';
 import 'package:amira_app/blocs/filter/filter/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/priceRangeSelection/price_range_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/switcher/switcher_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/presentation/CustomWidgets/animations.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:amira_app/presentation/CustomWidgets/radio_button.dart';
 import 'package:amira_app/presentation/Screens/cataloge/components/brand_cards.dart';
@@ -16,8 +18,10 @@ import 'package:flutter_svg/svg.dart';
 
 class FilterTile extends StatefulWidget {
   final double? width;
+  final String id;
 
   const FilterTile({
+    required this.id,
     super.key,
     this.width,
   });
@@ -27,6 +31,23 @@ class FilterTile extends StatefulWidget {
 }
 
 class _FilterTileState extends State<FilterTile> {
+  late TextEditingController _toTextEditingController;
+  late TextEditingController _fromTextEditingController;
+
+  @override
+  void initState() {
+    super.initState();
+    _toTextEditingController = TextEditingController();
+    _fromTextEditingController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _toTextEditingController.dispose();
+    _fromTextEditingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -34,7 +55,7 @@ class _FilterTileState extends State<FilterTile> {
         // filter icon
         GestureDetector(
           onTap: () {
-            filterBottomSheet(context);
+            filterBottomSheet(context, widget.id);
           },
           child: Container(
             height: 34.h,
@@ -65,7 +86,35 @@ class _FilterTileState extends State<FilterTile> {
                         ? priceBottomsheet(context)
                         : null;
               },
-              child: FilterChipCard(index: index),
+              child: BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
+                builder: (context, state) {
+                  if (state is GetOneCatalogeError) {
+                    return Center(
+                      child: Text(state.error.toString()),
+                    );
+                  } else if (state is GetOneCatelogeInitial) {
+                    return const Center(
+                      child: Text('It is initial'),
+                    );
+                  } else if (state is GetOneCatalogeLoading) {
+                    return Animations.loading;
+                  } else if (state is GetOneCatalogeLoaded) {
+                    if (state.getOneCatalogeList.subcategories!.isEmpty) {
+                      return const Center(
+                        child: Text('it is empty'),
+                      );
+                    }
+                    return FilterChipCard(
+                      index: index,
+                      initialCategoryValue:
+                          state.getOneCatalogeList.subcategories![0].name!,
+                    );
+                  }
+                  return const Center(
+                    child: const CircularProgressIndicator(),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -105,8 +154,10 @@ class _FilterTileState extends State<FilterTile> {
                       fontSize: AppFonts.fontSize22,
                     ),
                   ),
-                  const PriceRangeFieldAndCard(
+                  PriceRangeFieldAndCard(
                     bottomSheet: 3,
+                    toPriceController: _toTextEditingController,
+                    fromPriceController: _fromTextEditingController,
                   ),
                   Padding(
                     padding: EdgeInsets.only(
@@ -185,7 +236,7 @@ class _FilterTileState extends State<FilterTile> {
     );
   }
 
-  Future<dynamic> filterBottomSheet(BuildContext context) {
+  Future<dynamic> filterBottomSheet(BuildContext context, String id) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -216,6 +267,11 @@ class _FilterTileState extends State<FilterTile> {
                   context,
                 ),
               ),
+              BlocProvider.value(
+                value: BlocProvider.of<GetOneCatelogeBloc>(
+                  context,
+                ),
+              ),
             ],
             child: SingleChildScrollView(
               child: Padding(
@@ -240,41 +296,78 @@ class _FilterTileState extends State<FilterTile> {
                       Container(
                         padding: const EdgeInsets.all(5),
                         color: AppColors.whiteColor,
-                        child: Column(
-                          children: List.generate(
-                            filterCatgeories.length,
-                            (index) => BlocBuilder<
-                                CategoryRadioButtonSelectionBloc,
-                                CategoryRadioButtonSelectionState>(
-                              builder: (context, state) {
-                                return Column(
-                                  children: [
-                                    CustomRadioButton(
-                                      title: filterCatgeories[index],
-                                      value: filterCatgeories[index],
-                                      groupValue: state.tempSelectedTitle ??
-                                          filterCatgeories[0],
-                                      onChanged: (value) {
-                                        context
-                                            .read<
-                                                CategoryRadioButtonSelectionBloc>()
-                                            .add(
-                                              SelectRadioButtonEvent(
-                                                value ?? filterCatgeories[0],
-                                              ),
-                                            );
-                                      },
-                                    ),
-                                    Divider(
-                                      endIndent: 10,
-                                      indent: 10,
-                                      color: AppColors.lightGreyColor,
-                                    ),
-                                  ],
+                        child: BlocBuilder<GetOneCatelogeBloc,
+                            GetOneCatelogeState>(
+                          builder: (context, state) {
+                            if (state is GetOneCatalogeError) {
+                              return Center(
+                                child: Text(state.error.toString()),
+                              );
+                            } else if (state is GetOneCatelogeInitial) {
+                              return const Center(
+                                child: Text('It is initial'),
+                              );
+                            } else if (state is GetOneCatalogeLoading) {
+                              return Animations.loading;
+                            } else if (state is GetOneCatalogeLoaded) {
+                              if (state
+                                  .getOneCatalogeList.subcategories!.isEmpty) {
+                                return const Center(
+                                  child: Text('it is empty'),
                                 );
-                              },
-                            ),
-                          ),
+                              }
+                              return Column(
+                                children: List.generate(
+                                  state
+                                      .getOneCatalogeList.subcategories!.length,
+                                  (index) => BlocBuilder<
+                                      CategoryRadioButtonSelectionBloc,
+                                      CategoryRadioButtonSelectionState>(
+                                    builder: (context, stateRadio) {
+                                      return Column(
+                                        children: [
+                                          CustomRadioButton(
+                                            title: state.getOneCatalogeList
+                                                .subcategories![index].name!,
+                                            value: state.getOneCatalogeList
+                                                .subcategories![index].name!,
+                                            groupValue:
+                                                stateRadio.tempSelectedTitle ??
+                                                    state
+                                                        .getOneCatalogeList
+                                                        .subcategories![0]
+                                                        .name!,
+                                            onChanged: (value) {
+                                              context
+                                                  .read<
+                                                      CategoryRadioButtonSelectionBloc>()
+                                                  .add(
+                                                    SelectRadioButtonEvent(
+                                                      value ??
+                                                          state
+                                                              .getOneCatalogeList
+                                                              .subcategories![0]
+                                                              .name!,
+                                                    ),
+                                                  );
+                                            },
+                                          ),
+                                          Divider(
+                                            endIndent: 10,
+                                            indent: 10,
+                                            color: AppColors.lightGreyColor,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
                         ),
                       ),
                       //second tile
@@ -304,7 +397,6 @@ class _FilterTileState extends State<FilterTile> {
                                   ),
                                   value: state.tempIsLight ?? false,
                                   onChanged: (value) {
-                                    print(value);
                                     context
                                         .read<SwitcherBloc>()
                                         .add(ToggleSwitchEvent(!value));
@@ -345,8 +437,10 @@ class _FilterTileState extends State<FilterTile> {
 
                       //thirt tile
                       //price range textfield and price range card
-                      const PriceRangeFieldAndCard(
+                      PriceRangeFieldAndCard(
                         bottomSheet: 1,
+                        toPriceController: _toTextEditingController,
+                        fromPriceController: _fromTextEditingController,
                       ),
                       //save button
                       Padding(

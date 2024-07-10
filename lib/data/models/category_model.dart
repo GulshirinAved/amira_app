@@ -32,7 +32,7 @@ class CategoryModel {
 class Data {
   int? count;
   int? pageCount;
-  List<Row>? rows;
+  List<Rows>? rows;
 
   Data({
     this.count,
@@ -49,7 +49,7 @@ class Data {
         pageCount: json['pageCount'],
         rows: json['rows'] == null
             ? []
-            : List<Row>.from(json['rows']!.map((x) => Row.fromJson(x))),
+            : List<Rows>.from(json['rows']!.map((x) => Rows.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,15 +61,15 @@ class Data {
       };
 }
 
-class Row {
+class Rows {
   String? id;
   Image? image;
   String? parentId;
   DateTime? createdAt;
-  List<Row>? subcategories;
+  List<Rows>? subcategories;
   String? name;
 
-  Row({
+  Rows({
     this.id,
     this.image,
     this.parentId,
@@ -78,11 +78,11 @@ class Row {
     this.name,
   });
 
-  factory Row.fromRawJson(String str) => Row.fromJson(json.decode(str));
+  factory Rows.fromRawJson(String str) => Rows.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Row.fromJson(Map<String, dynamic> json) => Row(
+  factory Rows.fromJson(Map<String, dynamic> json) => Rows(
         id: json['id'],
         image: json['image'] == null ? null : Image.fromJson(json['image']),
         parentId: json['parentId'],
@@ -91,8 +91,8 @@ class Row {
             : DateTime.parse(json['createdAt']),
         subcategories: json['subcategories'] == null
             ? []
-            : List<Row>.from(
-                json['subcategories']!.map((x) => Row.fromJson(x))),
+            : List<Rows>.from(
+                json['subcategories']!.map((x) => Rows.fromJson(x))),
         name: json['name'],
       );
 

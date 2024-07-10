@@ -10,8 +10,10 @@ import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
 
 class GridviewProductsSlider extends StatelessWidget {
   final String topTitle;
+  final List<dynamic> productList;
   const GridviewProductsSlider({
     required this.topTitle,
+    required this.productList,
     super.key,
   });
 
@@ -46,28 +48,29 @@ class GridviewProductsSlider extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisExtent: 370,
             ),
-            itemCount: saleProducts.length,
+            itemCount: productList.length,
             itemBuilder: (context, index) {
               return ProductLargeCard(
                 index: index,
                 cartItem: CartItem(
-                  id: saleProducts[index].id,
-                  name: saleProducts[index].name,
-                  image: saleProducts[index].image,
-                  price: saleProducts[index].price,
-                  prevPrice: saleProducts[index].prevPrice,
-                  discount: saleProducts[index].discount,
-                  desc: saleProducts[index].desc,
+                  id: productList[index].id.toString(),
+                  name: productList[index].name,
+                  image: productList[index].images,
+                  price: productList[index].price,
+                  prevPrice: null,
+                  discount: null,
+                  desc: productList[index].description,
+                  shopid: productList[index].shopId,
                 ),
                 favItem: FavItem(
-                  id: saleProducts[index].id,
-                  name: saleProducts[index].name,
-                  image: saleProducts[index].image,
-                  price: saleProducts[index].price,
-                  prevPrice: saleProducts[index].prevPrice,
-                  discount: saleProducts[index].discount,
-                  desc: saleProducts[index].desc,
-                ),
+                    id: productList[index].id.toString(),
+                    name: productList[index].name,
+                    image: productList[index].images,
+                    price: productList[index].price,
+                    prevPrice: null,
+                    discount: null,
+                    desc: productList[index].description,
+                    shopid: productList[index].shopId),
               );
             },
           ),

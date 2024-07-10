@@ -7,8 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FilterChipCard extends StatelessWidget {
   final int index;
+  final String initialCategoryValue;
   const FilterChipCard({
     required this.index,
+    required this.initialCategoryValue,
     super.key,
   });
 
@@ -33,7 +35,7 @@ class FilterChipCard extends StatelessWidget {
         builder: (context, state) {
           return Text(
             index == 0
-                ? state.selectedTitle ?? filtername[0]
+                ? state.selectedTitle ?? initialCategoryValue
                 : filtername[index],
             style: TextStyle(
               color: index == 0 ? AppColors.whiteColor : AppColors.blackColor,

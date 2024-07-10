@@ -8,10 +8,13 @@ import 'package:amira_app/config/theme/theme.dart';
 
 class CategoryProductCard extends StatelessWidget {
   final int index;
-  final List categoryProductList;
+  final List subCategoryList;
+  final double? imageHeight;
+
   const CategoryProductCard({
     required this.index,
-    required this.categoryProductList,
+    required this.subCategoryList,
+    this.imageHeight,
     Key? key,
   }) : super(key: key);
 
@@ -30,15 +33,20 @@ class CategoryProductCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: ExtendedImage.network(
-              '$url${categoryProductList[index].images[0].url}',
-              height: 106.h,
-              width: 106.w,
-              fit: BoxFit.cover,
+            child: ClipRRect(
+              borderRadius: AppBorders.borderRadius10,
+              child: ExtendedImage.network(
+                '$url${subCategoryList[index].image.url}',
+                height: imageHeight?.h ?? 100.h,
+                width: imageHeight?.w ?? 106.w,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Text(
-            categoryProductList[index].name,
+            subCategoryList[index].name,
+            maxLines: 2,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: AppFonts.fontSize14,

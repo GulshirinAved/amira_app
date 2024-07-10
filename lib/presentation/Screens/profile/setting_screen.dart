@@ -4,9 +4,12 @@ import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/presentation/Screens/profile/components/flag_card.dart';
 import 'package:amira_app/presentation/Screens/profile/components/setting_tile.dart';
+import 'package:amira_app/presentation/Screens/profile/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -82,7 +85,7 @@ class SettingsScreen extends StatelessWidget {
                                           context
                                               .read<LanguageBloc>()
                                               .add(TurkmenLanguageEvent());
-                                          Navigator.pop(context);
+                                          Phoenix.rebirth(context);
                                         },
                                       ),
                                       FlagCard(
@@ -98,7 +101,7 @@ class SettingsScreen extends StatelessWidget {
                                           context
                                               .read<LanguageBloc>()
                                               .add(RussianLanguageEvent());
-                                          Navigator.pop(context);
+                                          Phoenix.rebirth(context);
                                         },
                                       ),
                                     ],
@@ -113,12 +116,14 @@ class SettingsScreen extends StatelessWidget {
                   );
                 },
               ),
-              Divider(),
+              const Divider(),
               SettingTile(
                 isIcon: true,
                 iconTitle: loginIcon,
                 title: 'Login',
-                onTap: () {},
+                onTap: () {
+                  pushScreenWithNavBar(context, LoginScreen());
+                },
               ),
             ],
           ),

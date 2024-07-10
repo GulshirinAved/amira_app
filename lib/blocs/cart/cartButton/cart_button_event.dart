@@ -1,45 +1,31 @@
 part of 'cart_button_bloc.dart';
 
-sealed class CartButtonEvent extends Equatable {
-  final CartItem? cartItem;
-  const CartButtonEvent(this.cartItem);
+abstract class CartButtonEvent {}
 
-  @override
-  List<Object> get props => [cartItem!];
+class AddCartEvent extends CartButtonEvent {
+  final CartItem cartItem;
+
+  AddCartEvent(this.cartItem);
 }
 
-final class AddCartEvent extends CartButtonEvent {
-  const AddCartEvent(
-    super.cartItem,
-  );
+class PlusButtonEvent extends CartButtonEvent {
+  final CartItem cartItem;
+
+  PlusButtonEvent(this.cartItem);
 }
 
-final class PlusButtonEvent extends CartButtonEvent {
-  const PlusButtonEvent(
-    super.cartItem,
-  );
+class MinusButtonEvent extends CartButtonEvent {
+  final CartItem cartItem;
+
+  MinusButtonEvent(this.cartItem);
 }
 
-final class MinusButtonEvent extends CartButtonEvent {
-  const MinusButtonEvent(
-    super.cartItem,
-  );
-  @override
-  List<Object> get props => [cartItem!];
+class RemoveCartEvent extends CartButtonEvent {
+  final CartItem cartItem;
+
+  RemoveCartEvent(this.cartItem);
 }
 
-final class RemoveCartEvent extends CartButtonEvent {
-  const RemoveCartEvent(
-    super.cartItem,
-  );
-  @override
-  List<Object> get props => [cartItem!];
-}
+class SumProductEvent extends CartButtonEvent {}
 
-final class SumProductEvent extends CartButtonEvent {
-  const SumProductEvent(
-    super.cartItem,
-  );
-  @override
-  List<Object> get props => [cartItem!];
-}
+class LoadCartEvent extends CartButtonEvent {}

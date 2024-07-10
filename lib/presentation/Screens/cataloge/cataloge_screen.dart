@@ -1,5 +1,6 @@
 import 'package:amira_app/blocs/cateloge/getAllCategory/all_category_bloc.dart';
-import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
+import 'package:amira_app/presentation/CustomWidgets/animations.dart';
+import 'package:amira_app/presentation/Screens/cataloge/categoryProfile_screen.dart';
 import 'package:amira_app/presentation/Screens/cataloge/components/categoryProducts_slider.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 import 'package:amira_app/presentation/Screens/search/search_screen.dart';
@@ -12,32 +13,11 @@ class CatelogeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AllCategoryBloc()..add(GetAllCategoryList()),
+    return BlocProvider(
+      create: (context) => AllCategoryBloc()
+        ..add(
+          GetAllCategoryList(),
         ),
-        BlocProvider(
-          create: (context) => AllProductsBloc()
-            ..add(
-              const GetAllProductsList(
-                postData: {
-                  'categories': ['category2'],
-                  'brands': [],
-                  'shops': [],
-                  'priceFrom': null,
-                  'priceTo': null,
-                  'ordering': 'popular',
-                  'search': '',
-                  'page': 1,
-                  'pageSize': 10,
-                  'discount': false,
-                  'isLiked': true,
-                },
-              ),
-            ),
-        ),
-      ],
       child: SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
@@ -56,7 +36,7 @@ class CatelogeScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                //veg tile
+                //category sliders
                 BlocBuilder<AllCategoryBloc, AllCategoryState>(
                   builder: (context, state) {
                     if (state is AllCategoryError) {
@@ -68,25 +48,56 @@ class CatelogeScreen extends StatelessWidget {
                         child: Text('It is initial'),
                       );
                     } else if (state is AllCategoryLoading) {
-                      return const Center(
-                        child: Text('it is loading'),
-                      );
+                      return Animations.loading;
                     } else if (state is AllCategoryLoaded) {
                       if (state.allCategoryList.isEmpty) {
                         return const Center(
                           child: Text('it is empty'),
                         );
                       }
+
                       return ListView.builder(
+                        controller: BlocProvider.of<AllCategoryBloc>(context)
+                            .scrollController,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        itemCount: state.categoryCount,
-                        itemBuilder: (context, index) => CategoryProductsSlider(
-                          categoryProductList: state.allCategoryList,
-                          topTitle: state.allCategoryList[index].name,
-                          categoryId: state.allCategoryList[index].id,
-                        ),
+                        itemCount: state.allCategoryList.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index >= state.allCategoryList.length) {
+                            if (!BlocProvider.of<AllCategoryBloc>(context)
+                                .isLoadingMore) {
+                              BlocProvider.of<AllCategoryBloc>(context)
+                                  .add(LoadMoreEvent());
+                            }
+                            return state.allCategoryList.length != index
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : const SizedBox.shrink();
+                          }
+                          //category card and toptitle
+                          return CategoryProductsSlider(
+                            categoryList: state.allCategoryList,
+                            topTitle: state.allCategoryList[index].name!,
+                            subCategoryList:
+                                state.allCategoryList[index].subcategories!,
+                            categoryId: state.allCategoryList[index].id!,
+                            onTap: () {
+                              //if press to title then shows all categoryID products. if press categorycard then shows  subcategoryId
+                              pushScreenWithNavBar(
+                                context,
+                                CategoryProfileScreen(
+                                  topTitle: state.allCategoryList[index].name!,
+                                  subCategoryList: state
+                                      .allCategoryList[index].subcategories!,
+                                  categoryId: state.allCategoryList[index].id!,
+                                  index: index,
+                                ),
+                              );
+                            },
+                          );
+                        },
                       );
                     }
                     return const Center(

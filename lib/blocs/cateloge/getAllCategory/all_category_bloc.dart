@@ -1,35 +1,67 @@
 import 'package:amira_app/data/api_repositories/getAllCategories_repository.dart';
+import 'package:amira_app/data/models/category_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'all_category_event.dart';
 part 'all_category_state.dart';
 
 class AllCategoryBloc extends Bloc<AllCategoryEvent, AllCategoryState> {
   int page = 1;
-
+  ScrollController scrollController = ScrollController();
+  bool isLoadingMore = false;
   AllCategoryBloc() : super(AllCategoryInitial()) {
     final GetAllCategoriesRepository getAllCategoriesRepository =
         GetAllCategoriesRepository();
+    scrollController.addListener(
+      () {
+        add(LoadMoreEvent());
+      },
+    );
 
     on<GetAllCategoryList>((event, emit) async {
+      isLoadingMore = false;
       emit(AllCategoryLoading());
 
       try {
         final categoryCount =
-            await getAllCategoriesRepository.fetchCountCategory();
+            await getAllCategoriesRepository.fetchCountCategory(page: page);
         if (categoryCount != null) {
-          final allCategoryList = await getAllCategoriesRepository
-              .fetchCategoryProductList(page: 1);
+          final allCategoryList =
+              await getAllCategoriesRepository.fetchCategoryProductList(
+            page: page,
+          );
           emit(
             AllCategoryLoaded(
               allCategoryList: allCategoryList,
-              categoryCount: categoryCount,
             ),
           );
         }
       } catch (e) {
         emit(AllCategoryError(error: e.toString()));
+      }
+    });
+    on<LoadMoreEvent>((event, emit) async {
+      if (!isLoadingMore &&
+          scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent) {
+        isLoadingMore = true;
+        page++;
+        final additionalCategoryList = await getAllCategoriesRepository
+            .fetchCategoryProductList(page: page);
+        if (additionalCategoryList.isNotEmpty) {
+          emit(
+            AllCategoryLoaded(
+              allCategoryList: [
+                ...(state as AllCategoryLoaded).allCategoryList,
+                ...additionalCategoryList
+              ],
+            ),
+          );
+
+          isLoadingMore = false;
+        }
       }
     });
   }

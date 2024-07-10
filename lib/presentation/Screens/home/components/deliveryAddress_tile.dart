@@ -162,6 +162,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                                   'showStreetAndHouseNumber',
                                 ) ??
                                 '',
+                        isTextNumber: false,
                         onFieldSubmitted: (value) {
                           context
                               .read<LocationAddBloc>()

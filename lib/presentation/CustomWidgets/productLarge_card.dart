@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:amira_app/presentation/CustomWidgets/cartAmount_button.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,10 +21,10 @@ class ProductLargeCard extends StatelessWidget {
   final CartItem cartItem;
   final int index;
   const ProductLargeCard({
-    Key? key,
     required this.favItem,
     required this.cartItem,
     required this.index,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -51,43 +52,59 @@ class ProductLargeCard extends StatelessWidget {
                 color: AppColors.lightPurpleColor,
                 borderRadius: AppBorders.borderRadius10,
               ),
-              child: Image.asset(favItem.image!),
+              child: ClipRRect(
+                  borderRadius: AppBorders.borderRadius10,
+                  child: cartItem.image![0] is Map<String, dynamic>
+                      ? ExtendedImage.network(
+                          'https://kip.tm/magaz/' + favItem.image![0]['url']!,
+                          height: 160.h,
+                          width: 160.h,
+                          fit: BoxFit.cover,
+                        )
+                      : ExtendedImage.network(
+                          'https://kip.tm/magaz/' + favItem.image![0].url,
+                          height: 160.h,
+                          width: 160.h,
+                          fit: BoxFit.cover,
+                        )),
             ),
             // price, previous price and discount
 
-            Row(
-              children: [
-                Text(
-                  favItem.price!,
-                  style: TextStyle(
-                    fontFamily: fontPeaceSans,
-                    fontWeight: FontWeight.w500,
-                    fontSize: AppFonts.fontSize14,
+            favItem.discount == null
+                ? SizedBox.shrink()
+                : Row(
+                    children: [
+                      Text(
+                        favItem.price!.toString(),
+                        style: TextStyle(
+                          fontFamily: fontPeaceSans,
+                          fontWeight: FontWeight.w500,
+                          fontSize: AppFonts.fontSize14,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                        child: Text(
+                          favItem.prevPrice ?? '',
+                          style: TextStyle(
+                            fontFamily: fontPeaceSans,
+                            fontWeight: FontWeight.w400,
+                            fontSize: AppFonts.fontSize12,
+                            color: AppColors.greyColor,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        favItem.discount ?? '',
+                        style: TextStyle(
+                          fontFamily: fontPeaceSans,
+                          fontWeight: FontWeight.w400,
+                          fontSize: AppFonts.fontSize12,
+                          color: AppColors.redColor,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5.w),
-                  child: Text(
-                    favItem.prevPrice!,
-                    style: TextStyle(
-                      fontFamily: fontPeaceSans,
-                      fontWeight: FontWeight.w400,
-                      fontSize: AppFonts.fontSize12,
-                      color: AppColors.greyColor,
-                    ),
-                  ),
-                ),
-                Text(
-                  favItem.discount!,
-                  style: TextStyle(
-                    fontFamily: fontPeaceSans,
-                    fontWeight: FontWeight.w400,
-                    fontSize: AppFonts.fontSize12,
-                    color: AppColors.redColor,
-                  ),
-                ),
-              ],
-            ),
 
             //name
             SizedBox(
@@ -104,8 +121,9 @@ class ProductLargeCard extends StatelessWidget {
             ),
             //desc
             Text(
-              favItem.desc!,
+              favItem.desc ?? ' ',
               maxLines: 2,
+              textAlign: TextAlign.start,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
@@ -131,7 +149,7 @@ class ProductLargeCard extends StatelessWidget {
                                       .add(AddCartEvent(cartItem));
                                   context
                                       .read<CartButtonBloc>()
-                                      .add(SumProductEvent(cartItem));
+                                      .add(SumProductEvent());
                                 },
                               )
                             : CartAmountButton(

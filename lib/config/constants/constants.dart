@@ -27,9 +27,14 @@ const String loginIcon = 'assets/icons/login.svg';
 //images
 const String bannerImage = 'assets/images/banner.png';
 const String banner1Image = 'assets/images/banner1.png';
-const String logo1Image = 'assets/images/logo1.png';
 const String ruFlagImage = 'assets/images/ruFlag.png';
 const String tmFlagImage = 'assets/images/tmFlag.png';
+const String appLogoImage = 'assets/images/appLogo.png';
+
+//animation
+const String emptyAnimation = 'assets/animation/empty.json';
+const String loadingAnimation = 'assets/animation/loading.json';
+const String nowifiAnimation = 'assets/animation/nowifi.json';
 
 //products
 const String sale1Image = 'assets/products/sale1.png';
@@ -99,8 +104,8 @@ List<ProductsModel> saleProducts = [
   ProductsModel(
     id: 1,
     name: 'Органические яблоки',
-    image: sale1Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -108,8 +113,8 @@ List<ProductsModel> saleProducts = [
   ProductsModel(
     id: 2,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -117,8 +122,8 @@ List<ProductsModel> saleProducts = [
   ProductsModel(
     id: 3,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '13.40',
     discount: '-2%',
     desc: 'Сочные и сладкие яблоки.',
@@ -126,8 +131,8 @@ List<ProductsModel> saleProducts = [
   ProductsModel(
     id: 4,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -135,8 +140,8 @@ List<ProductsModel> saleProducts = [
   ProductsModel(
     id: 5,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '13.40',
     discount: '-2%',
     desc: 'Сочные и сладкие яблоки.',
@@ -146,8 +151,8 @@ List<ProductsModel> vegProducts = [
   ProductsModel(
     id: 6,
     name: 'Зелень салата',
-    image: veg1Image,
-    price: '2.20',
+    image: [sale1Image],
+    price: 2,
     prevPrice: null,
     discount: null,
     desc: 'Сочные и сладкие яблоки.',
@@ -155,8 +160,8 @@ List<ProductsModel> vegProducts = [
   ProductsModel(
     id: 7,
     name: 'Клубника свежая 1 ланчик',
-    image: veg2Image,
-    price: '18.70',
+    image: [sale1Image],
+    price: 18,
     prevPrice: '22.40',
     discount: '-20%',
     desc: 'Сочные и сладкие яблоки.',
@@ -164,8 +169,8 @@ List<ProductsModel> vegProducts = [
   ProductsModel(
     id: 8,
     name: 'Бананы 6 шт',
-    image: veg3Image,
-    price: '5.20',
+    image: [sale1Image],
+    price: 5,
     prevPrice: '9.80',
     discount: '-4%',
     desc: 'Сочные и сладкие яблоки.',
@@ -173,8 +178,8 @@ List<ProductsModel> vegProducts = [
   ProductsModel(
     id: 9,
     name: 'Картофель',
-    image: sale2Image,
-    price: '4.50',
+    image: [sale1Image],
+    price: 4,
     prevPrice: null,
     discount: null,
     desc: 'Сочные и сладкие яблоки.',
@@ -184,8 +189,8 @@ List<ProductsModel> meatProducts = [
   ProductsModel(
     id: 10,
     name: 'Куринное филе грудк',
-    image: meat1Image,
-    price: '40.00',
+    image: [sale1Image],
+    price: 40,
     prevPrice: '45.00',
     discount: '-10%',
     desc: 'Сочные и сладкие яблоки.',
@@ -193,8 +198,8 @@ List<ProductsModel> meatProducts = [
   ProductsModel(
     id: 11,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -202,8 +207,8 @@ List<ProductsModel> meatProducts = [
   ProductsModel(
     id: 12,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '13.40',
     discount: '-2%',
     desc: 'Сочные и сладкие яблоки.',
@@ -213,8 +218,8 @@ List<ProductsModel> milkProducts = [
   ProductsModel(
     id: 13,
     name: 'Органические яблоки',
-    image: milk1Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -222,8 +227,8 @@ List<ProductsModel> milkProducts = [
   ProductsModel(
     id: 14,
     name: 'огурт клубничный',
-    image: milk2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -231,8 +236,8 @@ List<ProductsModel> milkProducts = [
   ProductsModel(
     id: 15,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -242,8 +247,8 @@ List<ProductsModel> cosmeticsProducts = [
   ProductsModel(
     id: 16,
     name: 'Органические яблоки',
-    image: sale1Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -251,8 +256,8 @@ List<ProductsModel> cosmeticsProducts = [
   ProductsModel(
     id: 17,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -260,8 +265,8 @@ List<ProductsModel> cosmeticsProducts = [
   ProductsModel(
     id: 18,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -269,8 +274,8 @@ List<ProductsModel> cosmeticsProducts = [
   ProductsModel(
     id: 19,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -278,8 +283,8 @@ List<ProductsModel> cosmeticsProducts = [
   ProductsModel(
     id: 20,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '13.40',
     discount: '-2%',
     desc: 'Сочные и сладкие яблоки.',
@@ -287,8 +292,8 @@ List<ProductsModel> cosmeticsProducts = [
   ProductsModel(
     id: 21,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -298,8 +303,8 @@ List<ProductsModel> hygieneProducts = [
   ProductsModel(
     id: 22,
     name: 'Органические яблоки',
-    image: sale1Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -307,8 +312,8 @@ List<ProductsModel> hygieneProducts = [
   ProductsModel(
     id: 23,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -316,8 +321,8 @@ List<ProductsModel> hygieneProducts = [
   ProductsModel(
     id: 24,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -325,8 +330,8 @@ List<ProductsModel> hygieneProducts = [
   ProductsModel(
     id: 25,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -334,8 +339,8 @@ List<ProductsModel> hygieneProducts = [
   ProductsModel(
     id: 26,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '13.40',
     discount: '-2%',
     desc: 'Сочные и сладкие яблоки.',
@@ -343,8 +348,8 @@ List<ProductsModel> hygieneProducts = [
   ProductsModel(
     id: 27,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -354,8 +359,8 @@ List<ProductsModel> houseProducts = [
   ProductsModel(
     id: 28,
     name: 'Органические яблоки',
-    image: sale1Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -363,8 +368,8 @@ List<ProductsModel> houseProducts = [
   ProductsModel(
     id: 29,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -372,8 +377,8 @@ List<ProductsModel> houseProducts = [
   ProductsModel(
     id: 30,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -383,8 +388,8 @@ List<ProductsModel> childProducts = [
   ProductsModel(
     id: 31,
     name: 'Органические яблоки',
-    image: sale1Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -392,8 +397,8 @@ List<ProductsModel> childProducts = [
   ProductsModel(
     id: 32,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -401,8 +406,8 @@ List<ProductsModel> childProducts = [
   ProductsModel(
     id: 33,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -410,8 +415,8 @@ List<ProductsModel> childProducts = [
   ProductsModel(
     id: 34,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -419,8 +424,8 @@ List<ProductsModel> childProducts = [
   ProductsModel(
     id: 35,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '13.40',
     discount: '-2%',
     desc: 'Сочные и сладкие яблоки.',
@@ -428,8 +433,8 @@ List<ProductsModel> childProducts = [
   ProductsModel(
     id: 36,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -439,8 +444,8 @@ List<ProductsModel> chanceryProducts = [
   ProductsModel(
     id: 37,
     name: 'Органические яблоки',
-    image: sale1Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -448,8 +453,8 @@ List<ProductsModel> chanceryProducts = [
   ProductsModel(
     id: 38,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -457,8 +462,8 @@ List<ProductsModel> chanceryProducts = [
   ProductsModel(
     id: 39,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -466,8 +471,8 @@ List<ProductsModel> chanceryProducts = [
   ProductsModel(
     id: 40,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -475,8 +480,8 @@ List<ProductsModel> chanceryProducts = [
   ProductsModel(
     id: 41,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '13.40',
     discount: '-2%',
     desc: 'Сочные и сладкие яблоки.',
@@ -484,8 +489,8 @@ List<ProductsModel> chanceryProducts = [
   ProductsModel(
     id: 42,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -495,8 +500,8 @@ List<ProductsModel> zooProducts = [
   ProductsModel(
     id: 43,
     name: 'Органические яблоки',
-    image: sale1Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -504,8 +509,8 @@ List<ProductsModel> zooProducts = [
   ProductsModel(
     id: 44,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -513,8 +518,8 @@ List<ProductsModel> zooProducts = [
   ProductsModel(
     id: 45,
     name: 'Свежие помидоры',
-    image: sale3Image,
-    price: '11.20',
+    image: [sale1Image],
+    price: 11,
     prevPrice: '15.40',
     discount: '-12%',
     desc: 'Сочные и сладкие яблоки.',
@@ -522,8 +527,8 @@ List<ProductsModel> zooProducts = [
   ProductsModel(
     id: 46,
     name: 'Авокадо Хасс',
-    image: sale2Image,
-    price: '21.50',
+    image: [sale1Image],
+    price: 21,
     prevPrice: '29.40',
     discount: '-5%',
     desc: 'Сочные и сладкие яблоки.',
@@ -612,7 +617,6 @@ List<Map<String, dynamic>> cosmeticsCategory = [
   },
 ];
 //filter categories
-List filterCatgeories = ['Овощи и фрукты', 'Овощи', 'Фрукты'];
 //brands
 List brands = [
   'Alma production',

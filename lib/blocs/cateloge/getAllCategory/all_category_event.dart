@@ -8,3 +8,5 @@ sealed class AllCategoryEvent extends Equatable {
 }
 
 class GetAllCategoryList extends AllCategoryEvent {}
+
+class LoadMoreEvent extends AllCategoryEvent {}

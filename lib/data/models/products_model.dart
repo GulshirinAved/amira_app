@@ -2,8 +2,8 @@
 class ProductsModel {
   final int id;
   final String? name;
-  final String? image;
-  final String? price;
+  final List? image;
+  final int? price;
   final String? prevPrice;
   final String? discount;
   final String? desc;
@@ -20,8 +20,8 @@ class ProductsModel {
   ProductsModel copyWith({
     int? id,
     String? name,
-    String? image,
-    String? price,
+    List? image,
+    int? price,
     String? prevPrice,
     String? discount,
     String? desc,

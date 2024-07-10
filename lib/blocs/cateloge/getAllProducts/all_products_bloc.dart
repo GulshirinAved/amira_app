@@ -12,10 +12,14 @@ class AllProductsBloc extends Bloc<AllProductsEvent, AllProductsState> {
         GetAllProductsRepository();
     on<GetAllProductsList>((event, emit) async {
       currentFilter = event.postData;
+      print('it is current fielter ${currentFilter}');
       try {
         emit(AllProductsLoading());
+        print('it is current fielter ${currentFilter}');
         final List<dynamic> allProductsList =
             await allProductsRepository.fetchAllProductList(currentFilter);
+        print('it is current fielter ${currentFilter}');
+        print('it is current products ${allProductsList}');
         emit(AllProductsLoaded(allProductsList: allProductsList));
       } catch (e) {
         emit(AllProductsError(error: e.toString()));

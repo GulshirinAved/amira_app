@@ -4,6 +4,7 @@ import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/cartAmount_button.dart';
 import 'package:amira_app/presentation/Screens/home/productProfile_screen.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,12 +30,13 @@ class ProductSmallCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => pushScreenWithNavBar(
-          context,
-          ProductProfileScreen(
-            favItem: favItem,
-            cartItem: cartItem,
-            index: index,
-          )),
+        context,
+        ProductProfileScreen(
+          favItem: favItem,
+          cartItem: cartItem,
+          index: index,
+        ),
+      ),
       child: Container(
         width: 120.w,
         margin: EdgeInsets.only(right: 6.w),
@@ -50,10 +52,18 @@ class ProductSmallCard extends StatelessWidget {
                 color: AppColors.lightPurpleColor,
                 borderRadius: AppBorders.borderRadius10,
               ),
-              child: Image.asset(favItem.image!),
+              child: ClipRRect(
+                borderRadius: AppBorders.borderRadius10,
+                child: ExtendedImage.network(
+                  'https://kip.tm/magaz/' + favItem.image![0].url!,
+                  height: 120.h,
+                  width: 120.h,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             Text(
-              favItem.price!,
+              favItem.price!.toString(),
               style: TextStyle(
                 fontFamily: fontPeaceSans,
                 fontWeight: FontWeight.w500,
@@ -115,7 +125,7 @@ class ProductSmallCard extends StatelessWidget {
                                 .add(AddCartEvent(cartItem));
                             context
                                 .read<CartButtonBloc>()
-                                .add(SumProductEvent(cartItem));
+                                .add(SumProductEvent());
                           },
                         )
                       : CartAmountButton(

@@ -12,13 +12,11 @@ final class AllCategoryInitial extends AllCategoryState {}
 final class AllCategoryLoading extends AllCategoryState {}
 
 final class AllCategoryLoaded extends AllCategoryState {
-  final List<dynamic> allCategoryList;
-  final int categoryCount;
+  final List<Rows> allCategoryList;
 
-  const AllCategoryLoaded(
-      {required this.allCategoryList, required this.categoryCount});
+  const AllCategoryLoaded({required this.allCategoryList});
   @override
-  List<Object> get props => [allCategoryList, categoryCount];
+  List<Object> get props => [allCategoryList];
 }
 
 final class AllCategoryError extends AllCategoryState {

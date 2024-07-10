@@ -6,9 +6,9 @@ part 'language_event.dart';
 part 'language_state.dart';
 
 class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
-  LanguageBloc() : super(LanguageInitial()) {
-    final Box langBox = Hive.box('lang');
+  final Box langBox = Hive.box('lang');
 
+  LanguageBloc() : super(const LanguageInitial(languageCode: '')) {
     on<LanguageEvent>((event, emit) {
       if (event is InitialLanguageEvent) {
         if (langBox.get('lang') != null) {
@@ -23,9 +23,11 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
         }
       } else if (event is RussianLanguageEvent) {
         langBox.put('lang', 'ru');
+
         emit(const ChangeLanguageState(languageCode: 'ru'));
       } else if (event is TurkmenLanguageEvent) {
-        langBox.put('lang', 'tm');
+        langBox.put('lang', 'tr');
+
         emit(const ChangeLanguageState(languageCode: 'tr'));
       }
     });

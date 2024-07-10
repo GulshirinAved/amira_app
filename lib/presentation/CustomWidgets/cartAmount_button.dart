@@ -36,7 +36,7 @@ class CartAmountButton extends StatelessWidget {
           GestureDetector(
             onTap: () {
               context.read<CartButtonBloc>().add(MinusButtonEvent(cartItem));
-              context.read<CartButtonBloc>().add(SumProductEvent(cartItem));
+              context.read<CartButtonBloc>().add(SumProductEvent());
             },
             child: Icon(
               CupertinoIcons.minus,
@@ -64,7 +64,7 @@ class CartAmountButton extends StatelessWidget {
           GestureDetector(
             onTap: () {
               context.read<CartButtonBloc>().add(PlusButtonEvent(cartItem));
-              context.read<CartButtonBloc>().add(SumProductEvent(cartItem));
+              context.read<CartButtonBloc>().add(SumProductEvent());
             },
             child: Icon(
               CupertinoIcons.add,

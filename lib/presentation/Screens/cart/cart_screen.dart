@@ -3,6 +3,7 @@ import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
+import 'package:amira_app/presentation/CustomWidgets/animations.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:amira_app/presentation/Screens/cart/cartPayment_screen.dart';
 import 'package:amira_app/presentation/Screens/cart/components/cartProduct_card.dart';
@@ -31,8 +32,18 @@ class CartScreen extends StatelessWidget {
             BlocBuilder<CartButtonBloc, CartButtonState>(
               builder: (context, state) {
                 if (state is CartButtonInitial || state.cartList.isEmpty) {
-                  return const Center(
-                    child: const Text('There is no products'),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Animations.empty,
+                      Text(
+                        'There is no products ',
+                        style: TextStyle(
+                          fontFamily: fontPeaceSans,
+                          fontSize: AppFonts.fontSize18,
+                        ),
+                      ),
+                    ],
                   );
                 }
                 return Column(
@@ -56,23 +67,23 @@ class CartScreen extends StatelessWidget {
                         itemBuilder: (context, index) => CartProductCard(
                           index: index,
                           favItem: FavItem(
-                            id: state.cartList[index].id,
-                            name: state.cartList[index].name,
-                            desc: state.cartList[index].desc,
-                            discount: state.cartList[index].discount,
-                            image: state.cartList[index].image,
-                            prevPrice: state.cartList[index].prevPrice,
-                            price: state.cartList[index].price,
-                          ),
+                              id: state.cartList[index].id,
+                              name: state.cartList[index].name,
+                              desc: state.cartList[index].desc,
+                              discount: state.cartList[index].discount,
+                              image: state.cartList[index].image,
+                              prevPrice: state.cartList[index].prevPrice,
+                              price: state.cartList[index].price,
+                              shopid: state.cartList[index].shopid),
                           cartItem: CartItem(
-                            id: state.cartList[index].id,
-                            name: state.cartList[index].name,
-                            desc: state.cartList[index].desc,
-                            discount: state.cartList[index].discount,
-                            image: state.cartList[index].image,
-                            prevPrice: state.cartList[index].prevPrice,
-                            price: state.cartList[index].price,
-                          ),
+                              id: state.cartList[index].id,
+                              name: state.cartList[index].name,
+                              desc: state.cartList[index].desc,
+                              discount: state.cartList[index].discount,
+                              image: state.cartList[index].image,
+                              prevPrice: state.cartList[index].prevPrice,
+                              price: state.cartList[index].price,
+                              shopid: state.cartList[index].shopid),
                         ),
                         separatorBuilder: (BuildContext context, int index) =>
                             Divider(
@@ -107,8 +118,9 @@ class CartScreen extends StatelessWidget {
                           BlocBuilder<CartButtonBloc, CartButtonState>(
                             builder: (context, state) {
                               return rowText(
-                                  leftText: 'Товары',
-                                  rightText: state.sum.toString());
+                                leftText: 'Товары',
+                                rightText: state.sum.toString(),
+                              );
                             },
                           ),
                           rowText(
@@ -118,7 +130,7 @@ class CartScreen extends StatelessWidget {
                           ),
                           rowText(
                             leftText: 'Итого',
-                            rightText: '38.75',
+                            rightText: '${state.sum ?? 0 - 12}',
                             color: AppColors.purpleColor,
                             fontSize: AppFonts.fontSize22,
                           ),
@@ -127,7 +139,15 @@ class CartScreen extends StatelessWidget {
                             onTap: () {
                               pushScreenWithNavBar(
                                 context,
-                                const CartPaymentScreen(),
+                                BlocBuilder<CartButtonBloc, CartButtonState>(
+                                  builder: (context, state) {
+                                    return CartPaymentScreen(
+                                      productsSumPrice: state.sum!,
+                                      discountPrice: -12.00,
+                                      totalPrice: state.sum! - 12,
+                                    );
+                                  },
+                                ),
                               );
                             },
                           ),
@@ -141,6 +161,7 @@ class CartScreen extends StatelessWidget {
 
             const GridviewProductsSlider(
               topTitle: 'Вы смотрели',
+              productList: [],
             ),
           ],
         ),
