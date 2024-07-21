@@ -31,130 +31,97 @@ class HomeScreen extends StatelessWidget {
           },
           child: Scaffold(
             resizeToAvoidBottomInset: false,
-            body: ListView(
-              children: [
-                //delivery address
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: const DeliveryAddressTile(),
-                ),
-                //search bar
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Container(
-                    height: 46.h,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                          color: AppColors.purple1Color.withOpacity(0.4),
-                        ),
-                      ],
-                    ),
-                    child: CustomTextField.search(
-                      context: context,
-                      onTap: () {
-                        pushScreenWithNavBar(
-                          context,
-                          const SearchScreen(),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                //banner
-                BlocBuilder<GetHomeBloc, GetHomeState>(
-                  builder: (context, state) {
-                    if (state is GetHomeError) {
-                      return Center(
-                        child: Text('there is error:${state.error}'),
-                      );
-                    } else if (state is GetHomeInitial) {
-                      return const Center(
-                        child: Text('it is initial'),
-                      );
-                    } else if (state is GetHomeLoading) {
-                      return Animations.loading;
-                    } else if (state is GetHomeLoaded) {
-                      if (state.getHomeBannerList.isEmpty) {
-                        return const SizedBox.shrink();
-                      }
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 15.h,
-                          horizontal: 16.w,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: AppBorders.borderRadius10,
-                          child: ExtendedImage.network(
-                            '$url${state.getHomeBannerList[0].image.url}',
-                            height: 150.h,
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-
-                //products
-                BlocBuilder<GetHomeBloc, GetHomeState>(
-                  builder: (context, state) {
-                    if (state is GetHomeError) {
-                      return Center(
-                        child: Text('there is error:${state.error}'),
-                      );
-                    } else if (state is GetHomeInitial) {
-                      return const Center(
-                        child: Text('it is initial'),
-                      );
-                    } else if (state is GetHomeLoading) {
-                      return Animations.loading;
-                    } else if (state is GetHomeLoaded) {
-                      if (state.getHomeBannerList.isEmpty) {
-                        return const SizedBox.shrink();
-                      }
-                      return Column(
-                        children: [
-                          //home page category sliders
-                          Column(
-                            children: [
-                              for (int i = 0; i < state.getHomeData.length; i++)
-                                ListviewProductsSlider(
-                                  topTitle:
-                                      state.getHomeData[i].category?.name ??
-                                          'Default Category Name',
-                                  productsList: state.getHomeProducts[i],
-                                ),
+            body: BlocBuilder<GetHomeBloc, GetHomeState>(
+              builder: (context, state) {
+                if (state is GetHomeError) {
+                  return Center(
+                    child: Text('There is an error: ${state.error}'),
+                  );
+                } else if (state is GetHomeLoading || state is GetHomeInitial) {
+                  return Animations.loading;
+                } else if (state is GetHomeLoaded) {
+                  return ListView(
+                    children: [
+//delivery address
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: const DeliveryAddressTile(),
+                      ),
+//search bar
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Container(
+                          height: 46.h,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 7,
+                                offset: const Offset(0, 3),
+                                color: AppColors.purple1Color.withOpacity(0.4),
+                              ),
                             ],
                           ),
-                          //banner
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: ClipRRect(
-                              borderRadius: AppBorders.borderRadius10,
-                              child: ExtendedImage.network(
-                                '$url${state.getHomeBannerList[1].image.url}',
-                                height: 150.h,
-                                width: MediaQuery.of(context).size.width,
-                                fit: BoxFit.cover,
-                              ),
+                          child: CustomTextField.search(
+                            context: context,
+                            onTap: () {
+                              pushScreenWithNavBar(
+                                context,
+                                const SearchScreen(),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+//banner
+                      if (state.getHomeBannerList.isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 15.h,
+                            horizontal: 16.w,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: AppBorders.borderRadius10,
+                            child: ExtendedImage.network(
+                              '$url${state.getHomeBannerList[0].image.url}',
+                              height: 150.h,
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
                             ),
                           ),
+                        ),
+//products
+                      Column(
+                        children: [
+//home page category sliders
+                          for (int i = 0; i < state.getHomeData.length; i++)
+                            ListviewProductsSlider(
+                              topTitle: state.getHomeData[i].category?.name ??
+                                  'Default Category Name',
+                              productsList: state.getHomeProducts[i],
+                            ),
+//banner
+                          if (state.getHomeBannerList.length > 1)
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: ClipRRect(
+                                borderRadius: AppBorders.borderRadius10,
+                                child: ExtendedImage.network(
+                                  '$url${state.getHomeBannerList[1].image.url}',
+                                  height: 150.h,
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
                         ],
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-              ],
+                      ),
+                    ],
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           ),
         ),

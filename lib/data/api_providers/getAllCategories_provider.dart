@@ -8,7 +8,7 @@ class GetAllCategoriesProvider {
   final Box langBox = Hive.box('lang');
 
   Future<List<Rows>> fetchAllCategories({required int page}) async {
-    final String getAllCategoryUrl = '${url}category/?page=$page&pageSize=1';
+    final String getAllCategoryUrl = '${url}category/?page=$page&pageSize=10';
     dio.options.headers = {
       'Accept-Language': langBox.get('lang') ?? 'tr',
       'Content-Type': 'application/json; charset=UTF-8',
@@ -33,7 +33,7 @@ class GetAllCategoriesProvider {
   }
 
   Future<int?> fetchCategoryCount({required int page}) async {
-    final String getAllCategoryUrl = '${url}category/?page=$page&pageSize=1';
+    final String getAllCategoryUrl = '${url}category/?page=$page&pageSize=10';
     dio.options.headers = {
       'Accept-Language': langBox.get('lang') ?? 'tr',
       'Content-Type': 'application/json; charset=UTF-8',

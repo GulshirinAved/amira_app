@@ -10,16 +10,12 @@ class CreateOrderProvider {
     try {
       final Response response =
           await dio.post(createOrderUrl, data: json.encode(postData));
-      print(postData);
       if (response.statusCode == 201) {
         return true;
       }
-      print(postData);
 
       return false;
     } catch (e) {
-      print(postData);
-
       throw Exception(e.toString());
     }
   }

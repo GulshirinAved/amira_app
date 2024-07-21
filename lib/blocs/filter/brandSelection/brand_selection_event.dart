@@ -10,15 +10,17 @@ sealed class BrandSelectionEvent extends Equatable {
 
 class SelectBrand extends BrandSelectionEvent {
   final int bottomSheet;
-  final int pressedBrandIndex;
+  final String pressedBrandName;
+  final String brandId;
 
   const SelectBrand(
     this.bottomSheet,
-    this.pressedBrandIndex,
+    this.pressedBrandName,
+    this.brandId,
   );
 
   @override
-  List<Object> get props => [bottomSheet, pressedBrandIndex];
+  List<Object> get props => [bottomSheet, pressedBrandName];
 }
 
 class ApplyBrandEvent extends BrandSelectionEvent {
@@ -27,4 +29,8 @@ class ApplyBrandEvent extends BrandSelectionEvent {
   const ApplyBrandEvent({required this.bottomSheet});
   @override
   List<Object> get props => [bottomSheet];
+}
+
+class ClearBrandEvent extends BrandSelectionEvent {
+  const ClearBrandEvent();
 }

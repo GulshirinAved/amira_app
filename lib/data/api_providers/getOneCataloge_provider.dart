@@ -13,7 +13,6 @@ class GetOneCatalogeProvider {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = response.data['data'];
         final Data product = Data.fromJson(responseData);
-        print(product.subcategories);
         return product;
       } else {
         throw Exception('Failed to load catalog');

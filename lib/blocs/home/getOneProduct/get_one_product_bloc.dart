@@ -11,12 +11,9 @@ class GetOneProductBloc extends Bloc<GetOneProductEvent, GetOneProductState> {
     final GetOneProductRepository getOneProductRepository =
         GetOneProductRepository();
     on<GetOneProduct>((event, emit) async {
-      print('it is product event ${event.id}');
       try {
-        emit(GetOneProductLoading());
         final getOneProduct =
             await getOneProductRepository.getOneProductRepository(event.id);
-        print(getOneProduct);
         emit(GetOneProductLoaded(getOneProductList: getOneProduct));
       } catch (e) {
         emit(GetOneProductError(error: e.toString()));

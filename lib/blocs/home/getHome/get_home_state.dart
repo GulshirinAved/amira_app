@@ -13,7 +13,7 @@ final class GetHomeLoading extends GetHomeState {}
 
 final class GetHomeLoaded extends GetHomeState {
   final List<dynamic> getHomeBannerList;
-  final List<List<Row>> getHomeProducts;
+  final List<List<dynamic>> getHomeProducts;
   final List<Datum> getHomeData;
 
   const GetHomeLoaded({

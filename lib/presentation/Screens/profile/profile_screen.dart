@@ -1,5 +1,7 @@
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/presentation/Screens/cart/cart_screen.dart';
+import 'package:amira_app/presentation/Screens/favorite/favorite_screen.dart';
 import 'package:amira_app/presentation/Screens/home/components/listviewProducts_slider.dart';
 import 'package:amira_app/presentation/Screens/profile/components/profile_card.dart';
 import 'package:amira_app/presentation/Screens/profile/setting_screen.dart';
@@ -35,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             //profile cards
             Container(
-              height: 106.h,
+              height: 108.h,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 color: AppColors.whiteColor,
@@ -48,14 +50,18 @@ class ProfileScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               alignment: Alignment.center,
               child: ListView.builder(
-                itemCount: profileCardName.length,
+                itemCount: 3,
                 scrollDirection: Axis.horizontal,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) => GestureDetector(
-                  onTap: () => index == 2
-                      ? pushScreenWithNavBar(context, const SettingsScreen())
-                      : null,
+                  onTap: () => pushScreenWithNavBar(
+                      context,
+                      index == 0
+                          ? FavoriteScreen()
+                          : index == 1
+                              ? CartScreen()
+                              : SettingsScreen()),
                   child: ProfileCard(
                     index: index,
                   ),

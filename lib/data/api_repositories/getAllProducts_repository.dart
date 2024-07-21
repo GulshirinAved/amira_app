@@ -5,7 +5,8 @@ class GetAllProductsRepository {
       GetAllProductsProvider();
   Future<List<dynamic>> fetchAllProductList(
     Map<String, dynamic> postData,
+    int page,
   ) async {
-    return _getAllProductsProvider.fetchAllProducts(postData);
+    return _getAllProductsProvider.fetchAllProducts(postData, page);
   }
 }

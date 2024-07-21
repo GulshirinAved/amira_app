@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amira_app/blocs/addDeliveryLocation/location_add_bloc.dart';
 import 'package:amira_app/blocs/cart/cartButton/cart_button_bloc.dart';
 import 'package:amira_app/blocs/cart/createOrder/create_order_bloc.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,14 @@ class _CartPaymentScreenState extends State<CartPaymentScreen> {
     nameController = TextEditingController();
     addressController = TextEditingController();
     phonenumberController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    addressController.dispose();
+    phonenumberController.dispose();
+    super.dispose();
   }
 
   @override
@@ -116,7 +125,7 @@ class _CartPaymentScreenState extends State<CartPaymentScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Способ оплаты',
+                      'Данные',
                       style: TextStyle(
                         fontFamily: fontPeaceSans,
                         fontWeight: FontWeight.w400,
@@ -130,19 +139,26 @@ class _CartPaymentScreenState extends State<CartPaymentScreen> {
                       controller: nameController,
                       isTextNumber: false,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
-                      child: CustomTextField.normal(
-                        context: context,
-                        hintText: 'Гарашсызлык 15',
-                        backColor: AppColors.lightGreyColor,
-                        controller: addressController,
-                        isTextNumber: false,
-                      ),
+                    BlocBuilder<LocationAddBloc, LocationAddState>(
+                      builder: (context, state) {
+                        addressController.text = state.savedLocation;
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          child: CustomTextField.normal(
+                            context: context,
+                            hintText: 'Гарашсызлык 15',
+                            backColor: AppColors.lightGreyColor,
+                            controller: addressController,
+                            isTextNumber: false,
+                          ),
+                        );
+                      },
                     ),
                     CustomTextField.normal(
                       context: context,
-                      hintText: '+993 (61) 87 67 98',
+                      hintText: '(61) 87 67 98',
+                      needPrefix: 2,
+                      rangeNumber: 8,
                       backColor: AppColors.lightGreyColor,
                       controller: phonenumberController,
                       isTextNumber: true,
@@ -196,7 +212,8 @@ class _CartPaymentScreenState extends State<CartPaymentScreen> {
                                         postData: {
                                           'address': addressController.text,
                                           'name': nameController.text,
-                                          'phone': phonenumberController.text,
+                                          'phone':
+                                              '+993${phonenumberController.text}',
                                           'payment': state.title == '' ||
                                                   state.title ==
                                                       paymentMethod[0]

@@ -18,7 +18,7 @@ final class CartButtonInitial extends CartButtonState {
 }
 
 final class CartButtonSuccess extends CartButtonState {
-  CartButtonSuccess({required super.cartList});
+  const CartButtonSuccess({required super.cartList});
 
   @override
   List<Object> get props => [cartList];
@@ -29,6 +29,7 @@ class SumProductState extends CartButtonState {
     required super.cartList,
     required this.sum,
   });
+  @override
   final double sum;
   @override
   List<Object> get props => [

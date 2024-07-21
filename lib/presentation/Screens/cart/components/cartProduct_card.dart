@@ -59,7 +59,7 @@ class CartProductCard extends StatelessWidget {
                       children: [
                         // Prices
                         Text(
-                          (cartItem.price).toString(),
+                          '${cartItem.price!.toString()} ${cartItem.coin == null ? '' : '.${cartItem.coin}'} TMT',
                           style: TextStyle(
                             fontFamily: fontPeaceSans,
                             fontWeight: FontWeight.w400,

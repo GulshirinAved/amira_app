@@ -2,8 +2,8 @@
 part of 'brand_selection_bloc.dart';
 
 class BrandSelectionState extends Equatable {
-  final int selectedBrandBottomSheet1;
-  final int selectedBrandBottomSheet2;
+  final List selectedBrandBottomSheet1;
+  final List selectedBrandBottomSheet2;
 
   const BrandSelectionState(
     this.selectedBrandBottomSheet1,

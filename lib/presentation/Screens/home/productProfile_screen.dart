@@ -82,205 +82,225 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                       .read<FavButtonBloc>()
                       .add(ToggleFavEvent(item: widget.favItem)),
                 ),
-                body: ListView(
-                  children: [
-                    //first tile:image and dicount
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.whiteColor,
-                        borderRadius: AppBorders.borderRadius10,
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 16.h,
-                      ),
-                      child: Column(
-                        children: [
-                          //image slider
-
-                          ImageSlider(
-                            imageList: widget.favItem.image!,
-                            pageController: _pageController,
+                body: BlocBuilder<GetOneProductBloc, GetOneProductState>(
+                  builder: (context, state) {
+                    if (state is GetOneProductError) {
+                      return Center(
+                        child: Text('The error is ${state.error}'),
+                      );
+                    } else if (state is GetOneProductInitial ||
+                        state is GetOneProductLoading) {
+                      return Animations.loading;
+                    }
+                    return ListView(
+                      children: [
+                        //first tile:image and dicount
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.whiteColor,
+                            borderRadius: AppBorders.borderRadius10,
                           ),
-                          //discount cards
-                          widget.favItem.discount == null
-                              ? const SizedBox.shrink()
-                              : Row(
-                                  children: [
-                                    //discount
-                                    DiscountCard(
-                                      title: widget.favItem.discount!,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 16.h,
+                          ),
+                          child: Column(
+                            children: [
+                              //image slider
+
+                              ImageSlider(
+                                imageList: widget.favItem.image!,
+                                pageController: _pageController,
+                              ),
+                              //discount cards
+                              widget.favItem.discount == null
+                                  ? const SizedBox.shrink()
+                                  : Row(
+                                      children: [
+                                        //discount
+                                        DiscountCard(
+                                          title: widget.favItem.discount!,
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        //sale
+                                        DiscountCard(
+                                          title: 'Акция',
+                                          backColor: AppColors.greenColor,
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    //sale
-                                    DiscountCard(
-                                      title: 'Акция',
-                                      backColor: AppColors.greenColor,
-                                    ),
-                                  ],
-                                ),
-                        ],
-                      ),
-                    ),
-                    //second tile
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.whiteColor,
-                        borderRadius: AppBorders.borderRadius10,
-                      ),
-                      margin: EdgeInsets.symmetric(vertical: 6.h),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                      ),
-                      child: BlocBuilder<GetOneProductBloc, GetOneProductState>(
-                        builder: (context, state) {
-                          if (state is GetOneProductError) {
-                            return Center(
-                              child: Text(state.error.toString()),
-                            );
-                          } else if (state is GetOneProductInitial) {
-                            return const Center(
-                              child: Text('It is initial'),
-                            );
-                          } else if (state is GetOneProductLoading) {
-                            return Animations.loading;
-                          } else if (state is GetOneProductLoaded) {
-                            if (state.getOneProductList.product == null) {
-                              return const Center(
-                                child: Text('it is empty'),
-                              );
-                            }
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                //brand name
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: ClipRRect(
-                                    borderRadius: AppBorders.borderRadius10,
-                                    child: Image.asset(
-                                      appleImage,
-                                      height: 42.h,
-                                      width: 83.w,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  title: Text(
-                                    state.getOneProductList.product!.brand!
-                                        .name!,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: AppFonts.fontSize14,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    'Бренд',
-                                    style: TextStyle(
-                                      color: AppColors.greyColor,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: AppFonts.fontSize14,
-                                    ),
-                                  ),
-                                  trailing: SvgPicture.asset(arrowRightIcon),
-                                ),
-                                //seller
-                                Column(
+                            ],
+                          ),
+                        ),
+                        //second tile
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.whiteColor,
+                            borderRadius: AppBorders.borderRadius10,
+                          ),
+                          margin: EdgeInsets.symmetric(vertical: 6.h),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                          ),
+                          child: BlocBuilder<GetOneProductBloc,
+                              GetOneProductState>(
+                            builder: (context, state) {
+                              if (state is GetOneProductError) {
+                                return Center(
+                                  child: Text(state.error.toString()),
+                                );
+                              } else if (state is GetOneProductInitial) {
+                                return const Center(
+                                  child: Text('It is initial'),
+                                );
+                              } else if (state is GetOneProductLoading) {
+                                return Animations.loading;
+                              } else if (state is GetOneProductLoaded) {
+                                if (state.getOneProductList.product == null) {
+                                  return const Center(
+                                    child: Text('it is empty'),
+                                  );
+                                }
+                                return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Мерген Джумаев',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: AppFonts.fontSize14,
+                                    //brand name
+                                    ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: ClipRRect(
+                                        borderRadius: AppBorders.borderRadius10,
+                                        child: Image.asset(
+                                          appleImage,
+                                          height: 42.h,
+                                          width: 83.w,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
+                                      title: Text(
+                                        state.getOneProductList.product!.brand!
+                                            .name!,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: AppFonts.fontSize14,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        'Бренд',
+                                        style: TextStyle(
+                                          color: AppColors.greyColor,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: AppFonts.fontSize14,
+                                        ),
+                                      ),
+                                      trailing:
+                                          SvgPicture.asset(arrowRightIcon),
                                     ),
-                                    Text(
-                                      'Продавец',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: AppFonts.fontSize14,
-                                        color: AppColors.greyColor,
-                                      ),
+                                    //seller
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          state.getOneProductList.product!.shop!
+                                                  .name ??
+                                              '',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: AppFonts.fontSize14,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Продавец',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: AppFonts.fontSize14,
+                                            color: AppColors.greyColor,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
+                                );
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ),
+                        BlocBuilder<GetOneProductBloc, GetOneProductState>(
+                          builder: (context, state) {
+                            if (state is GetOneProductError) {
+                              return Center(
+                                child: Text(state.error.toString()),
+                              );
+                            } else if (state is GetOneProductInitial) {
+                              return const Center(
+                                child: Text('It is initial'),
+                              );
+                            } else if (state is GetOneProductLoading) {
+                              return Animations.loading;
+                            } else if (state is GetOneProductLoaded) {
+                              if (state.getOneProductList.similaryProducts!
+                                  .isEmpty) {
+                                return const Center(
+                                  child: Text('it is empty'),
+                                );
+                              }
+                              return GridviewProductsSlider(
+                                topTitle: 'Рекомендуем',
+                                productList:
+                                    state.getOneProductList.similaryProducts!,
+                              );
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: SizedBox(
+                            height: 34.h,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: BlocBuilder<CartButtonBloc,
+                                      CartButtonState>(
+                                    builder: (context, state) {
+                                      final isItemInCart = state.cartList.any(
+                                          (item) =>
+                                              item.id == widget.cartItem.id);
+                                      return !isItemInCart
+                                          ? Button.iconButton(
+                                              width: 120.w,
+                                              onTap: () {
+                                                context
+                                                    .read<CartButtonBloc>()
+                                                    .add(AddCartEvent(
+                                                        widget.cartItem));
+                                                context
+                                                    .read<CartButtonBloc>()
+                                                    .add(SumProductEvent());
+                                              },
+                                            )
+                                          : CartAmountButton(
+                                              index: widget.index,
+                                              cartItem: widget.cartItem,
+                                              height: 34.w,
+                                            );
+                                    },
+                                  ),
                                 ),
                               ],
-                            );
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                      ),
-                    ),
-                    BlocBuilder<GetOneProductBloc, GetOneProductState>(
-                      builder: (context, state) {
-                        if (state is GetOneProductError) {
-                          return Center(
-                            child: Text(state.error.toString()),
-                          );
-                        } else if (state is GetOneProductInitial) {
-                          return const Center(
-                            child: Text('It is initial'),
-                          );
-                        } else if (state is GetOneProductLoading) {
-                          return Animations.loading;
-                        } else if (state is GetOneProductLoaded) {
-                          if (state
-                              .getOneProductList.similaryProducts!.isEmpty) {
-                            return const Center(
-                              child: Text('it is empty'),
-                            );
-                          }
-                          return GridviewProductsSlider(
-                            topTitle: 'Рекомендуем',
-                            productList:
-                                state.getOneProductList.similaryProducts!,
-                          );
-                        }
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: SizedBox(
-                        height: 34.h,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child:
-                                  BlocBuilder<CartButtonBloc, CartButtonState>(
-                                builder: (context, state) {
-                                  final isItemInCart = state.cartList.any(
-                                      (item) => item.id == widget.cartItem.id);
-                                  return !isItemInCart
-                                      ? Button.iconButton(
-                                          width: 120.w,
-                                          onTap: () {
-                                            context.read<CartButtonBloc>().add(
-                                                AddCartEvent(widget.cartItem));
-                                            context
-                                                .read<CartButtonBloc>()
-                                                .add(SumProductEvent());
-                                          },
-                                        )
-                                      : CartAmountButton(
-                                          index: widget.index,
-                                          cartItem: widget.cartItem,
-                                          height: 34.w,
-                                        );
-                                },
-                              ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                      ],
+                    );
+                  },
                 ),
               );
             },

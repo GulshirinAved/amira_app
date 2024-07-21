@@ -1,10 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:amira_app/blocs/filter/priceRangeSelection/price_range_selection_bloc.dart';
-import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 
@@ -52,6 +49,7 @@ class PriceRangeFieldAndCard extends StatelessWidget {
                   child: CustomTextField.normal(
                     context: context,
                     hintText: 'от',
+                    rangeNumber: 6,
                     backColor: AppColors.lightGreyColor,
                     controller: fromPriceController,
                     isTextNumber: true,
@@ -65,72 +63,13 @@ class PriceRangeFieldAndCard extends StatelessWidget {
                   child: CustomTextField.normal(
                     context: context,
                     hintText: 'до',
+                    rangeNumber: 6,
                     backColor: AppColors.lightGreyColor,
                     controller: toPriceController,
                     isTextNumber: true,
                   ),
                 ),
               ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.h),
-              child: Text(
-                'Популярные диопозоны',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: AppFonts.fontSize14,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 34.h,
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: priceRange.length,
-                itemBuilder: (context, index) => BlocBuilder<
-                    PriceRangeSelectionBloc, PriceRangeSelectionState>(
-                  builder: (context, state) {
-                    bool isSelected = (bottomSheet == 1
-                            ? state.selectedPriceBottomSheet1
-                            : state.selectedPriceBottomSheet2) ==
-                        index;
-                    return GestureDetector(
-                      onTap: () => context.read<PriceRangeSelectionBloc>().add(
-                            SelectPrice(
-                              bottomSheet: bottomSheet,
-                              pressedPriceIndex: index,
-                            ),
-                          ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? AppColors.blackColor
-                              : AppColors.lightGreyColor,
-                          borderRadius: AppBorders.borderRadius10,
-                        ),
-                        margin: EdgeInsets.only(right: 5.w),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 8.h,
-                        ),
-                        child: Text(
-                          priceRange[index],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: isSelected
-                                ? AppColors.whiteColor
-                                : AppColors.blackColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: AppFonts.fontSize14,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
             ),
           ],
         ),

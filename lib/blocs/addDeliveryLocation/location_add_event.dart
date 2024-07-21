@@ -32,7 +32,7 @@ final class LoadAddressEvent extends LocationAddEvent {
 final class SelectAddressEvent extends LocationAddEvent {
   final int index;
   final List<dynamic> addressList;
-  SelectAddressEvent(super.locationName, this.index, this.addressList);
+  const SelectAddressEvent(super.locationName, this.index, this.addressList);
   @override
   List<Object> get props => [index, addressList];
 }

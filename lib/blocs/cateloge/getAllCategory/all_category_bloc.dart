@@ -22,7 +22,6 @@ class AllCategoryBloc extends Bloc<AllCategoryEvent, AllCategoryState> {
 
     on<GetAllCategoryList>((event, emit) async {
       isLoadingMore = false;
-      emit(AllCategoryLoading());
 
       try {
         final categoryCount =
@@ -55,7 +54,7 @@ class AllCategoryBloc extends Bloc<AllCategoryEvent, AllCategoryState> {
             AllCategoryLoaded(
               allCategoryList: [
                 ...(state as AllCategoryLoaded).allCategoryList,
-                ...additionalCategoryList
+                ...additionalCategoryList,
               ],
             ),
           );

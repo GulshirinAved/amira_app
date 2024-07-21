@@ -38,14 +38,16 @@ class ProductSmallCard extends StatelessWidget {
         ),
       ),
       child: Container(
-        width: 120.w,
+        width: 130.w,
+        padding: const EdgeInsets.all(5),
         margin: EdgeInsets.only(right: 6.w),
+        decoration: BoxDecoration(color: AppColors.whiteColor),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //image
             Container(
-              height: 120.h,
+              height: 115.h,
               width: 120.h,
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -63,7 +65,7 @@ class ProductSmallCard extends StatelessWidget {
               ),
             ),
             Text(
-              favItem.price!.toString(),
+              '${favItem.price!.toString()} ${favItem.coin == null ? '' : '.${favItem.coin}'} TMT',
               style: TextStyle(
                 fontFamily: fontPeaceSans,
                 fontWeight: FontWeight.w500,
@@ -78,7 +80,9 @@ class ProductSmallCard extends StatelessWidget {
                 : Row(
                     children: [
                       Text(
-                        favItem.prevPrice!,
+                        favItem.prevPrice != null
+                            ? '${favItem.prevPrice} TMT'
+                            : '',
                         style: TextStyle(
                           fontFamily: fontPeaceSans,
                           fontWeight: FontWeight.w400,

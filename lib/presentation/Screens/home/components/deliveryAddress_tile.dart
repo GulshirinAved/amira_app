@@ -133,120 +133,124 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
       builder: (contextt) {
         return BlocProvider.value(
           value: BlocProvider.of<LocationAddBloc>(context),
-          child: SizedBox(
-            height: 300.h,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  AppLocalization.of(context)
-                          .getTransatedValues('deliveryAddress') ??
-                      '',
-                  style: TextStyle(
-                    fontFamily: fontPeaceSans,
-                    fontWeight: FontWeight.w400,
-                    fontSize: AppFonts.fontSize22,
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppLocalization.of(context)
+                        .getTransatedValues('deliveryAddress') ??
+                    '',
+                style: TextStyle(
+                  fontFamily: fontPeaceSans,
+                  fontWeight: FontWeight.w400,
+                  fontSize: AppFonts.fontSize22,
                 ),
-                //text fields for writing address
-                BlocBuilder<LocationAddBloc, LocationAddState>(
+              ),
+              //text fields for writing address
+              BlocBuilder<LocationAddBloc, LocationAddState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: CustomTextField.normal(
+                      context: context,
+                      controller: addressController,
+                      hintText: AppLocalization.of(context).getTransatedValues(
+                            'showStreetAndHouseNumber',
+                          ) ??
+                          '',
+                      isTextNumber: false,
+                      onFieldSubmitted: (value) {
+                        context
+                            .read<LocationAddBloc>()
+                            .add(SaveAddressEvent(value));
+                        context
+                            .read<LocationAddBloc>()
+                            .add(ShowSavedAddressEvent(value));
+                      },
+                      backColor: AppColors.lightGreyColor,
+                    ),
+                  );
+                },
+              ),
+              // writen addreses
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: BlocBuilder<LocationAddBloc, LocationAddState>(
                   builder: (context, state) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: CustomTextField.normal(
-                        context: context,
-                        controller: addressController,
-                        hintText:
-                            AppLocalization.of(context).getTransatedValues(
-                                  'showStreetAndHouseNumber',
-                                ) ??
-                                '',
-                        isTextNumber: false,
-                        onFieldSubmitted: (value) {
-                          context
-                              .read<LocationAddBloc>()
-                              .add(SaveAddressEvent(value));
-                          context
-                              .read<LocationAddBloc>()
-                              .add(ShowSavedAddressEvent(value));
-                        },
-                        backColor: AppColors.lightGreyColor,
+                    return SizedBox(
+                      height: state.locationList.isNotEmpty ? 110.h : 0,
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            context.read<LocationAddBloc>().add(
+                                  SelectAddressEvent(
+                                    state.locationList[index],
+                                    index,
+                                    state.locationList,
+                                  ),
+                                );
+                          },
+                          child: BlocBuilder<LocationAddBloc, LocationAddState>(
+                            builder: (context, state) {
+                              return Text(
+                                state.locationList[index],
+                                style: TextStyle(
+                                  fontWeight: state.selectedIndex == index
+                                      ? FontWeight.bold
+                                      : FontWeight.w400,
+                                  color: state.selectedIndex == index
+                                      ? AppColors.purpleColor
+                                      : AppColors.darkGreyColor,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        separatorBuilder: (context, index) => Divider(
+                          color: AppColors.greyColor,
+                        ),
+                        itemCount: state.locationList.length,
                       ),
                     );
                   },
                 ),
-                // writen addreses
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: BlocBuilder<LocationAddBloc, LocationAddState>(
-                    builder: (context, state) {
-                      return SizedBox(
-                        height: 110.h,
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              context.read<LocationAddBloc>().add(
-                                    SelectAddressEvent(
-                                      state.locationList[index],
-                                      index,
-                                      state.locationList,
-                                    ),
-                                  );
-                            },
-                            child:
-                                BlocBuilder<LocationAddBloc, LocationAddState>(
-                              builder: (context, state) {
-                                return Text(
-                                  state.locationList[index],
-                                  style: TextStyle(
-                                    fontWeight: state.selectedIndex == index
-                                        ? FontWeight.w800
-                                        : FontWeight.w400,
-                                    color: state.selectedIndex == index
-                                        ? AppColors.purpleColor
-                                        : AppColors.blackColor,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          separatorBuilder: (context, index) => Divider(
-                            color: AppColors.greyColor,
-                          ),
-                          itemCount: state.locationList.length,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                //save button
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: BlocBuilder<LocationAddBloc, LocationAddState>(
-                    builder: (context, state) {
-                      return Button.textButton(
-                        text: AppLocalization.of(context).getTransatedValues(
-                              'apply',
-                            ) ??
-                            '',
-                        onTap: () {
-                          context.read<LocationAddBloc>().add(
-                                OnButtonPressedAddressEvent(
-                                  state.locationList[state.selectedIndex!],
-                                  state.locationList,
-                                ),
-                              );
+              ),
+              //save button
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: kBottomNavigationBarHeight)
+                    .copyWith(top: 0),
+                child: BlocBuilder<LocationAddBloc, LocationAddState>(
+                  builder: (context, state) {
+                    return Button.textButton(
+                      text: AppLocalization.of(context).getTransatedValues(
+                            'apply',
+                          ) ??
+                          '',
+                      onTap: () {
+                        context
+                            .read<LocationAddBloc>()
+                            .add(SaveAddressEvent(addressController.text));
+                        context
+                            .read<LocationAddBloc>()
+                            .add(ShowSavedAddressEvent(addressController.text));
+                        context.read<LocationAddBloc>().add(
+                              OnButtonPressedAddressEvent(
+                                state.locationList[state.selectedIndex!],
+                                state.locationList,
+                              ),
+                            );
 
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                  ),
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

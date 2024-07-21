@@ -6,7 +6,7 @@ part 'payment_selection_state.dart';
 
 class PaymentSelectionBloc
     extends Bloc<PaymentSelectionEvent, PaymentSelectionState> {
-  PaymentSelectionBloc() : super(PaymentSelectionState('')) {
+  PaymentSelectionBloc() : super(const PaymentSelectionState('')) {
     on<PaymentSelectionEvent>((event, emit) {
       emit(state.copyWith(title: event.pressedTitle));
     });

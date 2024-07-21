@@ -71,6 +71,7 @@ class Product {
   DateTime? createdAt;
   String? visibility;
   Brand? brand;
+  Brand? shop;
   List<Category>? categories;
   String? name;
   String? description;
@@ -88,6 +89,7 @@ class Product {
     this.createdAt,
     this.visibility,
     this.brand,
+    this.shop,
     this.categories,
     this.name,
     this.description,
@@ -114,6 +116,7 @@ class Product {
             : DateTime.parse(json["createdAt"]),
         visibility: json["visibility"],
         brand: json["brand"] == null ? null : Brand.fromJson(json["brand"]),
+        shop: json["shop"] == null ? null : Brand.fromJson(json["shop"]),
         categories: json["categories"] == null
             ? []
             : List<Category>.from(
@@ -137,6 +140,7 @@ class Product {
         "createdAt": createdAt?.toIso8601String(),
         "visibility": visibility,
         "brand": brand?.toJson(),
+        "shop": shop?.toJson(),
         "categories": categories == null
             ? []
             : List<dynamic>.from(categories!.map((x) => x.toJson())),

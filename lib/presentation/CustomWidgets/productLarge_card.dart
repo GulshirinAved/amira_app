@@ -39,6 +39,7 @@ class ProductLargeCard extends StatelessWidget {
         ),
       ),
       child: Container(
+        color: AppColors.whiteColor,
         margin: EdgeInsets.symmetric(horizontal: 3.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,22 +71,24 @@ class ProductLargeCard extends StatelessWidget {
             ),
             // price, previous price and discount
 
-            favItem.discount == null
-                ? SizedBox.shrink()
-                : Row(
-                    children: [
-                      Text(
-                        favItem.price!.toString(),
-                        style: TextStyle(
-                          fontFamily: fontPeaceSans,
-                          fontWeight: FontWeight.w500,
-                          fontSize: AppFonts.fontSize14,
-                        ),
-                      ),
-                      Padding(
+            Row(
+              children: [
+                Text(
+                  '${favItem.price!.toString()} ${favItem.coin == null ? '' : '.${favItem.coin}'} TMT',
+                  style: TextStyle(
+                    fontFamily: fontPeaceSans,
+                    fontWeight: FontWeight.w500,
+                    fontSize: AppFonts.fontSize14,
+                  ),
+                ),
+                favItem.discount == null
+                    ? const SizedBox.shrink()
+                    : Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.w),
                         child: Text(
-                          favItem.prevPrice ?? '',
+                          favItem.prevPrice != null
+                              ? '${favItem.prevPrice} TMT'
+                              : '',
                           style: TextStyle(
                             fontFamily: fontPeaceSans,
                             fontWeight: FontWeight.w400,
@@ -94,7 +97,9 @@ class ProductLargeCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(
+                favItem.discount == null
+                    ? const SizedBox.shrink()
+                    : Text(
                         favItem.discount ?? '',
                         style: TextStyle(
                           fontFamily: fontPeaceSans,
@@ -103,8 +108,8 @@ class ProductLargeCard extends StatelessWidget {
                           color: AppColors.redColor,
                         ),
                       ),
-                    ],
-                  ),
+              ],
+            ),
 
             //name
             SizedBox(
@@ -120,15 +125,19 @@ class ProductLargeCard extends StatelessWidget {
               ),
             ),
             //desc
-            Text(
-              favItem.desc ?? ' ',
-              maxLines: 2,
-              textAlign: TextAlign.start,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: AppFonts.fontSize14,
-                color: AppColors.greyColor,
+            SizedBox(
+              height: 36.h,
+              child: Text(
+                favItem.desc ?? '',
+                maxLines: 2,
+                textAlign: TextAlign.justify,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: AppFonts.fontSize14,
+                  color: AppColors.greyColor,
+                ),
               ),
             ),
             SizedBox(

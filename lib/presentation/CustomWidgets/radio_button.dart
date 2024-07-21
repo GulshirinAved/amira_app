@@ -25,7 +25,6 @@ class CustomRadioButton extends StatelessWidget {
           : ListTileControlAffinity.leading,
       dense: true,
       visualDensity: VisualDensity.compact,
-      toggleable: true,
       activeColor: AppColors.purpleColor,
       title: Text(
         title,

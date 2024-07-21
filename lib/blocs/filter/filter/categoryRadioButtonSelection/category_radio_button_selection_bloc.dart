@@ -9,11 +9,14 @@ class CategoryRadioButtonSelectionBloc extends Bloc<
       : super(CategoryRadioButtonSelectionState(
             selectedTitle: null, tempSelectedTitle: null)) {
     on<SelectRadioButtonEvent>((event, emit) {
-      emit(state.copyWith(tempSelectedTitle: event.pressedTitle));
+      emit(state.copyWith(
+          tempSelectedTitle: event.pressedTitle, selectedId: event.pressedId));
     });
 
     on<ApplyRadioButtonEvent>((event, emit) {
-      emit(state.copyWith(selectedTitle: state.tempSelectedTitle));
+      emit(state.copyWith(
+          selectedTitle: state.tempSelectedTitle,
+          selectedId: state.selectedId));
     });
   }
 }

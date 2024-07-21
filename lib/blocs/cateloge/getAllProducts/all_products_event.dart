@@ -9,8 +9,13 @@ sealed class AllProductsEvent extends Equatable {
 
 class GetAllProductsList extends AllProductsEvent {
   final Map<String, dynamic> postData;
-
   const GetAllProductsList({required this.postData});
   @override
   List<Object> get props => [postData];
+}
+
+class AllProductsLoadMoreEvent extends AllProductsEvent {
+  const AllProductsLoadMoreEvent();
+  @override
+  List<Object> get props => [];
 }

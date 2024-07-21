@@ -1,6 +1,9 @@
 import 'package:amira_app/blocs/addDeliveryLocation/location_add_bloc.dart';
 import 'package:amira_app/blocs/cart/cartButton/cart_button_bloc.dart';
+import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
+import 'package:amira_app/blocs/cateloge/subCategoryCardSelection/sub_category_selection_bloc.dart';
 import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
+import 'package:amira_app/blocs/filter/filter/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/presentation/Screens/cart/cart_screen.dart';
@@ -29,6 +32,34 @@ class BottomNavBar extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               LocationAddBloc()..add(const LoadAddressEvent('')),
+        ),
+        BlocProvider(
+          create: (context) => CategoryRadioButtonSelectionBloc(),
+        ),
+        BlocProvider(
+          create: (context) {
+            return AllProductsBloc()
+              ..add(
+                const GetAllProductsList(
+                  postData: {
+                    'categories': [],
+                    'brands': [],
+                    'shops': [],
+                    'priceFrom': null,
+                    'priceTo': null,
+                    'ordering': 'popular',
+                    'search': '',
+                    'page': 1,
+                    'pageSize': 10,
+                    'discount': false,
+                    'isLiked': true,
+                  },
+                ),
+              );
+          },
+        ),
+        BlocProvider(
+          create: (context) => SubCategorySelectionBloc(),
         ),
       ],
       child: Scaffold(

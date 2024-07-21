@@ -8,16 +8,17 @@ part 'location_add_state.dart';
 class LocationAddBloc extends Bloc<LocationAddEvent, LocationAddState> {
   LocationAddBloc()
       : super(
-          LocationAddInitial(
+          const LocationAddInitial(
             -1,
             savedLocation: '',
-            locationList: const [],
+            locationList: [],
           ),
         ) {
     on<SaveAddressEvent>((event, emit) async {
       final Box addressBox = await Hive.openBox('addressBox');
       final List<String> currentList = List<String>.from(
-          addressBox.get('addressList', defaultValue: <String>[]));
+        addressBox.get('addressList', defaultValue: <String>[]),
+      );
       currentList.add(event.locationName!);
       await addressBox.put('addressList', currentList);
       final String savedLocation =

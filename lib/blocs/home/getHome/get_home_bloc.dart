@@ -11,7 +11,6 @@ class GetHomeBloc extends Bloc<GetHomeEvent, GetHomeState> {
     final GetHomeRespoitory _getHomeRepository = GetHomeRespoitory();
 
     on<GetHomeBannerList>((event, emit) async {
-      emit(GetHomeLoading());
       try {
         final getHomeBannerList = await _getHomeRepository.fetchHomeBanner();
         final getHomeProducts = await _getHomeRepository.fetchAllHomeProducts();

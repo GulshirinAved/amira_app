@@ -6,9 +6,11 @@ import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/animations.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
+import 'package:amira_app/presentation/Screens/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});
@@ -20,9 +22,15 @@ class FavoriteScreen extends StatelessWidget {
         body: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+              padding: const EdgeInsets.all(16),
               child: CustomTextField.search(
                 context: context,
+                onTap: () {
+                  pushScreenWithNavBar(
+                    context,
+                    const SearchScreen(),
+                  );
+                },
               ),
             ),
             BlocBuilder<FavButtonBloc, FavButtonState>(
@@ -76,6 +84,7 @@ class FavoriteScreen extends StatelessWidget {
                             discount: favList.discount,
                             desc: favList.desc,
                             shopid: favList.shopid,
+                            coin: favList.coin,
                           ),
                           favItem: FavItem(
                             id: favList.id,
@@ -86,6 +95,7 @@ class FavoriteScreen extends StatelessWidget {
                             discount: favList.discount,
                             desc: favList.desc,
                             shopid: favList.shopid,
+                            coin: favList.coin,
                           ),
                         );
                       },

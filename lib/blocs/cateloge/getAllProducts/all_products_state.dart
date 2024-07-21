@@ -15,6 +15,7 @@ final class AllProductsLoaded extends AllProductsState {
   final List<dynamic> allProductsList;
 
   const AllProductsLoaded({required this.allProductsList});
+
   @override
   List<Object> get props => [allProductsList];
 }

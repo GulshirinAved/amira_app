@@ -20,7 +20,9 @@ class FavButtonBloc extends Bloc<FavButtonEvent, FavButtonState> {
         updatedFavList.add(event.item);
       }
       await box.put(
-          'favList', updatedFavList.map((item) => item.toJson()).toList());
+        'favList',
+        updatedFavList.map((item) => item.toJson()).toList(),
+      );
       emit(SuccessState(favList: updatedFavList));
     });
     on<LoadFavEvent>((event, emit) async {

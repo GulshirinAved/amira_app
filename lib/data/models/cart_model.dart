@@ -4,13 +4,13 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:amira_app/data/models/product_model.dart';
-
 class CartItem {
   final String id;
   final String? name;
+
   final List<dynamic>? image;
   final int? price;
+  final int? coin;
   final String? prevPrice;
   final String? discount;
   final String? desc;
@@ -22,6 +22,7 @@ class CartItem {
     this.name,
     this.image,
     this.price,
+    this.coin,
     this.prevPrice,
     this.discount,
     this.desc,
@@ -35,6 +36,7 @@ class CartItem {
       'name': name,
       'image': image,
       'price': price,
+      'coin': coin,
       'prevPrice': prevPrice,
       'discount': discount,
       'desc': desc,
@@ -51,6 +53,7 @@ class CartItem {
           ? List<dynamic>.from((map['image'] as List<dynamic>))
           : [],
       price: map['price'] != null ? map['price'] as int : null,
+      coin: map['coin'] != null ? map['coin'] as int : null,
       prevPrice: map['prevPrice'] != null ? map['prevPrice'] as String : null,
       discount: map['discount'] != null ? map['discount'] as String : null,
       desc: map['desc'] != null ? map['desc'] as String : null,
@@ -67,8 +70,9 @@ class CartItem {
   CartItem copyWith({
     String? id,
     String? name,
-    List<Image>? image,
+    List<dynamic>? image,
     int? price,
+    int? coin,
     String? prevPrice,
     String? discount,
     String? desc,
@@ -80,6 +84,7 @@ class CartItem {
       name: name ?? this.name,
       image: image ?? this.image,
       price: price ?? this.price,
+      coin: coin ?? this.coin,
       prevPrice: prevPrice ?? this.prevPrice,
       discount: discount ?? this.discount,
       desc: desc ?? this.desc,
@@ -96,6 +101,7 @@ class CartItem {
         other.name == name &&
         listEquals(other.image, image) &&
         other.price == price &&
+        other.coin == coin &&
         other.prevPrice == prevPrice &&
         other.discount == discount &&
         other.desc == desc &&
@@ -109,6 +115,7 @@ class CartItem {
         name.hashCode ^
         image.hashCode ^
         price.hashCode ^
+        coin.hashCode ^
         prevPrice.hashCode ^
         discount.hashCode ^
         desc.hashCode ^

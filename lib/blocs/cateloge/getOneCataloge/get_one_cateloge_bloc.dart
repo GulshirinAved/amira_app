@@ -14,8 +14,6 @@ class GetOneCatelogeBloc
 
     on<GetOneCataloge>((event, emit) async {
       try {
-        print('it is event ${event.id}');
-        emit(GetOneCatalogeLoading());
         final getOneCatalogeList =
             await getOneCatalogeRepository.getOneCataloge(event.id);
 

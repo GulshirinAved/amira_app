@@ -19,7 +19,7 @@ Future<dynamic> showingDialog(BuildContext context) {
         backgroundColor: Colors.transparent,
         child: Container(
           alignment: Alignment.center,
-          constraints: BoxConstraints(minHeight: 190, maxHeight: 300),
+          constraints: const BoxConstraints(minHeight: 190, maxHeight: 300),
           decoration: BoxDecoration(
             color: AppColors.whiteColor,
             borderRadius: AppBorders.borderRadius10,

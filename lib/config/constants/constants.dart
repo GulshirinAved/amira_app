@@ -616,18 +616,7 @@ List<Map<String, dynamic>> cosmeticsCategory = [
     'image': milkCat3Image,
   },
 ];
-//filter categories
-//brands
-List brands = [
-  'Alma production',
-  'Тукрмен алма',
-  'Яшыл алма',
-  'Гызыл алма',
-  'Яблоко',
-  'Зеленое яблоко',
-];
-//filter price range
-List priceRange = ['до 15', '30-40', '50 и дороже'];
+
 //images for product profile
 List productProfileImage = [
   appleImage,
@@ -639,24 +628,7 @@ List productProfileImage = [
   appleImage,
   appleImage,
 ];
-//profile cards name
-final List<Map<String, dynamic>> profileCardName = [
-  {
-    'name': 'Избранное',
-    'icon': heartBoldIcon,
-    'amount': '6 товаров',
-  },
-  {
-    'name': 'Покупки',
-    'icon': shopBoldIcon,
-    'amount': '6 товаров',
-  },
-  {
-    'name': 'Настройки',
-    'icon': settingsIcon,
-    'amount': null,
-  },
-];
+
 //profile help tiles
 final List helpTiles = [
   'Часто задаваемые вопросы',

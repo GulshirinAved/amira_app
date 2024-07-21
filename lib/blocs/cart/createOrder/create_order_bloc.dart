@@ -12,7 +12,6 @@ class CreateOrderBloc extends Bloc<CreateOrderEvent, CreateOrderState> {
       final bool result =
           await createOrderRepository.createOrder(postData: event.postData);
       if (result == true) {
-        print(event.postData);
         emit(const CreateOrderSuccess());
       } else {
         emit(const CreateOrderFailure('Something went wrong!'));

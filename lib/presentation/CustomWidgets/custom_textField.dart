@@ -2,14 +2,16 @@ import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 enum TextFieldStyle { search, withUnderLine, normal }
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
-  final bool? needPrefix;
+  final int? needPrefix;
   final Color? backgroundColor;
   final Function(String)? onFieldSubmitted;
   final Function(String)? onChanged;
@@ -19,6 +21,7 @@ class CustomTextField extends StatelessWidget {
   final BuildContext context;
   final bool? isTextNumber;
   final TextEditingController? textController;
+  final int? rangeNumber;
   const CustomTextField({
     required this.hintText,
     required this.needPrefix,
@@ -31,37 +34,39 @@ class CustomTextField extends StatelessWidget {
     this.autofocus = false,
     this.textFieldStyle,
     this.isTextNumber = false,
+    this.rangeNumber,
     super.key,
   });
-  const CustomTextField._({
-    required this.hintText,
-    required this.context,
-    this.needPrefix,
-    this.backgroundColor,
-    this.onFieldSubmitted,
-    this.onChanged,
-    this.onTap,
-    this.autofocus,
-    this.textController,
-    this.textFieldStyle,
-    this.isTextNumber,
-  });
-  factory CustomTextField.search({
-    required final BuildContext context,
-    bool? autoFocus,
-    VoidCallback? onTap,
-    TextEditingController? controller,
-    final Function(String)? onChanged,
-  }) {
+  const CustomTextField._(
+      {required this.hintText,
+      required this.context,
+      this.needPrefix,
+      this.backgroundColor,
+      this.onFieldSubmitted,
+      this.onChanged,
+      this.onTap,
+      this.autofocus,
+      this.textController,
+      this.textFieldStyle,
+      this.isTextNumber,
+      this.rangeNumber});
+  factory CustomTextField.search(
+      {required final BuildContext context,
+      bool? autoFocus,
+      VoidCallback? onTap,
+      TextEditingController? controller,
+      final Function(String)? onChanged,
+      final Function(String?)? onFieldSubmitted}) {
     return CustomTextField._(
       hintText: AppLocalization.of(context).getTransatedValues('search') ?? '',
-      needPrefix: true,
+      needPrefix: 1,
       autofocus: autoFocus ?? false,
       onTap: onTap,
       textController: controller,
       onChanged: onChanged,
       context: context,
       isTextNumber: false,
+      onFieldSubmitted: onFieldSubmitted,
     );
   }
   factory CustomTextField.normal({
@@ -72,16 +77,19 @@ class CustomTextField extends StatelessWidget {
     TextEditingController? controller,
     final bool? isTextNumber,
     final bool? isObscure,
+    final int? rangeNumber,
+    final int? needPrefix,
   }) {
     return CustomTextField._(
       hintText: hintText!,
       autofocus: false,
       backgroundColor: backColor ?? AppColors.whiteColor,
-      needPrefix: false,
+      needPrefix: needPrefix,
       onFieldSubmitted: onFieldSubmitted,
       textController: controller,
       context: context,
       isTextNumber: isTextNumber,
+      rangeNumber: rangeNumber,
     );
   }
   factory CustomTextField.withUnderLine({
@@ -94,7 +102,7 @@ class CustomTextField extends StatelessWidget {
     return CustomTextField._(
       hintText: hintText!,
       autofocus: false,
-      needPrefix: false,
+      needPrefix: 3,
       context: context,
       textController: controller,
       textFieldStyle: TextFieldStyle.withUnderLine,
@@ -109,6 +117,9 @@ class CustomTextField extends StatelessWidget {
       autofocus: autofocus ?? false,
       keyboardType:
           isTextNumber == true ? TextInputType.phone : TextInputType.text,
+      inputFormatters: rangeNumber == null
+          ? []
+          : [LengthLimitingTextInputFormatter(rangeNumber)],
       decoration: InputDecoration(
         border: textFieldStyle == TextFieldStyle.withUnderLine
             ? const UnderlineInputBorder()
@@ -124,12 +135,17 @@ class CustomTextField extends StatelessWidget {
               ),
         filled: true,
         fillColor: backgroundColor ?? AppColors.whiteColor,
-        prefixIcon: needPrefix == false
-            ? null
-            : SvgPicture.asset(
-                searchIcon,
-                fit: BoxFit.scaleDown,
-              ),
+        prefixIcon: needPrefix == 1
+            ? SvgPicture.asset(searchIcon, fit: BoxFit.scaleDown)
+            : needPrefix == 2
+                ? Padding(
+                    padding: EdgeInsets.only(top: 13.h, left: 8.w),
+                    child: Text(
+                      '+993',
+                      style: TextStyle(fontSize: AppFonts.fontSize14),
+                    ),
+                  )
+                : null,
         hintText: hintText,
         hintStyle: TextStyle(
           fontWeight: FontWeight.w500,
