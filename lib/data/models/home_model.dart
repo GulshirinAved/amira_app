@@ -160,6 +160,11 @@ class Row {
   String? type;
   String? title;
   String? content;
+  int? amount;
+  String? unitId;
+  final Brand? brand;
+  final List<CategoryElement>? categories;
+  final SimpleDiscount? discount;
 
   Row({
     this.id,
@@ -179,6 +184,11 @@ class Row {
     this.type,
     this.title,
     this.content,
+    this.amount,
+    this.unitId,
+    this.brand,
+    this.categories,
+    this.discount,
   });
 
   factory Row.fromRawJson(String str) => Row.fromJson(json.decode(str));
@@ -207,6 +217,16 @@ class Row {
         type: json['type'],
         title: json['title'],
         content: json['content'],
+        amount: json['amount'],
+        unitId: json['unitId'],
+        brand: json['brand'] == null ? null : Brand.fromJson(json['brand']),
+        categories: json['categories'] == null
+            ? []
+            : List<CategoryElement>.from(
+                json['categories']!.map((x) => CategoryElement.fromJson(x))),
+        discount: json['discount'] == null
+            ? null
+            : SimpleDiscount.fromJson(json['discount']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -229,5 +249,97 @@ class Row {
         'type': type,
         'title': title,
         'content': content,
+        'amount': amount,
+        'unitId': unitId,
+        'brand': brand?.toJson(),
+        'categories': categories == null
+            ? []
+            : List<dynamic>.from(categories!.map((x) => x.toJson())),
+        'discount': discount?.toJson(),
+      };
+}
+
+class Brand {
+  final String? id;
+  final String? name;
+  final Image? logo;
+  final DateTime? createdAt;
+
+  Brand({
+    this.id,
+    this.name,
+    this.logo,
+    this.createdAt,
+  });
+
+  factory Brand.fromRawJson(String str) => Brand.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Brand.fromJson(Map<String, dynamic> json) => Brand(
+        id: json["id"],
+        name: json["name"],
+        logo: json["logo"] == null ? null : Image.fromJson(json["logo"]),
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "logo": logo?.toJson(),
+        "createdAt": createdAt?.toIso8601String(),
+      };
+}
+
+class CategoryElement {
+  final String? id;
+  final String? name;
+
+  CategoryElement({
+    this.id,
+    this.name,
+  });
+
+  factory CategoryElement.fromRawJson(String str) =>
+      CategoryElement.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory CategoryElement.fromJson(Map<String, dynamic> json) =>
+      CategoryElement(
+        id: json["id"],
+        name: json["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+      };
+}
+
+class SimpleDiscount {
+  final int? price;
+  final int? percent;
+
+  SimpleDiscount({
+    this.price,
+    this.percent,
+  });
+
+  factory SimpleDiscount.fromRawJson(String str) =>
+      SimpleDiscount.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory SimpleDiscount.fromJson(Map<String, dynamic> json) => SimpleDiscount(
+        price: json["price"],
+        percent: json["percent"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "price": price,
+        "percent": percent,
       };
 }

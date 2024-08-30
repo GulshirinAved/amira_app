@@ -1,3 +1,4 @@
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/cateloge/getAllBrands/get_all_brands_bloc.dart';
 import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
 import 'package:amira_app/blocs/cateloge/getOneCataloge/get_one_cateloge_bloc.dart';
@@ -6,8 +7,7 @@ import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart'
 import 'package:amira_app/blocs/filter/filter/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/switcher/switcher_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
-import 'package:amira_app/presentation/CustomWidgets/animations.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:amira_app/presentation/CustomWidgets/radio_button.dart';
 import 'package:amira_app/presentation/Screens/cataloge/components/brand_cards.dart';
@@ -66,7 +66,9 @@ Future<dynamic> filterBottomSheet(
                 child: Column(
                   children: [
                     Text(
-                      'Фильтры',
+                      AppLocalization.of(context)
+                              .getTransatedValues('filters') ??
+                          '',
                       style: TextStyle(
                         fontFamily: fontPeaceSans,
                         fontWeight: FontWeight.w400,
@@ -80,18 +82,14 @@ Future<dynamic> filterBottomSheet(
                           BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
                         builder: (context, state) {
                           if (state is GetOneCatalogeError) {
-                            return Center(
-                              child: Text(state.error.toString()),
-                            );
+                            return SizedBox.shrink();
                           } else if (state is GetOneCatelogeInitial ||
                               state is GetOneCatalogeLoading) {
-                            return Animations.loading;
+                            return SizedBox.shrink();
                           } else if (state is GetOneCatalogeLoaded) {
                             if (state
                                 .getOneCatalogeList.subcategories!.isEmpty) {
-                              return const Center(
-                                child: Text('it is empty'),
-                              );
+                              return const SizedBox.shrink();
                             }
                             return Column(
                               children: List.generate(
@@ -160,7 +158,11 @@ Future<dynamic> filterBottomSheet(
                                 visualDensity: VisualDensity.compact,
                                 activeColor: AppColors.purpleColor,
                                 title: Text(
-                                  'Скидки и акции',
+                                  AppLocalization.of(context)
+                                          .getTransatedValues(
+                                        'saleAndPromotion',
+                                      ) ??
+                                      '',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: AppFonts.fontSize14,

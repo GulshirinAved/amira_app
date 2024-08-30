@@ -10,7 +10,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:amira_app/blocs/cart/cartButton/cart_button_bloc.dart';
 import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
@@ -57,13 +57,13 @@ class ProductLargeCard extends StatelessWidget {
                   borderRadius: AppBorders.borderRadius10,
                   child: cartItem.image![0] is Map<String, dynamic>
                       ? ExtendedImage.network(
-                          'https://kip.tm/magaz/' + favItem.image![0]['url']!,
+                          '${url}' + favItem.image![0]['url']!,
                           height: 160.h,
                           width: 160.h,
                           fit: BoxFit.cover,
                         )
                       : ExtendedImage.network(
-                          'https://kip.tm/magaz/' + favItem.image![0].url,
+                          '${url}' + favItem.image![0].url,
                           height: 160.h,
                           width: 160.h,
                           fit: BoxFit.cover,
@@ -73,22 +73,22 @@ class ProductLargeCard extends StatelessWidget {
 
             Row(
               children: [
-                Text(
-                  '${favItem.price!.toString()} ${favItem.coin == null ? '' : '.${favItem.coin}'} TMT',
-                  style: TextStyle(
-                    fontFamily: fontPeaceSans,
-                    fontWeight: FontWeight.w500,
-                    fontSize: AppFonts.fontSize14,
-                  ),
-                ),
-                favItem.discount == null
+                favItem.price == null
+                    ? SizedBox.shrink()
+                    : Text(
+                        '${favItem.price!.toString()} ${favItem.coin == null ? '' : '.${favItem.coin}'}',
+                        style: TextStyle(
+                          fontFamily: fontPeaceSans,
+                          fontWeight: FontWeight.w500,
+                          fontSize: AppFonts.fontSize14,
+                        ),
+                      ),
+                favItem.discount?.price == null
                     ? const SizedBox.shrink()
                     : Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.w),
                         child: Text(
-                          favItem.prevPrice != null
-                              ? '${favItem.prevPrice} TMT'
-                              : '',
+                          '${favItem.discount?.price}',
                           style: TextStyle(
                             fontFamily: fontPeaceSans,
                             fontWeight: FontWeight.w400,
@@ -97,10 +97,10 @@ class ProductLargeCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                favItem.discount == null
-                    ? const SizedBox.shrink()
+                favItem.discount?.percent == null
+                    ? SizedBox.shrink()
                     : Text(
-                        favItem.discount ?? '',
+                        '${favItem.discount?.percent}%',
                         style: TextStyle(
                           fontFamily: fontPeaceSans,
                           fontWeight: FontWeight.w400,
@@ -199,7 +199,7 @@ class ProductLargeCard extends StatelessWidget {
                             colorFilter: ColorFilter.mode(
                               state.favList.any((item) => item.id == favItem.id)
                                   ? AppColors.whiteColor
-                                  : AppColors.darkGreyColor,
+                                  : AppColors.greyColor,
                               BlendMode.srcIn,
                             ),
                           ),

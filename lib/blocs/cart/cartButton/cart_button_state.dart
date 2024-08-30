@@ -1,6 +1,6 @@
 part of 'cart_button_bloc.dart';
 
-sealed class CartButtonState extends Equatable {
+class CartButtonState extends Equatable {
   final List cartList;
   final double? sum;
   final double? salePrice;
@@ -28,11 +28,11 @@ class SumProductState extends CartButtonState {
   const SumProductState({
     required super.cartList,
     required this.sum,
+    required this.salePrice,
   });
   @override
   final double sum;
+  final double salePrice;
   @override
-  List<Object> get props => [
-        sum,
-      ];
+  List<Object> get props => [sum, salePrice];
 }

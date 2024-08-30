@@ -37,12 +37,18 @@ class HomeProvider {
 //type=='products' from this need get count and category name
   Future<List<Datum>> fetchAllHomeData() async {
     const String getHomeUrl = '${url}api/home';
+    dio.options.headers = {
+      'Accept-Language': langBox.get('lang') ?? 'tr',
+    };
     try {
       if (homeDataBox.isEmpty) {
-        final Response response = await dio.get(getHomeUrl);
+        final Response response = await dio.get(
+          getHomeUrl,
+        );
         if (response.statusCode == 200) {
           final List<dynamic> homeData = response.data['data']
-              .where((item) => item['type'] == 'products')
+              .where((item) =>
+                  item['type'] == 'products' || item['type'] == 'newProducts')
               .toList();
           final List<Datum> homeProducts = homeData
               .map<Datum>(
@@ -78,12 +84,18 @@ class HomeProvider {
   ///type=='product' from this need get products
   Future<List<List<Row>>> fetchAllHomeProducts() async {
     const String getHomeUrl = '${url}api/home';
+    dio.options.headers = {
+      'Accept-Language': langBox.get('lang') ?? 'tr',
+    };
     try {
       if (homeBox.isEmpty) {
         final Response response = await dio.get(getHomeUrl);
         if (response.statusCode == 200) {
           final List<dynamic> homeData = response.data['data']
-              .where((item) => item['type'] == 'products')
+              .where(
+                (item) =>
+                    item['type'] == 'products' || item['type'] == 'newProducts',
+              )
               .toList();
           final List<List<Row>> listOfProductLists = [];
           for (var productData in homeData) {

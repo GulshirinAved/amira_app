@@ -2,7 +2,7 @@
 import 'package:amira_app/app_localization.dart';
 
 import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/animations.dart';
@@ -48,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
               'shops': const [],
               'priceFrom': null,
               'priceTo': null,
-              'ordering': 'popular',
+              'ordering': 'recommended',
               'search': searchController.text,
               'page': 1,
               'pageSize': 10,
@@ -62,14 +62,14 @@ class _SearchScreenState extends State<SearchScreen> {
           resizeToAvoidBottomInset: false,
           body: Builder(
             builder: (context) {
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: BlocBuilder<AllProductsBloc, AllProductsState>(
-                  builder: (context, state) {
-                    return ListView(
-                      children: [
-                        //search field and clear button
-                        Row(
+              return BlocBuilder<AllProductsBloc, AllProductsState>(
+                builder: (context, state) {
+                  return ListView(
+                    children: [
+                      //search field and clear button
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
                           children: [
                             Expanded(
                               child: CustomTextField.search(
@@ -133,132 +133,139 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ],
                         ),
-                        searchController.text.isEmpty
-                            ? const GridviewProductsSlider(
-                                topTitle: 'Рекомендуемые товары',
-                                productList: [],
-                              )
-                            : Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.whiteColor,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10.r),
-                                    topRight: Radius.circular(10.r),
-                                  ),
-                                ),
-                                margin: EdgeInsets.symmetric(vertical: 6.h),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w,
-                                  vertical: 10.h,
-                                ),
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    BlocBuilder<AllProductsBloc,
-                                        AllProductsState>(
-                                      builder: (context, state) {
-                                        if (state is AllProductsError) {
-                                          return Center(
-                                            child: Text(state.error.toString()),
-                                          );
-                                        } else if (state
-                                            is AllProductsInitial) {
-                                          return const Center(
-                                            child: Text('It is initial'),
-                                          );
-                                        } else if (state
-                                            is AllProductsLoading) {
-                                          return Animations.loading;
-                                        } else if (state is AllProductsLoaded) {
-                                          if (state.allProductsList.isEmpty) {
-                                            return const Center(
-                                              child: Text('it is empty'),
-                                            );
-                                          }
-                                          return GridView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            scrollDirection: Axis.vertical,
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              mainAxisExtent: 370,
-                                            ),
-                                            itemCount:
-                                                state.allProductsList.length,
-                                            itemBuilder: (context, index) {
-                                              return ProductLargeCard(
-                                                index: index,
-                                                cartItem: CartItem(
-                                                  id: state
-                                                      .allProductsList[index]
-                                                      .id,
-                                                  name: state
-                                                      .allProductsList[index]
-                                                      .name,
-                                                  image: state
-                                                      .allProductsList[index]
-                                                      .images,
-                                                  price: state
-                                                      .allProductsList[index]
-                                                      .price,
-                                                  prevPrice: '',
-                                                  discount: null,
-                                                  desc: state
-                                                      .allProductsList[index]
-                                                      .description,
-                                                  shopid: state
-                                                      .allProductsList[index]
-                                                      .shopId,
-                                                  coin: state
-                                                      .allProductsList[index]
-                                                      .coin,
-                                                ),
-                                                favItem: FavItem(
-                                                  id: state
-                                                      .allProductsList[index].id
-                                                      .toString(),
-                                                  name: state
-                                                      .allProductsList[index]
-                                                      .name,
-                                                  image: state
-                                                      .allProductsList[index]
-                                                      .images,
-                                                  price: state
-                                                      .allProductsList[index]
-                                                      .price,
-                                                  prevPrice: '',
-                                                  discount: null,
-                                                  desc: state
-                                                      .allProductsList[index]
-                                                      .description,
-                                                  shopid: state
-                                                      .allProductsList[index]
-                                                      .id,
-                                                  coin: state
-                                                      .allProductsList[index]
-                                                      .coin,
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          return const Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                  ],
+                      ),
+                      searchController.text.isEmpty
+                          ? BlocBuilder<AllProductsBloc, AllProductsState>(
+                              builder: (context, state) {
+                                if (state is AllProductsError) {
+                                  return SizedBox.shrink();
+                                } else if (state is AllProductsInitial ||
+                                    state is AllProductsLoading) {
+                                  return Animations.loading;
+                                } else if (state is AllProductsLoaded) {
+                                  if (state.allProductsList.isEmpty) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return GridviewProductsSlider(
+                                    topTitle: 'Рекомендуемые товары',
+                                    productList: state.allProductsList,
+                                  );
+                                }
+                                return SizedBox.shrink();
+                              },
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.whiteColor,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10.r),
+                                  topRight: Radius.circular(10.r),
                                 ),
                               ),
-                      ],
-                    );
-                  },
-                ),
+                              margin: EdgeInsets.symmetric(vertical: 6.h),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10.w,
+                                vertical: 10.h,
+                              ),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  BlocBuilder<AllProductsBloc,
+                                      AllProductsState>(
+                                    builder: (context, state) {
+                                      if (state is AllProductsError) {
+                                        return SizedBox.shrink();
+                                      } else if (state is AllProductsInitial) {
+                                        return const SizedBox.shrink();
+                                      } else if (state is AllProductsLoading) {
+                                        return Animations.loading;
+                                      } else if (state is AllProductsLoaded) {
+                                        if (state.allProductsList.isEmpty) {
+                                          return const SizedBox.shrink();
+                                        }
+                                        return GridView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          scrollDirection: Axis.vertical,
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            mainAxisExtent: 370,
+                                          ),
+                                          itemCount:
+                                              state.allProductsList.length,
+                                          itemBuilder: (context, index) {
+                                            return ProductLargeCard(
+                                              index: index,
+                                              cartItem: CartItem(
+                                                id: state
+                                                    .allProductsList[index].id,
+                                                name: state
+                                                    .allProductsList[index]
+                                                    .name,
+                                                image: state
+                                                    .allProductsList[index]
+                                                    .images,
+                                                price: state
+                                                    .allProductsList[index]
+                                                    .price,
+                                                discount: state
+                                                    .allProductsList[index]
+                                                    .discount,
+                                                desc: state
+                                                    .allProductsList[index]
+                                                    .description,
+                                                shopid: state
+                                                    .allProductsList[index]
+                                                    .shopId,
+                                                coin: state
+                                                    .allProductsList[index]
+                                                    .coin,
+                                              ),
+                                              favItem: FavItem(
+                                                id: state
+                                                    .allProductsList[index].id
+                                                    .toString(),
+                                                name: state
+                                                    .allProductsList[index]
+                                                    .name,
+                                                image: state
+                                                    .allProductsList[index]
+                                                    .images,
+                                                price: state
+                                                    .allProductsList[index]
+                                                    .price,
+                                                discount: state
+                                                    .allProductsList[index]
+                                                    .discount,
+                                                desc: state
+                                                    .allProductsList[index]
+                                                    .description,
+                                                shopid: state
+                                                    .allProductsList[index].id,
+                                                coin: state
+                                                    .allProductsList[index]
+                                                    .coin,
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ],
+                  );
+                },
               );
             },
           ),

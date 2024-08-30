@@ -1,8 +1,9 @@
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/cateloge/getAllBrands/get_all_brands_bloc.dart';
 import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
 import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:amira_app/presentation/Screens/cataloge/components/brand_cards.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ Future<dynamic> brandBottomSheet(BuildContext context,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Бренды',
+                AppLocalization.of(context).getTransatedValues('brands') ?? '',
                 style: TextStyle(
                   fontFamily: fontPeaceSans,
                   fontWeight: FontWeight.w400,

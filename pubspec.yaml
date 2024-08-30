@@ -24,6 +24,10 @@ dependencies:
      sdk: flutter
   flutter_phoenix: ^1.1.1
   lottie: ^3.1.2
+  carousel_slider: ^4.2.1
+  firebase_core_platform_interface: ^5.2.1
+  firebase_messaging: ^14.7.10
+  flutter_local_notifications: ^17.2.2
 
 dev_dependencies:
   flutter_test:
@@ -41,7 +45,10 @@ flutter:
   fonts:
     - family: Gilroy
       fonts:
-        - asset: assets/fonts/Gilroy.ttf
+        - asset: assets/fonts/Gilroy-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Gilroy-Bold.ttf
+          weight: 700
     - family: PeaceSans
       fonts:
         - asset: assets/fonts/PeaceSans.ttf

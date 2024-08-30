@@ -1,6 +1,7 @@
-import 'package:amira_app/blocs/productProfile/dotIndicator_bloc.dart/dot_indicator_bloc.dart';
+import 'package:amira_app/blocs/productProfile/dotIndicator/dot_indicator_bloc.dart';
 import 'package:amira_app/blocs/productProfile/imageScrolling/image_scrolling_bloc.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/constants/constants.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,13 +41,13 @@ class ImageSlider extends StatelessWidget {
               borderRadius: AppBorders.borderRadius10,
               child: imageList[index] is Map<String, dynamic>
                   ? ExtendedImage.network(
-                      'https://kip.tm/magaz/' + imageList[index]['url']!,
+                      url + imageList[index]['url']!,
                       height: 390.h,
                       width: 390.w,
                       fit: BoxFit.cover,
                     )
                   : ExtendedImage.network(
-                      'https://kip.tm/magaz/' + imageList[index].url,
+                      url + imageList[index].url,
                       height: 390.h,
                       width: 390.w,
                       fit: BoxFit.cover,

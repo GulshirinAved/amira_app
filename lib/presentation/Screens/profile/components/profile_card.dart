@@ -1,14 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:amira_app/app_localization.dart';
-import 'package:amira_app/blocs/cart/cartButton/cart_button_bloc.dart';
-import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 
 class ProfileCard extends StatelessWidget {
   final int index;
@@ -29,6 +26,7 @@ class ProfileCard extends StatelessWidget {
         borderRadius: AppBorders.borderRadius10,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SvgPicture.asset(
@@ -52,24 +50,6 @@ class ProfileCard extends StatelessWidget {
               fontSize: AppFonts.fontSize14,
             ),
           ),
-          BlocBuilder<FavButtonBloc, FavButtonState>(
-            builder: (context, favstate) {
-              return BlocBuilder<CartButtonBloc, CartButtonState>(
-                builder: (context, state) {
-                  return Text(
-                    index == 2
-                        ? ''
-                        : '${index == 0 ? favstate.favList.length : state.cartList.length} ${AppLocalization.of(context).getTransatedValues('products')}  ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: AppFonts.fontSize12,
-                      color: AppColors.greyColor,
-                    ),
-                  );
-                },
-              );
-            },
-          ),
         ],
       ),
     );
@@ -83,7 +63,8 @@ class ProfileCard extends StatelessWidget {
           }
         : index == 1
             ? {
-                'name': AppLocalization.of(context).getTransatedValues('buy'),
+                'name':
+                    AppLocalization.of(context).getTransatedValues('history'),
                 'icon': shopBoldIcon,
               }
             : {

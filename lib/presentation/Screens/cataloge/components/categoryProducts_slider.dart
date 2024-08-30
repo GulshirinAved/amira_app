@@ -5,13 +5,13 @@ import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart'
 import 'package:amira_app/blocs/filter/filter/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
 
 import 'package:amira_app/data/models/category_model.dart';
+import 'package:amira_app/presentation/CustomWidgets/customContainer_extension.dart';
 import 'package:amira_app/presentation/Screens/cataloge/categoryProfile_screen.dart';
 import 'package:amira_app/presentation/Screens/cataloge/components/categoryProduct_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:amira_app/config/theme/theme.dart';
 import 'package:amira_app/presentation/Screens/home/components/sliderTopTitle.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
@@ -35,14 +35,8 @@ class CategoryProductsSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10.r),
-          topRight: Radius.circular(10.r),
-        ),
-      ),
+    return CustomContainer.buildContainer(
+      width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(vertical: 6.h),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
       child: Column(
@@ -88,9 +82,7 @@ class CategoryProductsSlider extends StatelessWidget {
             child: BlocBuilder<AllProductsBloc, AllProductsState>(
               builder: (context, state) {
                 if (state is AllProductsError) {
-                  return Center(
-                    child: Text(state.error.toString()),
-                  );
+                  return SizedBox.shrink();
                 } else if (state is AllProductsInitial ||
                     state is AllProductsLoading) {
                   return const Center(

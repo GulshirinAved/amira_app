@@ -1,3 +1,4 @@
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/cateloge/getAllBrands/get_all_brands_bloc.dart';
 import 'package:amira_app/blocs/cateloge/getAllCategory/all_category_bloc.dart';
 import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
@@ -64,81 +65,128 @@ class CatelogeScreen extends StatelessWidget {
       ],
       child: SafeArea(
         child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                //search field
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: CustomTextField.search(
-                    context: context,
-                    onTap: () {
-                      pushScreenWithNavBar(
-                        context,
-                        const SearchScreen(),
+          body: Builder(
+            builder: (context) {
+              return RefreshIndicator(
+                onRefresh: () async {
+// Trigger the events to reload data
+                  context.read<AllCategoryBloc>().add(GetAllCategoryList());
+                  context
+                      .read<GetOneCatelogeBloc>()
+                      .add(const GetOneCataloge(id: ''));
+                  context
+                      .read<GetAllBrandsBloc>()
+                      .add(const GetAllBrandsList(categoryId: ''));
+                  context.read<AllProductsBloc>().add(
+                        const GetAllProductsList(
+                          postData: {
+                            'categories': [],
+                            'brands': [],
+                            'shops': [],
+                            'priceFrom': null,
+                            'priceTo': null,
+                            'ordering': 'popular',
+                            'search': '',
+                            'page': 1,
+                            'pageSize': 10,
+                            'discount': false,
+                            'isLiked': true,
+                          },
+                        ),
                       );
-                    },
-                  ),
-                ),
-                //category sliders
-                BlocBuilder<AllCategoryBloc, AllCategoryState>(
+                },
+                child: BlocBuilder<AllCategoryBloc, AllCategoryState>(
                   builder: (context, state) {
                     if (state is AllCategoryError) {
-                      return Center(
-                        child: Text(state.error.toString()),
+                      return ListView(
+                        children: [
+                          Center(
+                            child: Text(
+                              AppLocalization.of(context)
+                                      .getTransatedValues('error') ??
+                                  'An error occurred. Pull to refresh.',
+                            ),
+                          ),
+                        ],
                       );
                     } else if (state is AllCategoryInitial ||
                         state is AllCategoryLoading) {
                       return Animations.loading;
                     } else if (state is AllCategoryLoaded) {
-                      return ListView.builder(
-                        controller: BlocProvider.of<AllCategoryBloc>(context)
-                            .scrollController,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: state.allCategoryList.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index >= state.allCategoryList.length) {
-                            if (!BlocProvider.of<AllCategoryBloc>(context)
-                                .isLoadingMore) {
-                              BlocProvider.of<AllCategoryBloc>(context)
-                                  .add(LoadMoreEvent());
-                            }
-                            return state.allCategoryList.length != index
-                                ? const Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : const SizedBox.shrink();
-                          }
-                          //category card and toptitle
-                          return BlocBuilder<BrandSelectionBloc,
-                              BrandSelectionState>(
-                            builder: (context, stateBrand) {
-                              return CategoryProductsSlider(
-                                subCategoryList:
-                                    state.allCategoryList[index].subcategories!,
-                                categoryList: state.allCategoryList,
-                                topTitle:
-                                    state.allCategoryList[index].name ?? '',
-                                selectedBrand:
-                                    stateBrand.selectedBrandBottomSheet1,
-                                index: index,
-                                categoryId:
-                                    state.allCategoryList[index].id.toString(),
-                              );
-                            },
-                          );
-                        },
+// Filter categories with non-empty subcategories
+                      final nonEmptyCategories = state.allCategoryList
+                          .where(
+                              (category) => category.subcategories!.isNotEmpty)
+                          .toList();
+
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+// Search field
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: CustomTextField.search(
+                                context: context,
+                                onTap: () {
+                                  pushScreenWithNavBar(
+                                    context,
+                                    const SearchScreen(),
+                                  );
+                                },
+                              ),
+                            ),
+// Category sliders
+                            ListView.builder(
+                              controller:
+                                  BlocProvider.of<AllCategoryBloc>(context)
+                                      .scrollController,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemCount: nonEmptyCategories.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index >= nonEmptyCategories.length) {
+                                  if (!BlocProvider.of<AllCategoryBloc>(context)
+                                      .isLoadingMore) {
+                                    BlocProvider.of<AllCategoryBloc>(context)
+                                        .add(LoadMoreEvent());
+                                  }
+                                  return nonEmptyCategories.length != index
+                                      ? const Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : const SizedBox.shrink();
+                                }
+// Category card and top title
+                                return BlocBuilder<BrandSelectionBloc,
+                                    BrandSelectionState>(
+                                  builder: (context, stateBrand) {
+                                    return CategoryProductsSlider(
+                                      subCategoryList: nonEmptyCategories[index]
+                                          .subcategories!,
+                                      categoryList: nonEmptyCategories,
+                                      topTitle:
+                                          nonEmptyCategories[index].name ?? '',
+                                      selectedBrand:
+                                          stateBrand.selectedBrandBottomSheet1,
+                                      index: index,
+                                      categoryId: nonEmptyCategories[index]
+                                          .id
+                                          .toString(),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       );
                     }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const SizedBox.shrink();
                   },
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),

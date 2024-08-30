@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String topTitle;
@@ -39,22 +39,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.blackColor,
         ),
       ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GestureDetector(
-            onTap: onTap,
-            child: SvgPicture.asset(
-              iconTitle!,
-              colorFilter: ColorFilter.mode(
-                favActiveColor ?? AppColors.darkGreyColor,
-                BlendMode.srcIn,
+      actions: iconTitle == null
+          ? []
+          : [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: onTap,
+                  child: SvgPicture.asset(
+                    iconTitle!,
+                    colorFilter: ColorFilter.mode(
+                      favActiveColor ?? AppColors.greyColor,
+                      BlendMode.srcIn,
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ],
+            ],
     );
   }
 

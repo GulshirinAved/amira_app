@@ -31,8 +31,9 @@ class AllProductsBloc extends Bloc<AllProductsEvent, AllProductsState> {
       try {
         final List<dynamic> allProductsList = await allProductsRepository
             .fetchAllProductList(currentFilter, page);
-        emit(AllProductsLoaded(allProductsList: allProductsList));
-        print(event.postData);
+        emit(AllProductsLoaded(
+          allProductsList: allProductsList,
+        ));
       } catch (e) {
         emit(AllProductsError(error: e.toString()));
       }

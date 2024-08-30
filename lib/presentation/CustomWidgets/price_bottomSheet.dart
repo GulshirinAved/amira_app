@@ -1,6 +1,7 @@
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:amira_app/presentation/Screens/cataloge/components/priceRangeFieldCard.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ Future<dynamic> priceBottomsheet(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Цена',
+                  AppLocalization.of(context).getTransatedValues('price') ?? '',
                   style: TextStyle(
                     fontFamily: fontPeaceSans,
                     fontWeight: FontWeight.w400,

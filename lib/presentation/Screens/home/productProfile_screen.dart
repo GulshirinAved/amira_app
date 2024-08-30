@@ -1,21 +1,26 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/cart/cartButton/cart_button_bloc.dart';
 import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
 import 'package:amira_app/blocs/home/getOneProduct/get_one_product_bloc.dart';
+import 'package:amira_app/blocs/productProfile/expanableText/expandable_text_cubit.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/animations.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:amira_app/presentation/CustomWidgets/cartAmount_button.dart';
+import 'package:amira_app/presentation/CustomWidgets/customContainer_extension.dart';
 import 'package:amira_app/presentation/Screens/home/components/discount_card.dart';
+import 'package:amira_app/presentation/Screens/home/components/expandable_text.dart';
 import 'package:amira_app/presentation/Screens/home/components/gridviewProducts_slider.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:amira_app/blocs/productProfile/dotIndicator_bloc.dart/dot_indicator_bloc.dart';
+import 'package:amira_app/blocs/productProfile/dotIndicator/dot_indicator_bloc.dart';
 import 'package:amira_app/blocs/productProfile/imageScrolling/image_scrolling_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_appbar.dart';
 import 'package:amira_app/presentation/Screens/home/components/image_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,6 +58,7 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('widget.favItem.id ${widget.favItem.id}');
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -65,9 +71,13 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
           create: (context) =>
               GetOneProductBloc()..add(GetOneProduct(id: widget.favItem.id)),
         ),
+        BlocProvider(
+          create: (context) => ExpandableTextCubit(),
+        ),
       ],
       child: Builder(
         builder: (context) {
+          print('it is prand image ${widget.favItem.id}');
           return BlocBuilder<FavButtonBloc, FavButtonState>(
             builder: (context, state) {
               final isFav =
@@ -77,7 +87,7 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                   topTitle: widget.favItem.name ?? '',
                   iconTitle: isFav ? heartBoldIcon : heartIcon,
                   favActiveColor:
-                      isFav ? AppColors.purpleColor : AppColors.darkGreyColor,
+                      isFav ? AppColors.purpleColor : AppColors.greyColor,
                   onTap: () => context
                       .read<FavButtonBloc>()
                       .add(ToggleFavEvent(item: widget.favItem)),
@@ -85,16 +95,14 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                 body: BlocBuilder<GetOneProductBloc, GetOneProductState>(
                   builder: (context, state) {
                     if (state is GetOneProductError) {
-                      return Center(
-                        child: Text('The error is ${state.error}'),
-                      );
+                      return SizedBox.shrink();
                     } else if (state is GetOneProductInitial ||
                         state is GetOneProductLoading) {
                       return Animations.loading;
                     }
                     return ListView(
                       children: [
-                        //first tile:image and dicount
+                        //first tile:image and discount
                         Container(
                           decoration: BoxDecoration(
                             color: AppColors.whiteColor,
@@ -113,13 +121,14 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                                 pageController: _pageController,
                               ),
                               //discount cards
-                              widget.favItem.discount == null
+                              widget.favItem.discount?.price == null
                                   ? const SizedBox.shrink()
                                   : Row(
                                       children: [
                                         //discount
                                         DiscountCard(
-                                          title: widget.favItem.discount!,
+                                          title:
+                                              '${widget.favItem.discount!.percent}%',
                                         ),
                                         SizedBox(
                                           width: 10.w,
@@ -135,15 +144,39 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                           ),
                         ),
                         //second tile
-                        Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.whiteColor,
-                            borderRadius: AppBorders.borderRadius10,
-                          ),
+                        //desc
+                        CustomContainer.buildContainer(
+                          width: MediaQuery.of(context).size.width,
                           margin: EdgeInsets.symmetric(vertical: 6.h),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalization.of(context).getTransatedValues(
+                                      'description',
+                                    ) ??
+                                    '',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: AppFonts.fontSize14,
+                                  color: AppColors.blackColor,
+                                ),
+                              ),
+                              ExpandableText(
+                                text: widget.favItem.desc ?? '',
+                              ),
+                            ],
                           ),
+                        ),
+                        //third tile brand desc
+                        CustomContainer.buildContainer(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(vertical: 6.h),
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
                           child: BlocBuilder<GetOneProductBloc,
                               GetOneProductState>(
                             builder: (context, state) {
@@ -152,16 +185,12 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                                   child: Text(state.error.toString()),
                                 );
                               } else if (state is GetOneProductInitial) {
-                                return const Center(
-                                  child: Text('It is initial'),
-                                );
+                                return SizedBox.shrink();
                               } else if (state is GetOneProductLoading) {
                                 return Animations.loading;
                               } else if (state is GetOneProductLoaded) {
                                 if (state.getOneProductList.product == null) {
-                                  return const Center(
-                                    child: Text('it is empty'),
-                                  );
+                                  return SizedBox.shrink();
                                 }
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,8 +200,8 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                                       contentPadding: EdgeInsets.zero,
                                       leading: ClipRRect(
                                         borderRadius: AppBorders.borderRadius10,
-                                        child: Image.asset(
-                                          appleImage,
+                                        child: ExtendedImage.network(
+                                          '$url${widget.favItem.brand?.logo?.url}',
                                           height: 42.h,
                                           width: 83.w,
                                           fit: BoxFit.cover,
@@ -187,7 +216,9 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        'Бренд',
+                                        AppLocalization.of(context)
+                                                .getTransatedValues('brand') ??
+                                            '',
                                         style: TextStyle(
                                           color: AppColors.greyColor,
                                           fontWeight: FontWeight.w700,
@@ -212,7 +243,11 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                                           ),
                                         ),
                                         Text(
-                                          'Продавец',
+                                          AppLocalization.of(context)
+                                                  .getTransatedValues(
+                                                'seller',
+                                              ) ??
+                                              '',
                                           style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: AppFonts.fontSize14,
@@ -230,29 +265,29 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                             },
                           ),
                         ),
+                        //recommended
                         BlocBuilder<GetOneProductBloc, GetOneProductState>(
                           builder: (context, state) {
                             if (state is GetOneProductError) {
-                              return Center(
-                                child: Text(state.error.toString()),
-                              );
+                              return SizedBox.shrink();
                             } else if (state is GetOneProductInitial) {
-                              return const Center(
-                                child: Text('It is initial'),
-                              );
+                              return SizedBox.shrink();
                             } else if (state is GetOneProductLoading) {
                               return Animations.loading;
                             } else if (state is GetOneProductLoaded) {
                               if (state.getOneProductList.similaryProducts!
                                   .isEmpty) {
-                                return const Center(
-                                  child: Text('it is empty'),
-                                );
+                                return SizedBox.shrink();
                               }
-                              return GridviewProductsSlider(
-                                topTitle: 'Рекомендуем',
-                                productList:
-                                    state.getOneProductList.similaryProducts!,
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: GridviewProductsSlider(
+                                  topTitle: AppLocalization.of(context)
+                                          .getTransatedValues('recommend') ??
+                                      '',
+                                  productList:
+                                      state.getOneProductList.similaryProducts!,
+                                ),
                               );
                             }
                             return const Center(
@@ -260,47 +295,49 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
                             );
                           },
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          child: SizedBox(
-                            height: 34.h,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: BlocBuilder<CartButtonBloc,
-                                      CartButtonState>(
-                                    builder: (context, state) {
-                                      final isItemInCart = state.cartList.any(
-                                          (item) =>
-                                              item.id == widget.cartItem.id);
-                                      return !isItemInCart
-                                          ? Button.iconButton(
-                                              width: 120.w,
-                                              onTap: () {
-                                                context
-                                                    .read<CartButtonBloc>()
-                                                    .add(AddCartEvent(
-                                                        widget.cartItem));
-                                                context
-                                                    .read<CartButtonBloc>()
-                                                    .add(SumProductEvent());
-                                              },
-                                            )
-                                          : CartAmountButton(
-                                              index: widget.index,
-                                              cartItem: widget.cartItem,
-                                              height: 34.w,
-                                            );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
                       ],
                     );
                   },
+                ),
+                bottomSheet: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                  ).copyWith(bottom: kBottomNavigationBarHeight + 10, top: 10),
+                  child: SizedBox(
+                    height: 34.h,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: BlocBuilder<CartButtonBloc, CartButtonState>(
+                            builder: (context, state) {
+                              final isItemInCart = state.cartList.any(
+                                (item) => item.id == widget.cartItem.id,
+                              );
+                              return !isItemInCart
+                                  ? Button.iconButton(
+                                      width: 120.w,
+                                      onTap: () {
+                                        context.read<CartButtonBloc>().add(
+                                              AddCartEvent(
+                                                widget.cartItem,
+                                              ),
+                                            );
+                                        context
+                                            .read<CartButtonBloc>()
+                                            .add(SumProductEvent());
+                                      },
+                                    )
+                                  : CartAmountButton(
+                                      index: widget.index,
+                                      cartItem: widget.cartItem,
+                                      height: 34.w,
+                                    );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             },

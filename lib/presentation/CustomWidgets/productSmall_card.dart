@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
@@ -57,7 +57,7 @@ class ProductSmallCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: AppBorders.borderRadius10,
                 child: ExtendedImage.network(
-                  'https://kip.tm/magaz/' + favItem.image![0].url!,
+                  url + favItem.image![0].url!,
                   height: 120.h,
                   width: 120.h,
                   fit: BoxFit.cover,
@@ -73,32 +73,36 @@ class ProductSmallCard extends StatelessWidget {
               ),
             ),
             //  previous price and discount
-            favItem.discount == null
-                ? SizedBox(
-                    height: 12.h,
+            favItem.discount == {}
+                ? const SizedBox(
+                    height: 10,
                   )
                 : Row(
                     children: [
-                      Text(
-                        favItem.prevPrice != null
-                            ? '${favItem.prevPrice} TMT'
-                            : '',
-                        style: TextStyle(
-                          fontFamily: fontPeaceSans,
-                          fontWeight: FontWeight.w400,
-                          fontSize: AppFonts.fontSize12,
-                          color: AppColors.greyColor,
-                        ),
-                      ),
-                      Text(
-                        favItem.discount!,
-                        style: TextStyle(
-                          fontFamily: fontPeaceSans,
-                          fontWeight: FontWeight.w400,
-                          fontSize: AppFonts.fontSize12,
-                          color: AppColors.redColor,
-                        ),
-                      ),
+                      favItem.discount?.price == null
+                          ? const SizedBox()
+                          : Text(
+                              '${favItem.discount?.price} TMT ',
+                              style: TextStyle(
+                                fontFamily: fontPeaceSans,
+                                fontWeight: FontWeight.w400,
+                                fontSize: AppFonts.fontSize12,
+                                color: AppColors.greyColor,
+                              ),
+                            ),
+                      favItem.discount?.percent == null
+                          ? const SizedBox(
+                              height: 10,
+                            )
+                          : Text(
+                              '${favItem.discount?.percent}%',
+                              style: TextStyle(
+                                fontFamily: fontPeaceSans,
+                                fontWeight: FontWeight.w400,
+                                fontSize: AppFonts.fontSize12,
+                                color: AppColors.redColor,
+                              ),
+                            ),
                     ],
                   ),
             //name

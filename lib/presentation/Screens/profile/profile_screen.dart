@@ -1,9 +1,15 @@
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
-import 'package:amira_app/presentation/Screens/cart/cart_screen.dart';
+import 'package:amira_app/config/theme/constants.dart';
+import 'package:amira_app/data/api_providers/auth_provider.dart';
+import 'package:amira_app/presentation/CustomWidgets/customContainer_extension.dart';
+import 'package:amira_app/presentation/Screens/auth/register_screen.dart';
 import 'package:amira_app/presentation/Screens/favorite/favorite_screen.dart';
-import 'package:amira_app/presentation/Screens/home/components/listviewProducts_slider.dart';
+import 'package:amira_app/presentation/Screens/profile/components/beSeller_card.dart';
 import 'package:amira_app/presentation/Screens/profile/components/profile_card.dart';
+import 'package:amira_app/presentation/Screens/profile/shoppingHistory_screen.dart';
+import 'package:amira_app/presentation/Screens/profile/myDetails_screen.dart';
+import 'package:amira_app/presentation/Screens/profile/notification_screen.dart';
 import 'package:amira_app/presentation/Screens/profile/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,36 +25,43 @@ class ProfileScreen extends StatelessWidget {
       child: Scaffold(
         body: ListView(
           children: [
-            //phone number
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Text(
-                    '+993 61 31 24 54',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: AppFonts.fontSize14,
+// Phone number
+            GestureDetector(
+              onTap: () {
+                pushScreenWithNavBar(
+                    context,
+                    AuthProvider().getAccessToken() != null
+                        ? const MyDetailsScreen()
+                        : const RegisterScreen());
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Text(
+                      AuthProvider().getAccessToken() != null
+                          ? AuthProvider().getUserData() != null
+                              ? AuthProvider().getUserData()!.phone ?? ''
+                              : AppLocalization.of(context)
+                                      .getTransatedValues('register') ??
+                                  ''
+                          : '',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: AppFonts.fontSize14,
+                      ),
                     ),
-                  ),
-                  SvgPicture.asset(arrowRightIcon),
-                ],
-              ),
-            ),
-            //profile cards
-            Container(
-              height: 108.h,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: AppColors.whiteColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.r),
-                  topRight: Radius.circular(10.r),
+                    SvgPicture.asset(arrowRightIcon),
+                  ],
                 ),
               ),
+            ),
+// Profile cards
+            CustomContainer.buildContainer(
+              height: 108.h,
+              width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.symmetric(vertical: 6.h),
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              alignment: Alignment.center,
               child: ListView.builder(
                 itemCount: 3,
                 scrollDirection: Axis.horizontal,
@@ -56,36 +69,72 @@ class ProfileScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) => GestureDetector(
                   onTap: () => pushScreenWithNavBar(
-                      context,
-                      index == 0
-                          ? FavoriteScreen()
-                          : index == 1
-                              ? CartScreen()
-                              : SettingsScreen()),
-                  child: ProfileCard(
-                    index: index,
+                    context,
+                    index == 0
+                        ? const FavoriteScreen()
+                        : index == 1
+                            ? const ShoppingHistoryScreen()
+                            : const SettingsScreen(),
                   ),
+                  child: ProfileCard(index: index),
                 ),
               ),
             ),
-            //you saw products
-            ListviewProductsSlider(
-              topTitle: 'Вы смотрели',
-              productsList: saleProducts,
-            ),
-            //help tiles
-            Container(
+// BeSeller card
+            const BeSellerCard(),
+
+// Notification
+            CustomContainer.buildContainer(
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: AppColors.whiteColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.r),
-                  topRight: Radius.circular(10.r),
-                ),
-              ),
               margin: EdgeInsets.symmetric(vertical: 6.h),
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              alignment: Alignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //toptitle
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10.h),
+                    child: Text(
+                      AppLocalization.of(context)
+                              .getTransatedValues('followAndNotification') ??
+                          '',
+                      style: TextStyle(
+                        fontFamily: fontPeaceSans,
+                        color: AppColors.blackColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: AppFonts.fontSize22,
+                      ),
+                    ),
+                  ),
+                  //text and arrow
+                  GestureDetector(
+                    onTap: () {
+                      pushScreenWithNavBar(context, const NotificationScreen());
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppLocalization.of(context)
+                                  .getTransatedValues('notificationSettings') ??
+                              '',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: AppFonts.fontSize14,
+                          ),
+                        ),
+                        SvgPicture.asset(arrowRightIcon),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+// Help tiles
+            CustomContainer.buildContainer(
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.symmetric(vertical: 6.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               child: ListView.separated(
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
@@ -93,19 +142,24 @@ class ProfileScreen extends StatelessWidget {
                 itemBuilder: (context, index) => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      helpTiles[index],
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: AppFonts.fontSize14,
+                    //help tiles
+                    Expanded(
+                      child: Text(
+                        maxLines: 2,
+                        AppLocalization.of(context)
+                                .getTransatedValues(helpTiles[index]) ??
+                            '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: AppFonts.fontSize14,
+                        ),
                       ),
                     ),
                     SvgPicture.asset(arrowRightIcon),
                   ],
                 ),
-                separatorBuilder: (context, index) => Divider(
-                  color: AppColors.greyColor,
-                ),
+                separatorBuilder: (context, index) =>
+                    Divider(color: AppColors.grey1Color),
                 itemCount: helpTiles.length,
               ),
             ),

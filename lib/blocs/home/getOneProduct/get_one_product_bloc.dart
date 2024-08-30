@@ -12,7 +12,7 @@ class GetOneProductBloc extends Bloc<GetOneProductEvent, GetOneProductState> {
         GetOneProductRepository();
     on<GetOneProduct>((event, emit) async {
       try {
-        final getOneProduct =
+        final Data getOneProduct =
             await getOneProductRepository.getOneProductRepository(event.id);
         emit(GetOneProductLoaded(getOneProductList: getOneProduct));
       } catch (e) {

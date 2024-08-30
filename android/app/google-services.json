@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "307466942594",
+    "project_id": "amira-a318b",
+    "storage_bucket": "amira-a318b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307466942594:android:f0f31c5feb85a912951c9b",
+        "android_client_info": {
+          "package_name": "com.example.amira_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUDrziHCcOGg3RVCu15bvdhIzIYtIXpzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

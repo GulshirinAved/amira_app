@@ -18,15 +18,15 @@ class GetOneCatalogeModel {
 
   factory GetOneCatalogeModel.fromJson(Map<String, dynamic> json) =>
       GetOneCatalogeModel(
-        statusCode: json["statusCode"],
-        success: json["success"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        statusCode: json['statusCode'],
+        success: json['success'],
+        data: json['data'] == null ? null : Data.fromJson(json['data']),
       );
 
   Map<String, dynamic> toJson() => {
-        "statusCode": statusCode,
-        "success": success,
-        "data": data?.toJson(),
+        'statusCode': statusCode,
+        'success': success,
+        'data': data?.toJson(),
       };
 }
 
@@ -52,28 +52,28 @@ class Data {
   String toRawJson() => json.encode(toJson());
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["id"],
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
-        parentId: json["parentId"],
-        createdAt: json["createdAt"] == null
+        id: json['id'],
+        image: json['image'] == null ? null : Image.fromJson(json['image']),
+        parentId: json['parentId'],
+        createdAt: json['createdAt'] == null
             ? null
-            : DateTime.parse(json["createdAt"]),
-        subcategories: json["subcategories"] == null
+            : DateTime.parse(json['createdAt']),
+        subcategories: json['subcategories'] == null
             ? []
             : List<Data>.from(
-                json["subcategories"]!.map((x) => Data.fromJson(x))),
-        name: json["name"],
+                json['subcategories']!.map((x) => Data.fromJson(x))),
+        name: json['name'],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "image": image?.toJson(),
-        "parentId": parentId,
-        "createdAt": createdAt?.toIso8601String(),
-        "subcategories": subcategories == null
+        'id': id,
+        'image': image?.toJson(),
+        'parentId': parentId,
+        'createdAt': createdAt?.toIso8601String(),
+        'subcategories': subcategories == null
             ? []
             : List<dynamic>.from(subcategories!.map((x) => x.toJson())),
-        "name": name,
+        'name': name,
       };
 }
 
@@ -91,12 +91,12 @@ class Image {
   String toRawJson() => json.encode(toJson());
 
   factory Image.fromJson(Map<String, dynamic> json) => Image(
-        url: json["url"],
-        hashblur: json["hashblur"],
+        url: json['url'],
+        hashblur: json['hashblur'],
       );
 
   Map<String, dynamic> toJson() => {
-        "url": url,
-        "hashblur": hashblur,
+        'url': url,
+        'hashblur': hashblur,
       };
 }

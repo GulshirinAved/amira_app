@@ -2,8 +2,7 @@ import 'package:amira_app/blocs/cateloge/getOneCataloge/get_one_cateloge_bloc.da
 import 'package:amira_app/blocs/cateloge/subCategoryCardSelection/sub_category_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
-import 'package:amira_app/presentation/CustomWidgets/animations.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/brand_bottomSheet.dart';
 import 'package:amira_app/presentation/CustomWidgets/filter_bottomSheet.dart';
 import 'package:amira_app/presentation/CustomWidgets/price_bottomSheet.dart';
@@ -111,12 +110,10 @@ class _FilterTileState extends State<FilterTile> {
                     child: BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
                       builder: (context, state) {
                         if (state is GetOneCatalogeError) {
-                          return Center(
-                            child: Text(state.error.toString()),
-                          );
+                          return SizedBox.shrink();
                         } else if (state is GetOneCatelogeInitial ||
                             state is GetOneCatalogeLoading) {
-                          return Animations.loading;
+                          return const SizedBox.shrink();
                         } else if (state is GetOneCatalogeLoaded) {
                           if (state.getOneCatalogeList.subcategories!.isEmpty) {
                             return const SizedBox.shrink();

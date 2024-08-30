@@ -4,17 +4,19 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:amira_app/data/models/home_model.dart';
+
 class CartItem {
   final String id;
   final String? name;
-
   final List<dynamic>? image;
   final int? price;
   final int? coin;
-  final String? prevPrice;
-  final String? discount;
+  final SimpleDiscount? discount;
   final String? desc;
   final String? shopid;
+  final Brand? brand;
+
   int quantity;
 
   CartItem({
@@ -23,10 +25,10 @@ class CartItem {
     this.image,
     this.price,
     this.coin,
-    this.prevPrice,
-    this.discount,
+    required this.discount,
     this.desc,
     this.shopid,
+    this.brand,
     this.quantity = 1,
   });
 
@@ -37,10 +39,10 @@ class CartItem {
       'image': image,
       'price': price,
       'coin': coin,
-      'prevPrice': prevPrice,
-      'discount': discount,
+      'discount': discount?.toJson(),
       'desc': desc,
       'shopid': shopid,
+      'brand': brand?.toJson(),
       'quantity': quantity,
     };
   }
@@ -51,13 +53,17 @@ class CartItem {
       name: map['name'] != null ? map['name'] as String : null,
       image: map['image'] != null
           ? List<dynamic>.from((map['image'] as List<dynamic>))
-          : [],
+          : null,
       price: map['price'] != null ? map['price'] as int : null,
       coin: map['coin'] != null ? map['coin'] as int : null,
-      prevPrice: map['prevPrice'] != null ? map['prevPrice'] as String : null,
-      discount: map['discount'] != null ? map['discount'] as String : null,
+      discount: map['discount'] != null
+          ? SimpleDiscount.fromJson(map['discount'] as Map<String, dynamic>)
+          : null,
       desc: map['desc'] != null ? map['desc'] as String : null,
       shopid: map['shopid'] != null ? map['shopid'] as String : null,
+      brand: map['brand'] != null
+          ? Brand.fromJson(map['brand'] as Map<String, dynamic>)
+          : null,
       quantity: map['quantity'] as int,
     );
   }
@@ -73,10 +79,10 @@ class CartItem {
     List<dynamic>? image,
     int? price,
     int? coin,
-    String? prevPrice,
-    String? discount,
+    SimpleDiscount? discount,
     String? desc,
     String? shopid,
+    Brand? brand,
     int? quantity,
   }) {
     return CartItem(
@@ -85,10 +91,10 @@ class CartItem {
       image: image ?? this.image,
       price: price ?? this.price,
       coin: coin ?? this.coin,
-      prevPrice: prevPrice ?? this.prevPrice,
       discount: discount ?? this.discount,
       desc: desc ?? this.desc,
       shopid: shopid ?? this.shopid,
+      brand: brand ?? this.brand,
       quantity: quantity ?? this.quantity,
     );
   }
@@ -102,10 +108,10 @@ class CartItem {
         listEquals(other.image, image) &&
         other.price == price &&
         other.coin == coin &&
-        other.prevPrice == prevPrice &&
         other.discount == discount &&
         other.desc == desc &&
         other.shopid == shopid &&
+        other.brand == brand &&
         other.quantity == quantity;
   }
 
@@ -116,10 +122,10 @@ class CartItem {
         image.hashCode ^
         price.hashCode ^
         coin.hashCode ^
-        prevPrice.hashCode ^
         discount.hashCode ^
         desc.hashCode ^
         shopid.hashCode ^
+        brand.hashCode ^
         quantity.hashCode;
   }
 }

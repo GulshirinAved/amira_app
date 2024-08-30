@@ -5,9 +5,8 @@ import 'package:amira_app/blocs/cateloge/subCategoryCardSelection/sub_category_s
 import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/switcher/switcher_bloc.dart';
 
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/data/models/cart_model.dart';
-import 'package:amira_app/data/models/category_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/animations.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_appbar.dart';
@@ -23,7 +22,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CategoryProfileScreen extends StatelessWidget {
-  final List<Rows> subCategoryList;
+  final List<dynamic> subCategoryList;
   final List categoryList;
   final int index;
   final bool titlePressed;
@@ -51,9 +50,7 @@ class CategoryProfileScreen extends StatelessWidget {
               GetAllProductsList(
                 postData: {
                   'categories': [
-                    titlePressed
-                        ? categoryList[index].id
-                        : subCategoryList[index].id,
+                    titlePressed ? categoryId : subCategoryList[index].id,
                   ],
                   'brands': brandName,
                   'shops': [],
@@ -70,10 +67,8 @@ class CategoryProfileScreen extends StatelessWidget {
             ),
         ),
         BlocProvider(
-          create: (context) => GetOneCatelogeBloc()
-            ..add(
-              GetOneCataloge(id: categoryList[index].id!),
-            ),
+          create: (context) =>
+              GetOneCatelogeBloc()..add(GetOneCataloge(id: categoryId)),
         ),
         BlocProvider(
           create: (context) => SwitcherBloc(),
@@ -93,158 +88,71 @@ class CategoryProfileScreen extends StatelessWidget {
           iconTitle: searchIcon,
           onTap: () => pushScreenWithNavBar(context, const SearchScreen()),
         ),
-        body: ListView(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.whiteColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.r),
-                  topRight: Radius.circular(10.r),
-                ),
-              ),
-              margin: EdgeInsets.symmetric(vertical: 6.h),
-              padding: EdgeInsets.symmetric(
-                horizontal: 10.w,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  //subCategory Slider
-
-                  SizedBox(
-                    height: 157.h,
-                    child: BlocBuilder<AllProductsBloc, AllProductsState>(
-                      builder: (context, state) {
-                        print('it is state ${state}');
-                        if (state is AllProductsError) {
-                          return Center(
-                            child: Text(state.error.toString()),
-                          );
-                        } else if (state is AllProductsInitial ||
-                            state is AllProductsLoading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (state is AllProductsLoaded) {
-                          return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: subCategoryList.length,
-                            itemBuilder: (context, index) {
-                              //subCategory card
-                              return CategoryProductCard(
-                                index: index,
-                                subCategoryList: subCategoryList,
-                                categoryList: categoryList,
-                                needNavigate: false,
-                                topTitle: topTitle,
-                                selectedBrandName: brandName,
-                                categoryId: categoryId,
-                              );
-                            },
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                  BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
-                    builder: (context, state) {
-                      if (state is GetOneCatalogeError) {
-                        return Center(
-                          child: Text("it gives error ${state.error}"),
-                        );
-                      } else if (state is GetOneCatalogeLoading ||
-                          state is GetOneCatalogeLoading) {
-                        return Animations.loading;
-                      }
-                      return Column(
+        body: BlocBuilder<AllProductsBloc, AllProductsState>(
+          builder: (context, stateProducts) {
+            return BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
+              builder: (context, state) {
+                if (state is GetOneCatalogeError) {
+                  return SizedBox.shrink();
+                } else if (stateProducts is AllProductsError) {
+                  return SizedBox.shrink();
+                } else if (state is GetOneCatelogeInitial ||
+                    state is GetOneCatalogeLoading) {
+                  return Center(
+                    child: Animations.loading,
+                  );
+                } else if (stateProducts is AllProductsInitial ||
+                    stateProducts is AllProductsLoading) {
+                  return Center(
+                    child: Animations.loading,
+                  );
+                } else if (state is GetOneCatalogeLoaded &&
+                    stateProducts is AllProductsLoaded) {}
+                return ListView(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.whiteColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.r),
+                          topRight: Radius.circular(10.r),
+                        ),
+                      ),
+                      margin: EdgeInsets.symmetric(vertical: 6.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          BlocBuilder<SubCategorySelectionBloc,
-                              SubCategorySelectionState>(
-                            builder: (context, state) {
-                              return FilterTile(
-                                subCategoryId: state.subcategoryName == ''
-                                    ? categoryList[index].id
-                                    : subCategoryList[index].id!,
-                                categoryId: categoryId,
-                                isTopPressed: titlePressed,
-                              );
-                            },
-                          ),
+                          //subCategory Slider
+
                           SizedBox(
+                            height: 157.h,
                             child:
                                 BlocBuilder<AllProductsBloc, AllProductsState>(
                               builder: (context, state) {
-                                if (state is AllProductsLoaded) {
-                                  return GridView.builder(
-                                    controller:
-                                        BlocProvider.of<AllProductsBloc>(
-                                                context)
-                                            .scrollController,
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: state.allProductsList.length + 1,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisExtent: 370,
-                                    ),
+                                if (state is AllProductsError) {
+                                  return SizedBox.shrink();
+                                } else if (state is AllProductsInitial ||
+                                    state is AllProductsLoading) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (state is AllProductsLoaded) {
+                                  return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: subCategoryList.length,
                                     itemBuilder: (context, index) {
-                                      if (index >=
-                                          state.allProductsList.length) {
-                                        if (!BlocProvider.of<AllProductsBloc>(
-                                                context)
-                                            .isLoadingMore) {
-                                          BlocProvider.of<AllProductsBloc>(
-                                                  context)
-                                              .add(
-                                                  const AllProductsLoadMoreEvent());
-                                        }
-                                        return state.allProductsList.length !=
-                                                index
-                                            ? const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              )
-                                            : const SizedBox.shrink();
-                                      }
-                                      return ProductLargeCard(
-                                        favItem: FavItem(
-                                          id: state.allProductsList[index].id,
-                                          name:
-                                              state.allProductsList[index].name,
-                                          desc: state.allProductsList[index]
-                                              .description,
-                                          image: state
-                                              .allProductsList[index].images,
-                                          price: state
-                                              .allProductsList[index].price,
-                                          shopid: state
-                                              .allProductsList[index].shopId,
-                                          coin:
-                                              state.allProductsList[index].coin,
-                                        ),
-                                        cartItem: CartItem(
-                                          id: state.allProductsList[index].id,
-                                          name:
-                                              state.allProductsList[index].name,
-                                          desc: state.allProductsList[index]
-                                              .description,
-                                          image: state
-                                              .allProductsList[index].images,
-                                          price: state
-                                              .allProductsList[index].price,
-                                          shopid: state
-                                              .allProductsList[index].shopId,
-                                          coin:
-                                              state.allProductsList[index].coin,
-                                        ),
+                                      //subCategory card
+                                      return CategoryProductCard(
                                         index: index,
+                                        subCategoryList: subCategoryList,
+                                        categoryList: categoryList,
+                                        needNavigate: false,
+                                        topTitle: topTitle,
+                                        selectedBrandName: brandName,
+                                        categoryId: categoryId,
                                       );
                                     },
                                   );
@@ -256,14 +164,147 @@ class CategoryProfileScreen extends StatelessWidget {
                               },
                             ),
                           ),
+                          BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
+                            builder: (context, state) {
+                              if (state is GetOneCatalogeError) {
+                                return SizedBox.shrink();
+                              } else if (state is GetOneCatalogeLoading ||
+                                  state is GetOneCatalogeLoading) {
+                                return Animations.loading;
+                              }
+                              return Column(
+                                children: [
+                                  BlocBuilder<SubCategorySelectionBloc,
+                                      SubCategorySelectionState>(
+                                    builder: (context, state) {
+                                      return FilterTile(
+                                        subCategoryId:
+                                            state.subcategoryName == ''
+                                                ? categoryList[index].id
+                                                : subCategoryList[index].id!,
+                                        categoryId: categoryId,
+                                        isTopPressed: titlePressed,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(
+                                    child: BlocBuilder<AllProductsBloc,
+                                        AllProductsState>(
+                                      builder: (context, state) {
+                                        if (state is AllProductsLoaded) {
+                                          return GridView.builder(
+                                            controller: BlocProvider.of<
+                                                    AllProductsBloc>(context)
+                                                .scrollController,
+                                            shrinkWrap: true,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemCount:
+                                                state.allProductsList.length +
+                                                    1,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              mainAxisExtent: 370,
+                                            ),
+                                            itemBuilder: (context, index) {
+                                              if (index >=
+                                                  state
+                                                      .allProductsList.length) {
+                                                if (!BlocProvider.of<
+                                                            AllProductsBloc>(
+                                                        context)
+                                                    .isLoadingMore) {
+                                                  BlocProvider.of<
+                                                              AllProductsBloc>(
+                                                          context)
+                                                      .add(
+                                                          const AllProductsLoadMoreEvent());
+                                                }
+                                                return state.allProductsList
+                                                            .length !=
+                                                        index
+                                                    ? const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      )
+                                                    : const SizedBox.shrink();
+                                              }
+                                              return ProductLargeCard(
+                                                favItem: FavItem(
+                                                    id: state
+                                                        .allProductsList[index]
+                                                        .id,
+                                                    name: state
+                                                        .allProductsList[index]
+                                                        .name,
+                                                    desc: state
+                                                        .allProductsList[index]
+                                                        .description,
+                                                    image: state
+                                                        .allProductsList[index]
+                                                        .images,
+                                                    price: state
+                                                        .allProductsList[index]
+                                                        .price,
+                                                    shopid: state
+                                                        .allProductsList[index]
+                                                        .shopId,
+                                                    coin: state
+                                                        .allProductsList[index]
+                                                        .coin,
+                                                    discount: state
+                                                        .allProductsList[index]
+                                                        .discount),
+                                                cartItem: CartItem(
+                                                    id: state
+                                                        .allProductsList[index]
+                                                        .id,
+                                                    name: state
+                                                        .allProductsList[index]
+                                                        .name,
+                                                    desc: state
+                                                        .allProductsList[index]
+                                                        .description,
+                                                    image: state
+                                                        .allProductsList[index]
+                                                        .images,
+                                                    price: state
+                                                        .allProductsList[index]
+                                                        .price,
+                                                    shopid: state
+                                                        .allProductsList[index]
+                                                        .shopId,
+                                                    coin: state
+                                                        .allProductsList[index]
+                                                        .coin,
+                                                    discount: state
+                                                        .allProductsList[index]
+                                                        .discount),
+                                                index: index,
+                                              );
+                                            },
+                                          );
+                                        } else {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          )
                         ],
-                      );
-                    },
-                  )
-                ],
-              ),
-            ),
-          ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         ),
       ),
     );

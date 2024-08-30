@@ -1,7 +1,7 @@
 import 'package:amira_app/blocs/cart/cartButton/cart_button_bloc.dart';
 import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/cartAmount_button.dart';
@@ -33,13 +33,13 @@ class CartProductCard extends StatelessWidget {
               borderRadius: AppBorders.borderRadius10,
               child: cartItem.image![0] is Map<String, dynamic>
                   ? ExtendedImage.network(
-                      'https://kip.tm/magaz/' + cartItem.image![0]['url']!,
+                      '$url' + cartItem.image![0]['url']!,
                       height: 75.h,
                       width: 75.h,
                       fit: BoxFit.cover,
                     )
                   : ExtendedImage.network(
-                      'https://kip.tm/magaz/' + cartItem.image![0].url,
+                      '$url' + cartItem.image![0].url,
                       height: 75.h,
                       width: 75.h,
                       fit: BoxFit.cover,
@@ -69,15 +69,17 @@ class CartProductCard extends StatelessWidget {
                         SizedBox(
                           width: 6.w,
                         ),
-                        Text(
-                          cartItem.prevPrice ?? '',
-                          style: TextStyle(
-                            color: AppColors.greyColor,
-                            fontFamily: fontPeaceSans,
-                            fontWeight: FontWeight.w400,
-                            fontSize: AppFonts.fontSize12,
-                          ),
-                        ),
+                        cartItem.discount?.percent == null
+                            ? SizedBox.shrink()
+                            : Text(
+                                '${cartItem.discount?.percent} % ',
+                                style: TextStyle(
+                                  color: AppColors.greyColor,
+                                  fontFamily: fontPeaceSans,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFonts.fontSize12,
+                                ),
+                              ),
                       ],
                     ),
                     // Heart icon
@@ -96,7 +98,7 @@ class CartProductCard extends StatelessWidget {
                             colorFilter: ColorFilter.mode(
                               isFav
                                   ? AppColors.purpleColor
-                                  : AppColors.darkGreyColor,
+                                  : AppColors.greyColor,
                               BlendMode.srcIn,
                             ),
                           ),

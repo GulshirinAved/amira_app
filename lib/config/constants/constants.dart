@@ -1,5 +1,4 @@
 //fonts
-import 'package:amira_app/data/models/products_model.dart';
 
 const String fontGilroy = 'Gilroy';
 const String fontPeaceSans = 'PeaceSans';
@@ -18,17 +17,19 @@ const String userBoldIcon = 'assets/icons/userBold.svg';
 const String mapPinIcon = 'assets/icons/mapPin.svg';
 const String arrowRightIcon = 'assets/icons/arrowRight.svg';
 const String arrowLeftIcon = 'assets/icons/arrowLeft.svg';
+const String arrowDownIcon = 'assets/icons/arrowDown.svg';
+const String arrowUpIcon = 'assets/icons/arrowUp.svg';
 const String searchIcon = 'assets/icons/search.svg';
 const String filterIcon = 'assets/icons/filter.svg';
 const String settingsIcon = 'assets/icons/settings.svg';
 const String trashIcon = 'assets/icons/trash.svg';
 const String loginIcon = 'assets/icons/login.svg';
+const String eyeIcon = 'assets/icons/eye.svg';
+const String eyeOffIcon = 'assets/icons/eyeOff.svg';
 
 //images
 const String bannerImage = 'assets/images/banner.png';
 const String banner1Image = 'assets/images/banner1.png';
-const String ruFlagImage = 'assets/images/ruFlag.png';
-const String tmFlagImage = 'assets/images/tmFlag.png';
 const String appLogoImage = 'assets/images/appLogo.png';
 
 //animation
@@ -63,7 +64,7 @@ const String milkCat6Image = 'assets/products/milkCat6.png';
 const String appleImage = 'assets/products/apple.png';
 
 //urls
-const String url = 'https://kip.tm/magaz/';
+const String url = 'http://119.235.122.134:8091/magaz/';
 
 List<Map<String, dynamic>> bottomNavBarItems = [
   {
@@ -87,553 +88,19 @@ List<Map<String, dynamic>> bottomNavBarItems = [
     'iconBold': userBoldIcon,
   }
 ];
-//tabbar names
-List<Map<String, dynamic>> tabbarName = [
-  {'name': 'Скидки'},
-  {'name': 'Овощи и фрукты'},
-  {'name': 'Мясо'},
-  {'name': 'Молочка'},
-  {'name': 'Касметика'},
-  {'name': 'Гигиена'},
-  {'name': 'Дом'},
-  {'name': 'Детям'},
-  {'name': 'Концелярия'},
-  {'name': 'Зоотовары'},
-];
-List<ProductsModel> saleProducts = [
-  ProductsModel(
-    id: 1,
-    name: 'Органические яблоки',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 2,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 3,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '13.40',
-    discount: '-2%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 4,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 5,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '13.40',
-    discount: '-2%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> vegProducts = [
-  ProductsModel(
-    id: 6,
-    name: 'Зелень салата',
-    image: [sale1Image],
-    price: 2,
-    prevPrice: null,
-    discount: null,
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 7,
-    name: 'Клубника свежая 1 ланчик',
-    image: [sale1Image],
-    price: 18,
-    prevPrice: '22.40',
-    discount: '-20%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 8,
-    name: 'Бананы 6 шт',
-    image: [sale1Image],
-    price: 5,
-    prevPrice: '9.80',
-    discount: '-4%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 9,
-    name: 'Картофель',
-    image: [sale1Image],
-    price: 4,
-    prevPrice: null,
-    discount: null,
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> meatProducts = [
-  ProductsModel(
-    id: 10,
-    name: 'Куринное филе грудк',
-    image: [sale1Image],
-    price: 40,
-    prevPrice: '45.00',
-    discount: '-10%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 11,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 12,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '13.40',
-    discount: '-2%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> milkProducts = [
-  ProductsModel(
-    id: 13,
-    name: 'Органические яблоки',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 14,
-    name: 'огурт клубничный',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 15,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> cosmeticsProducts = [
-  ProductsModel(
-    id: 16,
-    name: 'Органические яблоки',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 17,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 18,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 19,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 20,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '13.40',
-    discount: '-2%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 21,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> hygieneProducts = [
-  ProductsModel(
-    id: 22,
-    name: 'Органические яблоки',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 23,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 24,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 25,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 26,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '13.40',
-    discount: '-2%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 27,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> houseProducts = [
-  ProductsModel(
-    id: 28,
-    name: 'Органические яблоки',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 29,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 30,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> childProducts = [
-  ProductsModel(
-    id: 31,
-    name: 'Органические яблоки',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 32,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 33,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 34,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 35,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '13.40',
-    discount: '-2%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 36,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> chanceryProducts = [
-  ProductsModel(
-    id: 37,
-    name: 'Органические яблоки',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 38,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 39,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 40,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 41,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '13.40',
-    discount: '-2%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 42,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
-List<ProductsModel> zooProducts = [
-  ProductsModel(
-    id: 43,
-    name: 'Органические яблоки',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 44,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 45,
-    name: 'Свежие помидоры',
-    image: [sale1Image],
-    price: 11,
-    prevPrice: '15.40',
-    discount: '-12%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-  ProductsModel(
-    id: 46,
-    name: 'Авокадо Хасс',
-    image: [sale1Image],
-    price: 21,
-    prevPrice: '29.40',
-    discount: '-5%',
-    desc: 'Сочные и сладкие яблоки.',
-  ),
-];
 
 final List filtername = ['Овощи и фрукты', 'Бренд', 'Цена'];
-// veg category
-List<Map<String, dynamic>> vegCategory = [
-  {
-    'name': 'Овощи',
-    'image': vegCat1Image,
-  },
-  {
-    'name': 'Фрукты',
-    'image': vegCat2Image,
-  },
-  {
-    'name': 'Зелень',
-    'image': vegCat3Image,
-  },
-  {
-    'name': 'Грибы',
-    'image': vegCat4Image,
-  },
-  {
-    'name': 'Замороженное',
-    'image': vegCat5Image,
-  },
-];
-//meat category
-List<Map<String, dynamic>> meatCategory = [
-  {
-    'name': 'Птица',
-    'image': meatCat1Image,
-  },
-  {
-    'name': 'Мясо',
-    'image': meatCat2Image,
-  },
-  {
-    'name': 'Рыба',
-    'image': meatCat3Image,
-  },
-];
-//milk category
-List<Map<String, dynamic>> milkCategory = [
-  {
-    'name': 'Молоко',
-    'image': milkCat1Image,
-  },
-  {
-    'name': 'Сыр',
-    'image': milkCat2Image,
-  },
-  {
-    'name': 'Йогурт',
-    'image': milkCat3Image,
-  },
-  {
-    'name': 'Сметана',
-    'image': milkCat4Image,
-  },
-  {
-    'name': 'Сливки',
-    'image': milkCat5Image,
-  },
-  {
-    'name': 'Масло',
-    'image': milkCat6Image,
-  },
-];
-//costemtics
-List<Map<String, dynamic>> cosmeticsCategory = [
-  {
-    'name': 'Молоко',
-    'image': milkCat1Image,
-  },
-  {
-    'name': 'Сыр',
-    'image': milkCat2Image,
-  },
-  {
-    'name': 'Йогурт',
-    'image': milkCat3Image,
-  },
-];
-
-//images for product profile
-List productProfileImage = [
-  appleImage,
-  appleImage,
-  appleImage,
-  appleImage,
-  appleImage,
-  appleImage,
-  appleImage,
-  appleImage,
-];
 
 //profile help tiles
 final List helpTiles = [
-  'Часто задаваемые вопросы',
-  'Помощь и приложение',
-  'Политика конфиденциальности',
+  'faq',
+  'privacyPolicy',
+  'rewritePersonalData',
+  'paymentMethods',
+];
+final List bonusTile = [
+  'couponDiscount',
+  'bonusPrograms',
 ];
 final List settingHinTexts = [
   '+993 61 31 24 54',
@@ -644,11 +111,12 @@ final List paymentMethod = ['Картой', 'Наличными'];
 //languages
 List<Map<String, dynamic>> languageList = [
   {
-    'image': tmFlagImage,
     'title': 'Türkmençe',
   },
   {
-    'image': ruFlagImage,
     'title': 'Русский',
   }
 ];
+final List<String> genderList = ['male', 'female'];
+final List<String> tabbarList = ['activeCoupon', 'sale'];
+final List<String> notificationList = ['post', 'sms'];

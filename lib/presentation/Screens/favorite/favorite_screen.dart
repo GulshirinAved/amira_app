@@ -1,9 +1,11 @@
+import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/favButton/favbutton_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/animations.dart';
+import 'package:amira_app/presentation/CustomWidgets/customContainer_extension.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
 import 'package:amira_app/presentation/Screens/search/search_screen.dart';
@@ -44,7 +46,9 @@ class FavoriteScreen extends StatelessWidget {
                       children: [
                         Animations.empty,
                         Text(
-                          'There is no products ',
+                          AppLocalization.of(context)
+                                  .getTransatedValues('favEmpty') ??
+                              '',
                           style: TextStyle(
                             fontFamily: fontPeaceSans,
                             fontSize: AppFonts.fontSize18,
@@ -54,13 +58,10 @@ class FavoriteScreen extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: AppBorders.borderRadius10,
-                    ),
+                  return CustomContainer.buildContainer(
+                    width: MediaQuery.of(context).size.width,
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                        EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
                     child: GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -80,7 +81,6 @@ class FavoriteScreen extends StatelessWidget {
                             name: favList.name,
                             image: favList.image,
                             price: favList.price,
-                            prevPrice: favList.prevPrice,
                             discount: favList.discount,
                             desc: favList.desc,
                             shopid: favList.shopid,
@@ -91,7 +91,6 @@ class FavoriteScreen extends StatelessWidget {
                             name: favList.name,
                             image: favList.image,
                             price: favList.price,
-                            prevPrice: favList.prevPrice,
                             discount: favList.discount,
                             desc: favList.desc,
                             shopid: favList.shopid,

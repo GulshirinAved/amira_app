@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 
 class BrandCards extends StatelessWidget {
   final int bottomSheet;
@@ -19,22 +19,13 @@ class BrandCards extends StatelessWidget {
     return BlocBuilder<GetAllBrandsBloc, GetAllBrandsState>(
       builder: (context, brandState) {
         if (brandState is GetAllBrandsError) {
-          return Center(
-            child: Text('it is error ${brandState.error}'),
-          );
-        } else if (brandState is GetAllBrandsInitial) {
-          return const Center(
-            child: Text('it initial'),
-          );
-        } else if (brandState is GetAllBrandsLoading) {
-          return const Center(
-            child: Text('it is loadings'),
-          );
+          return SizedBox.shrink();
+        } else if (brandState is GetAllBrandsInitial ||
+            brandState is GetAllBrandsLoading) {
+          return SizedBox.shrink();
         } else if (brandState is GetAllBrandsLoaded) {
           if (brandState.allBrandsList.isEmpty) {
-            return const Center(
-              child: Text('it is empty'),
-            );
+            return SizedBox.shrink();
           }
           return GridView.builder(
             shrinkWrap: true,

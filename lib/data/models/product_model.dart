@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:amira_app/data/models/home_model.dart';
+
 class ProductModel {
-  int? statusCode;
-  bool? success;
-  Data? data;
+  final int? statusCode;
+  final bool? success;
+  final Data? data;
 
   ProductModel({
     this.statusCode,
@@ -30,10 +32,10 @@ class ProductModel {
 }
 
 class Data {
-  int? count;
-  int? pageCount;
-  DataCategory? category;
-  List<Row>? rows;
+  final int? count;
+  final int? pageCount;
+  final DataCategory? category;
+  final List<Row>? rows;
 
   Data({
     this.count,
@@ -54,7 +56,7 @@ class Data {
             : DataCategory.fromJson(json['category']),
         rows: json['rows'] == null
             ? []
-            : List<Row>.from(json['rows'].map((x) => Row.fromJson(x))),
+            : List<Row>.from(json['rows']!.map((x) => Row.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,11 +70,11 @@ class Data {
 }
 
 class DataCategory {
-  Id? id;
-  Image? image;
-  dynamic parentId;
-  DateTime? createdAt;
-  Name? name;
+  final String? id;
+  final Image? image;
+  final dynamic parentId;
+  final DateTime? createdAt;
+  final String? name;
 
   DataCategory({
     this.id,
@@ -88,36 +90,27 @@ class DataCategory {
   String toRawJson() => json.encode(toJson());
 
   factory DataCategory.fromJson(Map<String, dynamic> json) => DataCategory(
-        id: json['id'] == null ? null : idValues.map[json['id']],
+        id: json['id'],
         image: json['image'] == null ? null : Image.fromJson(json['image']),
         parentId: json['parentId'],
         createdAt: json['createdAt'] == null
             ? null
             : DateTime.parse(json['createdAt']),
-        name: json['name'] == null ? null : nameValues.map[json['name']],
+        name: json['name'],
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id == null ? null : idValues.reverse[id],
+        'id': id,
         'image': image?.toJson(),
         'parentId': parentId,
         'createdAt': createdAt?.toIso8601String(),
-        'name': name == null ? null : nameValues.reverse[name],
+        'name': name,
       };
 }
 
-enum Id { CATEGORY1, CATEGORY1_SUBCATEGORY1, CATEGORY1_SUBCATEGORY2, CATEGORY2 }
-
-final idValues = EnumValues({
-  'category1': Id.CATEGORY1,
-  'category1-subcategory1': Id.CATEGORY1_SUBCATEGORY1,
-  'category1-subcategory2': Id.CATEGORY1_SUBCATEGORY2,
-  'category2': Id.CATEGORY2
-});
-
 class Image {
-  String? url;
-  String? hashblur;
+  final String? url;
+  final String? hashblur;
 
   Image({
     this.url,
@@ -139,31 +132,27 @@ class Image {
       };
 }
 
-enum Name { CATEGORY1_EN, CATEGORY2_EN, SUBCATEGORY1_EN, SUBCATEGORY2_EN }
-
-final nameValues = EnumValues({
-  'category1-en': Name.CATEGORY1_EN,
-  'category2-en': Name.CATEGORY2_EN,
-  'subcategory1-en': Name.SUBCATEGORY1_EN,
-  'subcategory2-en': Name.SUBCATEGORY2_EN
-});
-
 class Row {
-  String? id;
-  int? price;
-  int? usd;
-  int? coin;
-  List<Image>? images;
-  String? brandId;
-  String? shopId;
-  int? quantity;
-  DateTime? createdAt;
-  String? visibility;
-  Brand? brand;
-  List<CategoryElement>? categories;
-  String? name;
-  String? description;
-  bool? isLiked;
+  final String? id;
+  final int? price;
+  final int? usd;
+  final int? coin;
+  final List<Image>? images;
+  final String? brandId;
+  final String? shopId;
+  final int? quantity;
+  final DateTime? createdAt;
+  final String? visibility;
+  final int? amount;
+  final String? unitId;
+  final Brand? brand;
+  final Brand? shop;
+  final List<CategoryElement>? categories;
+  final Brand? unit;
+  final String? name;
+  final String? description;
+  final bool? isLiked;
+  final SimpleDiscount? discount;
 
   Row({
     this.id,
@@ -176,11 +165,16 @@ class Row {
     this.quantity,
     this.createdAt,
     this.visibility,
+    this.amount,
+    this.unitId,
     this.brand,
+    this.shop,
     this.categories,
+    this.unit,
     this.name,
     this.description,
     this.isLiked,
+    this.discount,
   });
 
   factory Row.fromRawJson(String str) => Row.fromJson(json.decode(str));
@@ -194,7 +188,7 @@ class Row {
         coin: json['coin'],
         images: json['images'] == null
             ? []
-            : List<Image>.from(json['images'].map((x) => Image.fromJson(x))),
+            : List<Image>.from(json['images']!.map((x) => Image.fromJson(x))),
         brandId: json['brandId'],
         shopId: json['shopId'],
         quantity: json['quantity'],
@@ -202,14 +196,21 @@ class Row {
             ? null
             : DateTime.parse(json['createdAt']),
         visibility: json['visibility'],
+        amount: json['amount'],
+        unitId: json['unitId'],
         brand: json['brand'] == null ? null : Brand.fromJson(json['brand']),
+        shop: json['shop'] == null ? null : Brand.fromJson(json['shop']),
         categories: json['categories'] == null
             ? []
             : List<CategoryElement>.from(
                 json['categories']!.map((x) => CategoryElement.fromJson(x))),
+        unit: json['unit'] == null ? null : Brand.fromJson(json['unit']),
         name: json['name'],
         description: json['description'],
         isLiked: json['isLiked'],
+        discount: json['discount'] == null
+            ? null
+            : SimpleDiscount.fromJson(json['discount']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -225,21 +226,26 @@ class Row {
         'quantity': quantity,
         'createdAt': createdAt?.toIso8601String(),
         'visibility': visibility,
+        'amount': amount,
+        'unitId': unitId,
         'brand': brand?.toJson(),
+        'shop': shop?.toJson(),
         'categories': categories == null
             ? []
             : List<dynamic>.from(categories!.map((x) => x.toJson())),
+        'unit': unit?.toJson(),
         'name': name,
         'description': description,
         'isLiked': isLiked,
+        'discount': discount?.toJson(),
       };
 }
 
 class Brand {
-  String? id;
-  String? name;
-  Image? logo;
-  DateTime? createdAt;
+  final String? id;
+  final String? name;
+  final Image? logo;
+  final DateTime? createdAt;
 
   Brand({
     this.id,
@@ -270,8 +276,8 @@ class Brand {
 }
 
 class CategoryElement {
-  Id? id;
-  Name? name;
+  final String? id;
+  final String? name;
 
   CategoryElement({
     this.id,
@@ -285,24 +291,12 @@ class CategoryElement {
 
   factory CategoryElement.fromJson(Map<String, dynamic> json) =>
       CategoryElement(
-        id: json['id'] == null ? null : idValues.map[json['id']],
-        name: json['name'] == null ? null : nameValues.map[json['name']],
+        id: json['id'],
+        name: json['name'],
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id == null ? null : idValues.reverse[id],
-        'name': name == null ? null : nameValues.reverse[name],
+        'id': id,
+        'name': name,
       };
-}
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

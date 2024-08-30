@@ -1,6 +1,6 @@
 import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/internetConnection/internet_connection_bloc.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

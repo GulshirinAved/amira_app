@@ -5,19 +5,18 @@ import 'package:amira_app/blocs/cateloge/subCategoryCardSelection/sub_category_s
 import 'package:amira_app/blocs/filter/brandSelection/brand_selection_bloc.dart';
 import 'package:amira_app/blocs/filter/filter/categoryRadioButtonSelection/category_radio_button_selection_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/data/models/category_model.dart';
 import 'package:amira_app/presentation/Screens/cataloge/categoryProfile_screen.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CategoryProductCard extends StatelessWidget {
   final int index;
-  final List<Rows> subCategoryList;
+  final List<dynamic> subCategoryList;
   final List categoryList;
   final double? imageHeight;
   final bool needNavigate;
@@ -46,9 +45,7 @@ class CategoryProductCard extends StatelessWidget {
                 pressedName: subCategoryList[index].name ?? '',
               ),
             );
-        context
-            .read<GetOneCatelogeBloc>()
-            .add(GetOneCataloge(id: categoryList[index].id!));
+        context.read<GetOneCatelogeBloc>().add(GetOneCataloge(id: categoryId));
         context.read<AllProductsBloc>().add(
               GetAllProductsList(
                 postData: {

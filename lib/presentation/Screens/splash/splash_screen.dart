@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:amira_app/blocs/internetConnection/internet_connection_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/Screens/bottomNavBar/bottomNavBar_screen.dart';
 import 'package:amira_app/presentation/Screens/splash/component/network_dialog.dart';
 import 'package:flutter/material.dart';

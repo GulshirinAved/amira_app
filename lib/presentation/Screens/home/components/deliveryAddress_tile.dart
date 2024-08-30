@@ -1,7 +1,7 @@
 import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/addDeliveryLocation/location_add_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/button.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 import 'package:flutter/material.dart';
@@ -203,7 +203,7 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                                       : FontWeight.w400,
                                   color: state.selectedIndex == index
                                       ? AppColors.purpleColor
-                                      : AppColors.darkGreyColor,
+                                      : AppColors.greyColor,
                                 ),
                               );
                             },

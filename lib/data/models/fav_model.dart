@@ -3,16 +3,18 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:amira_app/data/models/home_model.dart';
+
 class FavItem {
   final String id;
   final String? name;
   final List<dynamic>? image;
   final int? price;
   final int? coin;
-  final String? prevPrice;
-  final String? discount;
+  final SimpleDiscount? discount;
   final String? desc;
   final String? shopid;
+  final Brand? brand;
   bool? isfavorite;
 
   FavItem({
@@ -21,10 +23,10 @@ class FavItem {
     this.image,
     this.price,
     this.coin,
-    this.prevPrice,
-    this.discount,
+    required this.discount,
     this.desc,
     this.shopid,
+    this.brand,
     this.isfavorite = false,
   });
 
@@ -35,11 +37,11 @@ class FavItem {
       'image': image,
       'price': price,
       'coin': coin,
-      'prevPrice': prevPrice,
-      'discount': discount,
+      'discount': discount?.toJson(),
       'desc': desc,
       'shopid': shopid,
       'isfavorite': isfavorite,
+      'brand': brand?.toJson(),
     };
   }
 
@@ -52,11 +54,15 @@ class FavItem {
           : [],
       coin: map['coin'] != null ? map['coin'] as int : null,
       price: map['price'] != null ? map['price'] as int : null,
-      prevPrice: map['prevPrice'] != null ? map['prevPrice'] as String : null,
-      discount: map['discount'] != null ? map['discount'] as String : null,
+      discount: map['discount'] != null
+          ? SimpleDiscount.fromJson(map['discount'] as Map<String, dynamic>)
+          : null,
       desc: map['desc'] != null ? map['desc'] as String : null,
       shopid: map['shopid'] != null ? map['shopid'] as String : null,
-      isfavorite: map['isfavorite'] as bool,
+      isfavorite: map['isfavorite'] as bool? ?? false,
+      brand: map['brand'] != null
+          ? Brand.fromJson(map['brand'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -64,6 +70,32 @@ class FavItem {
 
   factory FavItem.fromJson(String source) =>
       FavItem.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  FavItem copyWith({
+    String? id,
+    String? name,
+    List<dynamic>? image,
+    int? price,
+    int? coin,
+    SimpleDiscount? discount,
+    String? desc,
+    String? shopid,
+    Brand? brand,
+    bool? isfavorite,
+  }) {
+    return FavItem(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      price: price ?? this.price,
+      coin: coin ?? this.coin,
+      discount: discount ?? this.discount,
+      desc: desc ?? this.desc,
+      shopid: shopid ?? this.shopid,
+      brand: brand ?? this.brand,
+      isfavorite: isfavorite ?? this.isfavorite,
+    );
+  }
 
   @override
   bool operator ==(covariant FavItem other) {
@@ -74,10 +106,10 @@ class FavItem {
         listEquals(other.image, image) &&
         other.price == price &&
         other.coin == coin &&
-        other.prevPrice == prevPrice &&
         other.discount == discount &&
         other.desc == desc &&
         other.shopid == shopid &&
+        other.brand == brand &&
         other.isfavorite == isfavorite;
   }
 
@@ -88,36 +120,10 @@ class FavItem {
         image.hashCode ^
         price.hashCode ^
         coin.hashCode ^
-        prevPrice.hashCode ^
         discount.hashCode ^
         desc.hashCode ^
         shopid.hashCode ^
+        brand.hashCode ^
         isfavorite.hashCode;
-  }
-
-  FavItem copyWith({
-    String? id,
-    String? name,
-    List<dynamic>? image,
-    int? price,
-    int? coin,
-    String? prevPrice,
-    String? discount,
-    String? desc,
-    String? shopid,
-    bool? isfavorite,
-  }) {
-    return FavItem(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      image: image ?? this.image,
-      price: price ?? this.price,
-      coin: coin ?? this.coin,
-      prevPrice: prevPrice ?? this.prevPrice,
-      discount: discount ?? this.discount,
-      desc: desc ?? this.desc,
-      shopid: shopid ?? this.shopid,
-      isfavorite: isfavorite ?? this.isfavorite,
-    );
   }
 }

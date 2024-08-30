@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
+import 'package:amira_app/presentation/CustomWidgets/customContainer_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:amira_app/config/constants/constants.dart';
-import 'package:amira_app/config/theme/theme.dart';
+import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
 
 class GridviewProductsSlider extends StatelessWidget {
@@ -19,14 +20,8 @@ class GridviewProductsSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.whiteColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10.r),
-          topRight: Radius.circular(10.r),
-        ),
-      ),
+    return CustomContainer.buildContainer(
+      width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(vertical: 6.h),
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
@@ -57,8 +52,7 @@ class GridviewProductsSlider extends StatelessWidget {
                   name: productList[index].name,
                   image: productList[index].images,
                   price: productList[index].price,
-                  prevPrice: null,
-                  discount: null,
+                  discount: productList[index].discount,
                   desc: productList[index].description,
                   shopid: productList[index].shopId,
                   coin: productList[index].coin,
@@ -68,8 +62,7 @@ class GridviewProductsSlider extends StatelessWidget {
                   name: productList[index].name,
                   image: productList[index].images,
                   price: productList[index].price,
-                  prevPrice: null,
-                  discount: null,
+                  discount: productList[index].discount,
                   desc: productList[index].description,
                   shopid: productList[index].shopId,
                   coin: productList[index].coin,
