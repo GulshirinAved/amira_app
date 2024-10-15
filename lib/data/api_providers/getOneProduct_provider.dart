@@ -10,7 +10,6 @@ class GetOneProductProvider {
 
     try {
       final Response response = await dio.get(allProductsUrl);
-      print('it is id ${id}');
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = response.data['data'];
         final Data product = Data.fromJson(responseData);

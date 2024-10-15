@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/auth/register/register_bloc.dart';
 import 'package:amira_app/blocs/auth/validateTextField/validate_text_field_bloc.dart';
@@ -173,7 +175,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               .getTransatedValues('address') ??
                           '',
                       topPadding: 15,
-                      errorText: state.isPassValid
+                      errorText: state.isAddressValid
                           ? ''
                           : AppLocalization.of(context)
                                   .getTransatedValues('noAddress') ??
@@ -207,23 +209,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onChanged: (text) {
                         if (text!.length == 10) {
                           try {
-                            final DateTime? date =
+                            final DateTime date =
                                 DateFormat('yyyy-MM-dd').parseStrict(text);
-                            if (date != null) {
-                              dateController.text =
-                                  DateFormat('yyyy-MM-dd').format(date);
-                              dateController.selection =
-                                  TextSelection.fromPosition(
-                                TextPosition(
-                                    offset: dateController.text.length),
-                              );
-                            }
+                            dateController.text =
+                                DateFormat('yyyy-MM-dd').format(date);
+                            dateController.selection =
+                                TextSelection.fromPosition(
+                              TextPosition(
+                                offset: dateController.text.length,
+                              ),
+                            );
                             return dateController.text;
                           } catch (e) {}
                           context
                               .read<ValidateTextFieldBloc>()
                               .add(BirthdayChanged(birthdayDate: text));
                         }
+                        return null;
                       },
                       isTextNumber: true,
                       prefixWidget: const SizedBox.shrink(),
@@ -300,38 +302,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 //have acc button
                 Align(
-                    alignment: Alignment.topLeft,
-                    child: text(context, title: 'haveAcc', onTap: () {
-                      pushScreenWithoutNavBar(context, LoginScreen());
-                    })),
+                  alignment: Alignment.topLeft,
+                  child: text(
+                    context,
+                    title: 'haveAcc',
+                    onTap: () {
+                      pushScreenWithoutNavBar(context, const LoginScreen());
+                    },
+                  ),
+                ),
                 //button for register
                 BlocListener<RegisterBloc, RegisterState>(
                   listener: (context, registerState) {
+                    log(registerState.toString());
                     if (registerState is RegisterLoaded) {
-                      if (registerState.statusCode == 200 ||
-                          registerState.statusCode == 201) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          pushScreenWithoutNavBar(
-                            context,
-                            OtpScreen(
-                              phoneNumber: phoneController.text,
-                            ),
-                          );
-                        });
-                      } else if (registerState is RegisterFailure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(AppLocalization.of(context)
-                                    .getTransatedValues(
-                                        registerState.statusCode == 602
-                                            ? 'userExists'
-                                            : registerState.statusCode == 603
-                                                ? 'otpinvalid'
-                                                : 'error') ??
-                                ''),
+                      log(registerState.statusCode.toString());
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        pushScreenWithoutNavBar(
+                          context,
+                          OtpScreen(
+                            phoneNumber: phoneController.text,
                           ),
                         );
-                      }
+                      });
+                    } else if (registerState is RegisterFailure) {
+                      log('it is failure ${registerState.toString()}');
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            AppLocalization.of(context).getTransatedValues(
+                                  registerState.statusCode == 602
+                                      ? 'userExists'
+                                      : registerState.statusCode == 603
+                                          ? 'otpinvalid'
+                                          : 'error',
+                                ) ??
+                                '',
+                          ),
+                        ),
+                      );
                     }
                   },
                   child: BlocBuilder<SelectGenderCubit, String>(
@@ -341,6 +352,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 .getTransatedValues('register') ??
                             '',
                         onTap: () {
+                          log("""${phoneController.text.length != 8} ||
+                              ${passController.text.length < 6} ||
+                              ${nameController.text == ''}||
+                              ${addressController.text == ''} ||
+                              ${dateController.text.length != 10}""");
                           if (phoneController.text.length != 8 ||
                               passController.text.length < 6 ||
                               nameController.text == '' ||
@@ -348,11 +364,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               dateController.text.length != 10) {
                             context.read<ValidateTextFieldBloc>().add(
                                   PhoneNumberChanged(
-                                      phoneNumber: phoneController.text),
+                                    phoneNumber: phoneController.text,
+                                  ),
                                 );
                             context.read<ValidateTextFieldBloc>().add(
                                   PasswordChanged(
-                                      passWord: passController.text),
+                                    passWord: passController.text,
+                                  ),
                                 );
                             context.read<ValidateTextFieldBloc>().add(
                                   NameChanged(
@@ -372,21 +390,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           } else {
                             context.read<RegisterBloc>().add(
                                   RegisterSubmitted(
-                                      phoneNumber:
-                                          '+993${phoneController.text}',
-                                      password: passController.text,
-                                      address: addressController.text,
-                                      birthday: dateController.text,
-                                      name: nameController.text,
-                                      gender: genderState),
+                                    phoneNumber: '+993${phoneController.text}',
+                                    password: passController.text,
+                                    address: addressController.text,
+                                    birthday: dateController.text,
+                                    name: nameController.text,
+                                    gender: genderState == ''
+                                        ? genderList[0]
+                                        : genderState,
+                                  ),
                                 );
-                            context.read<RegisterBloc>().add(ResetRegister());
+                            context.read<RegisterBloc>().add(
+                                  ResetRegister(),
+                                );
                           }
                         },
                       );
                     },
                   ),
-                )
+                ),
               ],
             ),
           ),

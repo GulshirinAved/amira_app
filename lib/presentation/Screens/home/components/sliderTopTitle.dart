@@ -9,6 +9,7 @@ import 'package:amira_app/config/theme/constants.dart';
 class TopTitle extends StatelessWidget {
   final String title;
   final VoidCallback? onTap;
+
   const TopTitle({
     required this.title,
     super.key,
@@ -36,7 +37,9 @@ class TopTitle extends StatelessWidget {
                 ),
               ),
             ),
-            SvgPicture.asset(arrowRightIcon),
+            onTap == null
+                ? const SizedBox.shrink()
+                : SvgPicture.asset(arrowRightIcon),
           ],
         ),
       ),

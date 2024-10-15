@@ -100,5 +100,8 @@
     "paymentMethod": "Tölegiň görnüşi",
     "details": "Maglumatlar",
     "toPay": "Tölemek",
-    "favEmpty": "Halanlarym içi boş"
+    "favEmpty": "Halanlarym içi boş",
+    "youWatched": "Siziň görenleriňiz",
+    "wrongPass": "Parolyňyz nädogry bolup biler \"Paroly ýatdan çykardyňyzmy?\" paroly üýtgedip bilersiňiz",
+    "deliveryType": "Eltip beriş görnüşi"
 }

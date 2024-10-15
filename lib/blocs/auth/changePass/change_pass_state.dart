@@ -10,17 +10,17 @@ sealed class ChangePassState extends Equatable {
 final class ChangePassInitial extends ChangePassState {}
 
 final class ChangePassLoaded extends ChangePassState {
-  final int statusCode;
+  final Data userData;
 
-  const ChangePassLoaded({required this.statusCode});
+  const ChangePassLoaded({required this.userData});
   @override
-  List<Object> get props => [statusCode];
+  List<Object> get props => [userData];
 }
 
 final class ChangePassFailure extends ChangePassState {
-  final int statusCode;
+  final String error;
 
-  const ChangePassFailure({required this.statusCode});
+  const ChangePassFailure({required this.error});
   @override
-  List<Object> get props => [statusCode];
+  List<Object> get props => [error];
 }

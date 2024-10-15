@@ -76,9 +76,11 @@ class HomeScreen extends StatelessWidget {
                             final int length = [
                               homeState.getHomeData.length,
                               homeState.getHomeProducts.length,
-                              categoryState.allCategoryList.length
-                            ].reduce((value, element) =>
-                                value < element ? value : element);
+                              categoryState.allCategoryList.length,
+                            ].reduce(
+                              (value, element) =>
+                                  value < element ? value : element,
+                            );
 
                             return ListView(
                               children: [
@@ -125,8 +127,8 @@ class HomeScreen extends StatelessWidget {
                                     child: ClipRRect(
                                       borderRadius: AppBorders.borderRadius10,
                                       child: ExtendedImage.network(
-                                        '${url}' +
-                                            '${homeState.getHomeBannerList[0].image.url}',
+                                        '$url'
+                                        '${homeState.getHomeBannerList[0].image.url}',
                                         height: 150.h,
                                         width:
                                             MediaQuery.of(context).size.width,
@@ -157,13 +159,13 @@ class HomeScreen extends StatelessWidget {
                                     if (homeState.getHomeBannerList.length > 1)
                                       Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: 16.w),
+                                          horizontal: 16.w,
+                                        ),
                                         child: ClipRRect(
                                           borderRadius:
                                               AppBorders.borderRadius10,
                                           child: ExtendedImage.network(
-                                            url +
-                                                '${homeState.getHomeBannerList[1].image.url}',
+                                            '$url${homeState.getHomeBannerList[1].image.url}',
                                             height: 150.h,
                                             width: MediaQuery.of(context)
                                                 .size

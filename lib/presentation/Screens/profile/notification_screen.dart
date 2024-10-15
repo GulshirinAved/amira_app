@@ -1,4 +1,5 @@
 import 'package:amira_app/app_localization.dart';
+import 'package:amira_app/blocs/auth/subscribeNotifi/subscribe_notification_bloc.dart';
 import 'package:amira_app/blocs/profile/notificationCheckBox/notification_check_box_cubit.dart';
 import 'package:amira_app/presentation/CustomWidgets/customContainer_extension.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_appbar.dart';
@@ -12,8 +13,15 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotificationCheckBoxCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NotificationCheckBoxCubit(),
+        ),
+        BlocProvider(
+          create: (context) => SubscribeNotificationBloc(),
+        ),
+      ],
       child: Scaffold(
         appBar: CustomAppBar(
           topTitle:

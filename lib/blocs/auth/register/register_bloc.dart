@@ -26,7 +26,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         } else if (statusCode == 603) {
           emit(RegisterFailure(statusCode: statusCode!));
         }
-      } catch (e) {}
+      } catch (e) {
+        throw Exception(e.toString());
+      }
     });
     on<ResetRegister>((event, emit) async {
       emit(RegisterInitial());

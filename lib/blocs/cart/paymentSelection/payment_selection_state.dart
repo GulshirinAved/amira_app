@@ -3,16 +3,20 @@ part of 'payment_selection_bloc.dart';
 
 class PaymentSelectionState extends Equatable {
   final String? title;
-  const PaymentSelectionState(this.title);
+  final String? id;
+
+  const PaymentSelectionState(this.title, this.id);
 
   @override
-  List<Object> get props => [title ?? ''];
+  List<Object> get props => [title ?? '', id ?? ''];
 
   PaymentSelectionState copyWith({
     String? title,
+    String? id,
   }) {
     return PaymentSelectionState(
       title ?? this.title,
+      id ?? this.id,
     );
   }
 }

@@ -64,28 +64,26 @@ Future<dynamic> customDialog(BuildContext context) {
                         width: 10,
                       ),
                       Expanded(
-                        child: Expanded(
-                          child: Button.textButton(
-                            backColor: AppColors.redColor,
-                            text: AppLocalization.of(context)
-                                .getTransatedValues('yes'),
-                            onTap: () {
-                              context
-                                  .read<RemoveAccauntBloc>()
-                                  .add(RemoveAccauntSubmitted());
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SplashScreen(),
-                                ),
-                                (route) => false,
-                              );
-                            },
-                          ),
+                        child: Button.textButton(
+                          backColor: AppColors.redColor,
+                          text: AppLocalization.of(context)
+                              .getTransatedValues('yes'),
+                          onTap: () {
+                            context
+                                .read<RemoveAccauntBloc>()
+                                .add(RemoveAccauntSubmitted());
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SplashScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          },
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

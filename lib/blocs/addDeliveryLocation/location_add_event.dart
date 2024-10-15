@@ -23,12 +23,6 @@ final class ShowSavedAddressEvent extends LocationAddEvent {
   );
 }
 
-final class LoadAddressEvent extends LocationAddEvent {
-  const LoadAddressEvent(
-    super.locationName,
-  );
-}
-
 final class SelectAddressEvent extends LocationAddEvent {
   final int index;
   final List<dynamic> addressList;

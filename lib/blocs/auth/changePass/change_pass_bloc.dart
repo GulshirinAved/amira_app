@@ -1,4 +1,5 @@
 import 'package:amira_app/data/api_repositories/auth_repository.dart';
+import 'package:amira_app/data/models/updateUserData_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,16 +11,14 @@ class ChangePassBloc extends Bloc<ChangePassEvent, ChangePassState> {
     final AuthRepository changePassRepository = AuthRepository();
     on<ChangePassSubmitted>((event, emit) async {
       try {
-        final statusCode = await changePassRepository.changePass(
-          newPassword: event.newPassword,
-          oldPassword: event.oldPassword,
+        final Data? userData = await changePassRepository.changePass(
+          newPassword: event.newPassword ?? '',
+          oldPassword: event.oldPassword ?? '',
         );
-        if (statusCode == 200 || statusCode == 201) {
-          emit(ChangePassLoaded(statusCode: statusCode!));
-        } else {
-          emit(ChangePassFailure(statusCode: statusCode!));
-        }
-      } catch (e) {}
+        emit(ChangePassLoaded(userData: userData!));
+      } catch (e) {
+        emit(ChangePassFailure(error: e.toString()));
+      }
     });
     on<ResetPass>((event, emit) async {
       emit(ChangePassInitial());

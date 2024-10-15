@@ -53,7 +53,7 @@ class CategoryProfileScreen extends StatelessWidget {
                     titlePressed ? categoryId : subCategoryList[index].id,
                   ],
                   'brands': brandName,
-                  'shops': [],
+                  'shops': const [],
                   'priceFrom': null,
                   'priceTo': null,
                   'ordering': 'popular',
@@ -93,9 +93,9 @@ class CategoryProfileScreen extends StatelessWidget {
             return BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
               builder: (context, state) {
                 if (state is GetOneCatalogeError) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 } else if (stateProducts is AllProductsError) {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 } else if (state is GetOneCatelogeInitial ||
                     state is GetOneCatalogeLoading) {
                   return Center(
@@ -133,7 +133,7 @@ class CategoryProfileScreen extends StatelessWidget {
                                 BlocBuilder<AllProductsBloc, AllProductsState>(
                               builder: (context, state) {
                                 if (state is AllProductsError) {
-                                  return SizedBox.shrink();
+                                  return const SizedBox.shrink();
                                 } else if (state is AllProductsInitial ||
                                     state is AllProductsLoading) {
                                   return const Center(
@@ -167,7 +167,7 @@ class CategoryProfileScreen extends StatelessWidget {
                           BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
                             builder: (context, state) {
                               if (state is GetOneCatalogeError) {
-                                return SizedBox.shrink();
+                                return const SizedBox.shrink();
                               } else if (state is GetOneCatalogeLoading ||
                                   state is GetOneCatalogeLoading) {
                                 return Animations.loading;
@@ -177,11 +177,18 @@ class CategoryProfileScreen extends StatelessWidget {
                                   BlocBuilder<SubCategorySelectionBloc,
                                       SubCategorySelectionState>(
                                     builder: (context, state) {
+                                      String subCategoryId;
+                                      if (state.subcategoryName == '') {
+                                        subCategoryId = categoryList[index].id;
+                                      } else {
+                                        subCategoryId =
+                                            (index < subCategoryList.length)
+                                                ? subCategoryList[index].id!
+                                                : '';
+                                      }
+
                                       return FilterTile(
-                                        subCategoryId:
-                                            state.subcategoryName == ''
-                                                ? categoryList[index].id
-                                                : subCategoryList[index].id!,
+                                        subCategoryId: subCategoryId,
                                         categoryId: categoryId,
                                         isTopPressed: titlePressed,
                                       );
@@ -212,14 +219,15 @@ class CategoryProfileScreen extends StatelessWidget {
                                                   state
                                                       .allProductsList.length) {
                                                 if (!BlocProvider.of<
-                                                            AllProductsBloc>(
-                                                        context)
-                                                    .isLoadingMore) {
+                                                    AllProductsBloc>(
+                                                  context,
+                                                ).isLoadingMore) {
                                                   BlocProvider.of<
-                                                              AllProductsBloc>(
-                                                          context)
-                                                      .add(
-                                                          const AllProductsLoadMoreEvent());
+                                                      AllProductsBloc>(
+                                                    context,
+                                                  ).add(
+                                                    const AllProductsLoadMoreEvent(),
+                                                  );
                                                 }
                                                 return state.allProductsList
                                                             .length !=
@@ -232,55 +240,57 @@ class CategoryProfileScreen extends StatelessWidget {
                                               }
                                               return ProductLargeCard(
                                                 favItem: FavItem(
-                                                    id: state
-                                                        .allProductsList[index]
-                                                        .id,
-                                                    name: state
-                                                        .allProductsList[index]
-                                                        .name,
-                                                    desc: state
-                                                        .allProductsList[index]
-                                                        .description,
-                                                    image: state
-                                                        .allProductsList[index]
-                                                        .images,
-                                                    price: state
-                                                        .allProductsList[index]
-                                                        .price,
-                                                    shopid: state
-                                                        .allProductsList[index]
-                                                        .shopId,
-                                                    coin: state
-                                                        .allProductsList[index]
-                                                        .coin,
-                                                    discount: state
-                                                        .allProductsList[index]
-                                                        .discount),
+                                                  id: state
+                                                      .allProductsList[index]
+                                                      .id,
+                                                  name: state
+                                                      .allProductsList[index]
+                                                      .name,
+                                                  desc: state
+                                                      .allProductsList[index]
+                                                      .description,
+                                                  image: state
+                                                      .allProductsList[index]
+                                                      .images,
+                                                  price: state
+                                                      .allProductsList[index]
+                                                      .price,
+                                                  shopid: state
+                                                      .allProductsList[index]
+                                                      .shopId,
+                                                  coin: state
+                                                      .allProductsList[index]
+                                                      .coin,
+                                                  discount: state
+                                                      .allProductsList[index]
+                                                      .discount,
+                                                ),
                                                 cartItem: CartItem(
-                                                    id: state
-                                                        .allProductsList[index]
-                                                        .id,
-                                                    name: state
-                                                        .allProductsList[index]
-                                                        .name,
-                                                    desc: state
-                                                        .allProductsList[index]
-                                                        .description,
-                                                    image: state
-                                                        .allProductsList[index]
-                                                        .images,
-                                                    price: state
-                                                        .allProductsList[index]
-                                                        .price,
-                                                    shopid: state
-                                                        .allProductsList[index]
-                                                        .shopId,
-                                                    coin: state
-                                                        .allProductsList[index]
-                                                        .coin,
-                                                    discount: state
-                                                        .allProductsList[index]
-                                                        .discount),
+                                                  id: state
+                                                      .allProductsList[index]
+                                                      .id,
+                                                  name: state
+                                                      .allProductsList[index]
+                                                      .name,
+                                                  desc: state
+                                                      .allProductsList[index]
+                                                      .description,
+                                                  image: state
+                                                      .allProductsList[index]
+                                                      .images,
+                                                  price: state
+                                                      .allProductsList[index]
+                                                      .price,
+                                                  shopid: state
+                                                      .allProductsList[index]
+                                                      .shopId,
+                                                  coin: state
+                                                      .allProductsList[index]
+                                                      .coin,
+                                                  discount: state
+                                                      .allProductsList[index]
+                                                      .discount,
+                                                ),
                                                 index: index,
                                               );
                                             },
@@ -296,7 +306,7 @@ class CategoryProfileScreen extends StatelessWidget {
                                 ],
                               );
                             },
-                          )
+                          ),
                         ],
                       ),
                     ),

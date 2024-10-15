@@ -82,10 +82,10 @@ Future<dynamic> filterBottomSheet(
                           BlocBuilder<GetOneCatelogeBloc, GetOneCatelogeState>(
                         builder: (context, state) {
                           if (state is GetOneCatalogeError) {
-                            return SizedBox.shrink();
+                            return const SizedBox.shrink();
                           } else if (state is GetOneCatelogeInitial ||
                               state is GetOneCatalogeLoading) {
-                            return SizedBox.shrink();
+                            return const SizedBox.shrink();
                           } else if (state is GetOneCatalogeLoaded) {
                             if (state
                                 .getOneCatalogeList.subcategories!.isEmpty) {

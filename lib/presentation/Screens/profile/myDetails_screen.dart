@@ -1,4 +1,5 @@
 import 'package:amira_app/app_localization.dart';
+import 'package:amira_app/blocs/auth/userProfile/user_profile_bloc.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/data/api_providers/auth_provider.dart';
@@ -9,6 +10,7 @@ import 'package:amira_app/presentation/Screens/profile/components/custom_dialog.
 import 'package:amira_app/presentation/Screens/profile/components/userData_tile.dart';
 import 'package:amira_app/presentation/Screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
@@ -49,7 +51,9 @@ class MyDetailsScreen extends StatelessWidget {
                         _buildText(
                           onTap: () {
                             pushScreenWithNavBar(
-                                context, const ChnagePassScreen());
+                              context,
+                              const ChnagePassScreen(),
+                            );
                           },
                           textPadding: const EdgeInsets.only(top: 20),
                           AppLocalization.of(context)
@@ -103,29 +107,40 @@ class MyDetailsScreen extends StatelessWidget {
 
   // Build list of UserDataTiles
   Widget _buildUserDataTiles(BuildContext context) {
-    final userData = AuthProvider().getUserData();
-    return Column(
-      children: [
-        _buildUserDataTile(context, 'nameSurname', userData?.name),
-        _buildUserDataTile(
-          context,
-          'birthday',
-          userData?.birthday != null
-              ? DateFormat('yyyy-MM-dd').format(
-                  DateTime.parse(userData!.birthday!),
-                )
-              : null,
-        ),
-        _buildUserDataTile(context, 'phone', userData?.phone),
-        _buildUserDataTile(context, 'post', userData?.email),
-        _buildUserDataTile(
-            context,
-            'gender',
-            AppLocalization.of(context)
-                    .getTransatedValues(userData?.gender ?? '') ??
-                '',
-            isLast: true),
-      ],
+    return BlocBuilder<UserProfileBloc, UserProfileState>(
+      builder: (context, state) {
+        if (state is UserProfileError ||
+            state is UserProfileError ||
+            state is UserProfileInitial) {
+          return const SizedBox.shrink();
+        } else if (state is UserProfileLoaded) {
+          return Column(
+            children: [
+              _buildUserDataTile(context, 'nameSurname', state.userData?.name),
+              _buildUserDataTile(
+                context,
+                'birthday',
+                state.userData?.birthday != null
+                    ? DateFormat('yyyy-MM-dd').format(
+                        DateTime.parse(state.userData!.birthday!),
+                      )
+                    : null,
+              ),
+              _buildUserDataTile(context, 'phone', state.userData?.phone),
+              _buildUserDataTile(context, 'post', state.userData?.email),
+              _buildUserDataTile(
+                context,
+                'gender',
+                AppLocalization.of(context)
+                        .getTransatedValues(state.userData?.gender ?? '') ??
+                    '',
+                isLast: true,
+              ),
+            ],
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 

@@ -16,7 +16,6 @@ class CreateOrderProvider {
       final Response response = await dio.post(createOrderUrl,
           data: json.encode(postData), options: Options(headers: headers));
 
-      print('${'it is postdata${postData}'}');
       if (response.statusCode == 201) {
         return true;
       }

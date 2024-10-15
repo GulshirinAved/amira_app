@@ -1,4 +1,5 @@
 import 'package:amira_app/app_localization.dart';
+import 'package:amira_app/blocs/auth/subscribeNotifi/subscribe_notification_bloc.dart';
 import 'package:amira_app/blocs/profile/notificationCheckBox/notification_check_box_cubit.dart';
 import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/constants.dart';
@@ -55,6 +56,13 @@ class NotificationCheckBox extends StatelessWidget {
                 context
                     .read<NotificationCheckBoxCubit>()
                     .toggleCheckbox(noti2Type);
+                context.read<SubscribeNotificationBloc>().add(
+                      Submit(
+                        fcmNotifications: true,
+                        emailNotifications: state[noti1Type] ?? false,
+                        smsNotifications: state[noti2Type] ?? false,
+                      ),
+                    );
               },
             );
           },

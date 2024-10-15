@@ -236,20 +236,17 @@ class _DeliveryAddressTileState extends State<DeliveryAddressTile> {
                             .add(SaveAddressEvent(addressController.text));
                         context
                             .read<LocationAddBloc>()
-                            .add(ShowSavedAddressEvent(addressController.text));
-                        context.read<LocationAddBloc>().add(
-                              OnButtonPressedAddressEvent(
-                                state.locationList[state.selectedIndex!],
-                                state.locationList,
-                              ),
-                            );
+                            .add(OnButtonPressedAddressEvent(
+                              state.locationList[state.selectedIndex!],
+                              state.locationList,
+                            ));
 
                         Navigator.pop(context);
                       },
                     );
                   },
                 ),
-              ),
+              )
             ],
           ),
         );

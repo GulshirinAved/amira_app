@@ -93,10 +93,22 @@ final List filtername = ['Овощи и фрукты', 'Бренд', 'Цена']
 
 //profile help tiles
 final List helpTiles = [
-  'faq',
-  'privacyPolicy',
-  'rewritePersonalData',
-  'paymentMethods',
+  {
+    'title': 'faq',
+    'path': '',
+  },
+  {
+    'title': 'privacyPolicy',
+    'path': 'http://119.235.122.134:8091/ru/static/privacy',
+  },
+  {
+    'title': 'rewritePersonalData',
+    'path': 'http://119.235.122.134:8091/ru/static/privacy',
+  },
+  {
+    'title': 'paymentMethods',
+    'path': 'http://119.235.122.134:8091/ru/static/privacy',
+  }
 ];
 final List bonusTile = [
   'couponDiscount',
@@ -107,7 +119,6 @@ final List settingHinTexts = [
   'Введите почту',
   'Дату рождения',
 ];
-final List paymentMethod = ['Картой', 'Наличными'];
 //languages
 List<Map<String, dynamic>> languageList = [
   {

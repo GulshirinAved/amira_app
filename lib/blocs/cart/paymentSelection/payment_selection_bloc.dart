@@ -6,9 +6,14 @@ part 'payment_selection_state.dart';
 
 class PaymentSelectionBloc
     extends Bloc<PaymentSelectionEvent, PaymentSelectionState> {
-  PaymentSelectionBloc() : super(const PaymentSelectionState('')) {
+  PaymentSelectionBloc() : super(const PaymentSelectionState('', '')) {
     on<PaymentSelectionEvent>((event, emit) {
-      emit(state.copyWith(title: event.pressedTitle));
+      emit(
+        state.copyWith(
+          title: event.pressedTitle,
+          id: event.pressedId,
+        ),
+      );
     });
   }
 }

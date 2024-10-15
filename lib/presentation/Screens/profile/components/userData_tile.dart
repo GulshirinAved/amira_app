@@ -22,7 +22,7 @@ class UserDataTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        pushScreenWithoutNavBar(context, PrivateDetailsScreen());
+        pushScreenWithoutNavBar(context, const PrivateDetailsScreen());
       },
       child: SizedBox(
         height: 42.h,

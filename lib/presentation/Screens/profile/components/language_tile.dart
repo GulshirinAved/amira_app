@@ -145,8 +145,7 @@ class LanguageTile extends StatelessWidget {
                                                               'tr' &&
                                                           index == 0
                                                       ? AppColors.purple1Color
-                                                      : (state as ChangeLanguageState)
-                                                                      .languageCode ==
+                                                      : state.languageCode ==
                                                                   'ru' &&
                                                               index == 1
                                                           ? AppColors

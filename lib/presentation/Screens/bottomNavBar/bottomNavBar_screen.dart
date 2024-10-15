@@ -30,8 +30,7 @@ class BottomNavBar extends StatelessWidget {
           create: (context) => CartButtonBloc()..add(LoadCartEvent()),
         ),
         BlocProvider(
-          create: (context) =>
-              LocationAddBloc()..add(const LoadAddressEvent('')),
+          create: (context) => LocationAddBloc(),
         ),
         BlocProvider(
           create: (context) => CategoryRadioButtonSelectionBloc(),

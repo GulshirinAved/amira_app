@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:amira_app/blocs/auth/login/login_bloc.dart';
 import 'package:amira_app/blocs/auth/validateTextField/validate_text_field_bloc.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_checkBox.dart';
@@ -118,7 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: phoneController,
                           onChanged: (value) {
                             context.read<ValidateTextFieldBloc>().add(
-                                PhoneNumberChanged(phoneNumber: value ?? ''));
+                                  PhoneNumberChanged(phoneNumber: value ?? ''),
+                                );
                             return null;
                           },
                           isTextNumber: true,
@@ -151,7 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               controller: passwordController,
                               onChanged: (value) {
                                 context.read<ValidateTextFieldBloc>().add(
-                                    PasswordChanged(passWord: value ?? ''));
+                                      PasswordChanged(passWord: value ?? ''),
+                                    );
                                 return null;
                               },
                               isTextNumber: false,
@@ -181,42 +185,62 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: text(context, title: 'noAcc', onTap: () {
-                              pushScreenWithoutNavBar(
-                                  context, const RegisterScreen());
-                            }),
+                            child: text(
+                              context,
+                              title: 'noAcc',
+                              onTap: () {
+                                pushScreenWithoutNavBar(
+                                  context,
+                                  const RegisterScreen(),
+                                );
+                              },
+                            ),
                           ),
                           Expanded(
-                              child:
-                                  text(context, title: 'forgetPass', onTap: () {
-                            pushScreenWithoutNavBar(
-                                context, const ForgetPassScreen());
-                          })),
+                            child: text(
+                              context,
+                              title: 'forgetPass',
+                              onTap: () {
+                                pushScreenWithoutNavBar(
+                                  context,
+                                  const ForgetPassScreen(),
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     //button get code
                     BlocListener<LoginBloc, LoginState>(
                       listener: (context, state) {
+                        log('it is loginstate $state');
                         if (state is LoginLoaded) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             pushReplacementWithNavBar(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const BottomNavBar(),
-                                ));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const BottomNavBar(),
+                              ),
+                            );
                           });
                         } else if (state is LoginFailure) {
+                          log(state.statusCode.toString());
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                                content: Text(AppLocalization.of(context)
-                                        .getTransatedValues(
-                                            state.statusCode == 602
-                                                ? 'userExists'
-                                                : state.statusCode == 603
-                                                    ? 'otpinvalid'
-                                                    : 'error') ??
-                                    '')),
+                              content: Text(
+                                AppLocalization.of(context).getTransatedValues(
+                                      state.statusCode == 602
+                                          ? 'userExists'
+                                          : state.statusCode == 603
+                                              ? 'otpinvalid'
+                                              : state.statusCode == 601
+                                                  ? 'wrongPass'
+                                                  : 'pass',
+                                    ) ??
+                                    '',
+                              ),
+                            ),
                           );
                         }
                       },
@@ -229,11 +253,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               passwordController.text.length < 6) {
                             context.read<ValidateTextFieldBloc>().add(
                                   PhoneNumberChanged(
-                                      phoneNumber: phoneController.text),
+                                    phoneNumber: phoneController.text,
+                                  ),
                                 );
                             context.read<ValidateTextFieldBloc>().add(
                                   PasswordChanged(
-                                      passWord: passwordController.text),
+                                    passWord: passwordController.text,
+                                  ),
                                 );
                           } else {
                             context.read<LoginBloc>().add(
@@ -324,19 +350,21 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         children: [
           TextSpan(
-              text: 'политикой конфиденциальности, условиями сервиса',
-              style: TextStyle(
-                color: AppColors.purple2Color,
-                fontWeight: FontWeight.w500,
-                fontSize: AppFonts.fontSize14,
-              )),
+            text: 'политикой конфиденциальности, условиями сервиса',
+            style: TextStyle(
+              color: AppColors.purple2Color,
+              fontWeight: FontWeight.w500,
+              fontSize: AppFonts.fontSize14,
+            ),
+          ),
           TextSpan(
-              text: ' и ',
-              style: TextStyle(
-                color: AppColors.greyColor,
-                fontWeight: FontWeight.w500,
-                fontSize: AppFonts.fontSize14,
-              )),
+            text: ' и ',
+            style: TextStyle(
+              color: AppColors.greyColor,
+              fontWeight: FontWeight.w500,
+              fontSize: AppFonts.fontSize14,
+            ),
+          ),
           TextSpan(
             text: 'условиями продажи товаров',
             style: TextStyle(
@@ -344,7 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
               fontWeight: FontWeight.w500,
               fontSize: AppFonts.fontSize14,
             ),
-          )
+          ),
         ],
       ),
     );

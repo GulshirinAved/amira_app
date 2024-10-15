@@ -31,31 +31,53 @@ class AuthRepository {
     return _authProvider.signIn(phone: phone, password: password);
   }
 
-  Future<int?> changePass(
-      {final String? newPassword, final String? oldPassword}) async {
+  Future<Data?> changePass({
+    final String? newPassword,
+    final String? oldPassword,
+  }) async {
     return _authProvider.changePass(
-        newPassword: newPassword!, oldPassword: oldPassword!);
+      newPass: newPassword!,
+      oldPass: oldPassword!,
+    );
   }
 
   Future<int?> forgetPass({String? phone, String? password}) async {
     return _authProvider.forgetPass(phone: phone, password: password);
   }
 
-  Future<Data?> updateUserData(
-      {String? name,
-      String? address,
-      String? birthday,
-      String? email,
-      String? gender}) async {
+  Future<Data?> updateUserData({
+    String? name,
+    String? address,
+    String? birthday,
+    String? email,
+    String? gender,
+  }) async {
     return _authProvider.updateUserData(
-        name: name,
-        address: address,
-        birthday: birthday,
-        email: email,
-        gender: gender);
+      name: name,
+      address: address,
+      birthday: birthday,
+      email: email,
+      gender: gender,
+    );
   }
 
   Future<int?> removesAccaunt() async {
     return _authProvider.removeAccaunt();
+  }
+
+  Future<Data?> getUserProfile() async {
+    return _authProvider.getUserProfile();
+  }
+
+  Future<Data?> subscribeNotification({
+    required bool fcmNotifications,
+    required bool emailNotifications,
+    required bool smsNotifications,
+  }) async {
+    return _authProvider.subscribeNotification(
+      fcmNotifications: fcmNotifications,
+      emailNotifications: emailNotifications,
+      smsNotifications: smsNotifications,
+    );
   }
 }

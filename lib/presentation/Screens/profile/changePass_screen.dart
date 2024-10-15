@@ -84,7 +84,8 @@ class _ChnagePassScreenState extends State<ChnagePassScreen> {
                               controller: oldPassController,
                               onChanged: (value) {
                                 context.read<ValidateTextFieldBloc>().add(
-                                    PasswordChanged(passWord: value ?? ''));
+                                      PasswordChanged(passWord: value ?? ''),
+                                    );
                                 return null;
                               },
                               isTextNumber: false,
@@ -126,8 +127,10 @@ class _ChnagePassScreenState extends State<ChnagePassScreen> {
                               controller: newPassController,
                               onChanged: (value) {
                                 context.read<ValidateTextFieldBloc>().add(
-                                    NewPasswordChanged(
-                                        newPassWord: value ?? ''));
+                                      NewPasswordChanged(
+                                        newPassWord: value ?? '',
+                                      ),
+                                    );
                                 return null;
                               },
                               isTextNumber: false,
@@ -160,14 +163,13 @@ class _ChnagePassScreenState extends State<ChnagePassScreen> {
                         } else if (state is ChangePassFailure) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                                content: Text(AppLocalization.of(context)
-                                        .getTransatedValues(
-                                            state.statusCode == 602
-                                                ? 'userExists'
-                                                : state.statusCode == 603
-                                                    ? 'otpinvalid'
-                                                    : 'error') ??
-                                    '')),
+                              content: Text(
+                                AppLocalization.of(context).getTransatedValues(
+                                      'error',
+                                    ) ??
+                                    '',
+                              ),
+                            ),
                           );
                         }
                       },
@@ -182,11 +184,13 @@ class _ChnagePassScreenState extends State<ChnagePassScreen> {
                                   newPassController.text) {
                             context.read<ValidateTextFieldBloc>().add(
                                   NewPasswordChanged(
-                                      newPassWord: newPassController.text),
+                                    newPassWord: newPassController.text,
+                                  ),
                                 );
                             context.read<ValidateTextFieldBloc>().add(
                                   PasswordChanged(
-                                      passWord: oldPassController.text),
+                                    passWord: oldPassController.text,
+                                  ),
                                 );
                           } else {
                             context.read<ChangePassBloc>().add(

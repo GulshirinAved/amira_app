@@ -13,17 +13,18 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 class ListviewProductsSlider extends StatelessWidget {
   final String topTitle;
   final List productsList;
-  final int index;
-  final String categoryId;
-  final List subCategoryList;
+  final int? index;
+  final String? categoryId;
+  final List? subCategoryList;
   final bool? titlePressed;
+
   const ListviewProductsSlider({
     required this.topTitle,
     required this.productsList,
-    required this.index,
-    required this.categoryId,
-    required this.subCategoryList,
-    required this.titlePressed,
+    this.titlePressed,
+    this.categoryId,
+    this.subCategoryList,
+    this.index,
     super.key,
   });
 
@@ -39,16 +40,21 @@ class ListviewProductsSlider extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: TopTitle(
               title: topTitle,
-              onTap: () => pushScreenWithNavBar(
-                  context,
-                  CategoryProfileScreen(
-                      subCategoryList: subCategoryList,
-                      categoryList: productsList,
-                      index: index,
-                      titlePressed: titlePressed ?? true,
-                      topTitle: topTitle,
-                      brandName: [],
-                      categoryId: categoryId)),
+              //if index==0 it cannot go categoryProfilescreen i idi it for you watched
+              onTap: index == null
+                  ? null
+                  : () => pushScreenWithNavBar(
+                        context,
+                        CategoryProfileScreen(
+                          subCategoryList: subCategoryList!,
+                          categoryList: productsList,
+                          index: index!,
+                          titlePressed: titlePressed ?? true,
+                          topTitle: topTitle,
+                          brandName: const [],
+                          categoryId: categoryId!,
+                        ),
+                      ),
             ),
           ),
           SizedBox(

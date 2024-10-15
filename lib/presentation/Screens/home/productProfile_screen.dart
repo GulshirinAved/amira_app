@@ -58,7 +58,6 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('widget.favItem.id ${widget.favItem.id}');
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -77,7 +76,6 @@ class _ProductProfileScreenState extends State<ProductProfileScreen> {
       ],
       child: Builder(
         builder: (context) {
-          print('it is prand image ${widget.favItem.id}');
           return BlocBuilder<FavButtonBloc, FavButtonState>(
             builder: (context, state) {
               final isFav =

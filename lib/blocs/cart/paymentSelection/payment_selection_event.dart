@@ -3,10 +3,13 @@ part of 'payment_selection_bloc.dart';
 
 class PaymentSelectionEvent extends Equatable {
   final String pressedTitle;
+  final String pressedId;
+
   const PaymentSelectionEvent(
     this.pressedTitle,
+    this.pressedId,
   );
 
   @override
-  List<Object> get props => [pressedTitle];
+  List<Object> get props => [pressedTitle, pressedId];
 }

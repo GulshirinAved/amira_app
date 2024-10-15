@@ -1,14 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:amira_app/app_localization.dart';
 
 import 'package:amira_app/blocs/cateloge/getAllProducts/all_products_bloc.dart';
+import 'package:amira_app/config/constants/constants.dart';
 import 'package:amira_app/config/theme/constants.dart';
 import 'package:amira_app/data/models/cart_model.dart';
 import 'package:amira_app/data/models/fav_model.dart';
 import 'package:amira_app/presentation/CustomWidgets/animations.dart';
+import 'package:amira_app/presentation/CustomWidgets/customContainer_extension.dart';
 import 'package:amira_app/presentation/CustomWidgets/custom_textField.dart';
 import 'package:amira_app/presentation/CustomWidgets/productLarge_card.dart';
-import 'package:amira_app/presentation/Screens/home/components/gridviewProducts_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -138,20 +140,137 @@ class _SearchScreenState extends State<SearchScreen> {
                           ? BlocBuilder<AllProductsBloc, AllProductsState>(
                               builder: (context, state) {
                                 if (state is AllProductsError) {
-                                  return SizedBox.shrink();
+                                  return const SizedBox.shrink();
                                 } else if (state is AllProductsInitial ||
                                     state is AllProductsLoading) {
                                   return Animations.loading;
                                 } else if (state is AllProductsLoaded) {
+                                  print(state);
                                   if (state.allProductsList.isEmpty) {
                                     return const SizedBox.shrink();
                                   }
-                                  return GridviewProductsSlider(
-                                    topTitle: 'Рекомендуемые товары',
-                                    productList: state.allProductsList,
+                                  return CustomContainer.buildContainer(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.symmetric(vertical: 6.h),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.w),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppLocalization.of(context)
+                                                  .getTransatedValues(
+                                                'recommend',
+                                              ) ??
+                                              '',
+                                          style: TextStyle(
+                                            color: AppColors.blackColor,
+                                            fontFamily: fontPeaceSans,
+                                            fontSize: AppFonts.fontSize22,
+                                          ),
+                                        ),
+                                        GridView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          scrollDirection: Axis.vertical,
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            mainAxisExtent: 370,
+                                          ),
+                                          controller:
+                                              BlocProvider.of<AllProductsBloc>(
+                                            context,
+                                          ).scrollController,
+                                          itemCount:
+                                              state.allProductsList.length + 1,
+                                          itemBuilder: (context, index) {
+                                            if (index >=
+                                                state.allProductsList.length) {
+                                              if (!BlocProvider.of<
+                                                      AllProductsBloc>(context)
+                                                  .isLoadingMore) {
+                                                BlocProvider.of<
+                                                    AllProductsBloc>(
+                                                  context,
+                                                ).add(
+                                                  const AllProductsLoadMoreEvent(),
+                                                );
+                                              }
+                                              return state.allProductsList
+                                                          .length !=
+                                                      index
+                                                  ? const SizedBox.shrink()
+                                                  : const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                            }
+
+                                            return ProductLargeCard(
+                                              index: index,
+                                              cartItem: CartItem(
+                                                id: state
+                                                    .allProductsList[index].id
+                                                    .toString(),
+                                                name: state
+                                                    .allProductsList[index]
+                                                    .name,
+                                                image: state
+                                                    .allProductsList[index]
+                                                    .images,
+                                                price: state
+                                                    .allProductsList[index]
+                                                    .price,
+                                                discount: state
+                                                    .allProductsList[index]
+                                                    .discount,
+                                                desc: state
+                                                    .allProductsList[index]
+                                                    .description,
+                                                shopid: state
+                                                    .allProductsList[index]
+                                                    .shopId,
+                                                coin: state
+                                                    .allProductsList[index]
+                                                    .coin,
+                                              ),
+                                              favItem: FavItem(
+                                                id: state
+                                                    .allProductsList[index].id
+                                                    .toString(),
+                                                name: state
+                                                    .allProductsList[index]
+                                                    .name,
+                                                image: state
+                                                    .allProductsList[index]
+                                                    .images,
+                                                price: state
+                                                    .allProductsList[index]
+                                                    .price,
+                                                discount: state
+                                                    .allProductsList[index]
+                                                    .discount,
+                                                desc: state
+                                                    .allProductsList[index]
+                                                    .description,
+                                                shopid: state
+                                                    .allProductsList[index]
+                                                    .shopId,
+                                                coin: state
+                                                    .allProductsList[index]
+                                                    .coin,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 }
-                                return SizedBox.shrink();
+                                return const SizedBox.shrink();
                               },
                             )
                           : Container(
@@ -176,7 +295,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       AllProductsState>(
                                     builder: (context, state) {
                                       if (state is AllProductsError) {
-                                        return SizedBox.shrink();
+                                        return const SizedBox.shrink();
                                       } else if (state is AllProductsInitial) {
                                         return const SizedBox.shrink();
                                       } else if (state is AllProductsLoading) {
@@ -187,6 +306,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                         }
                                         return GridView.builder(
                                           shrinkWrap: true,
+                                          controller:
+                                              BlocProvider.of<AllProductsBloc>(
+                                            context,
+                                          ).scrollController,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
                                           scrollDirection: Axis.vertical,
@@ -196,8 +319,29 @@ class _SearchScreenState extends State<SearchScreen> {
                                             mainAxisExtent: 370,
                                           ),
                                           itemCount:
-                                              state.allProductsList.length,
+                                              state.allProductsList.length + 1,
                                           itemBuilder: (context, index) {
+                                            if (index >=
+                                                state.allProductsList.length) {
+                                              if (!BlocProvider.of<
+                                                      AllProductsBloc>(context)
+                                                  .isLoadingMore) {
+                                                BlocProvider.of<
+                                                    AllProductsBloc>(
+                                                  context,
+                                                ).add(
+                                                  const AllProductsLoadMoreEvent(),
+                                                );
+                                              }
+                                              return state.allProductsList
+                                                          .length !=
+                                                      index
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : const SizedBox.shrink();
+                                            }
                                             return ProductLargeCard(
                                               index: index,
                                               cartItem: CartItem(
