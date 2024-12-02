@@ -57,7 +57,9 @@ class ProductSmallCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: AppBorders.borderRadius10,
                 child: ExtendedImage.network(
-                  url + favItem.image![0].url!,
+                  favItem.image != null && favItem.image!.isNotEmpty
+                      ? url + favItem.image![0].url
+                      : '',
                   height: 120.h,
                   width: 120.h,
                   fit: BoxFit.cover,

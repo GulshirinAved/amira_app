@@ -64,7 +64,7 @@ const String milkCat6Image = 'assets/products/milkCat6.png';
 const String appleImage = 'assets/products/apple.png';
 
 //urls
-const String url = 'http://119.235.122.134:8091/magaz/';
+const String url = 'http://216.250.13.89:8091/magaz/';
 
 List<Map<String, dynamic>> bottomNavBarItems = [
   {
@@ -99,15 +99,15 @@ final List helpTiles = [
   },
   {
     'title': 'privacyPolicy',
-    'path': 'http://119.235.122.134:8091/ru/static/privacy',
+    'path': 'http://216.250.13.89:8091/ru/static/privacy',
   },
   {
     'title': 'rewritePersonalData',
-    'path': 'http://119.235.122.134:8091/ru/static/privacy',
+    'path': 'http://216.250.13.89:8091/ru/static/privacy',
   },
   {
     'title': 'paymentMethods',
-    'path': 'http://119.235.122.134:8091/ru/static/privacy',
+    'path': 'http://216.250.13.89:8091/ru/static/privacy',
   }
 ];
 final List bonusTile = [

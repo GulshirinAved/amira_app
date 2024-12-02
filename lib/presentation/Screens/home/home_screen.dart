@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:amira_app/app_localization.dart';
 import 'package:amira_app/blocs/cateloge/getAllCategory/all_category_bloc.dart';
 import 'package:amira_app/blocs/home/getHome/get_home_bloc.dart';
@@ -81,6 +83,7 @@ class HomeScreen extends StatelessWidget {
                               (value, element) =>
                                   value < element ? value : element,
                             );
+                            log(length.toString());
 
                             return ListView(
                               children: [
@@ -150,7 +153,9 @@ class HomeScreen extends StatelessWidget {
                                             homeState.getHomeProducts[i],
                                         index: i,
                                         subCategoryList: categoryState
-                                            .allCategoryList[i].subcategories!,
+                                                .allCategoryList[i]
+                                                .subcategories ??
+                                            [],
                                         categoryId: homeState
                                                 .getHomeData[i].categoryId ??
                                             '',

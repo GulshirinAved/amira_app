@@ -30,20 +30,28 @@ class CartProductCard extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-              borderRadius: AppBorders.borderRadius10,
-              child: cartItem.image![0] is Map<String, dynamic>
-                  ? ExtendedImage.network(
-                      '$url' + cartItem.image![0]['url']!,
-                      height: 75.h,
-                      width: 75.h,
-                      fit: BoxFit.cover,
-                    )
-                  : ExtendedImage.network(
-                      '$url' + cartItem.image![0].url,
-                      height: 75.h,
-                      width: 75.h,
-                      fit: BoxFit.cover,
-                    )),
+            borderRadius: AppBorders.borderRadius10,
+            child: (cartItem.image != null && cartItem.image!.isNotEmpty)
+                ? (cartItem.image![0] is Map<String, dynamic>
+                    ? ExtendedImage.network(
+                        url + cartItem.image![0]['url']!,
+                        height: 75.h,
+                        width: 75.h,
+                        fit: BoxFit.cover,
+                      )
+                    : ExtendedImage.network(
+                        url + cartItem.image![0].url,
+                        height: 75.h,
+                        width: 75.h,
+                        fit: BoxFit.cover,
+                      ))
+                : Container(
+                    height: 75.h,
+                    width: 75.h,
+                    color: Colors.grey,
+                    child: const Center(child: Text('No Image')),
+                  ),
+          ),
           SizedBox(
             width: 10.w,
           ),
@@ -70,7 +78,7 @@ class CartProductCard extends StatelessWidget {
                           width: 6.w,
                         ),
                         cartItem.discount?.percent == null
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : Text(
                                 '${cartItem.discount?.percent} % ',
                                 style: TextStyle(

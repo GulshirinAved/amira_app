@@ -24,8 +24,8 @@ class ProductLargeCard extends StatelessWidget {
     required this.favItem,
     required this.cartItem,
     required this.index,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,27 +54,35 @@ class ProductLargeCard extends StatelessWidget {
                 borderRadius: AppBorders.borderRadius10,
               ),
               child: ClipRRect(
-                  borderRadius: AppBorders.borderRadius10,
-                  child: cartItem.image![0] is Map<String, dynamic>
-                      ? ExtendedImage.network(
-                          '${url}' + favItem.image![0]['url']!,
-                          height: 160.h,
-                          width: 160.h,
-                          fit: BoxFit.cover,
-                        )
-                      : ExtendedImage.network(
-                          '${url}' + favItem.image![0].url,
-                          height: 160.h,
-                          width: 160.h,
-                          fit: BoxFit.cover,
-                        )),
+                borderRadius: AppBorders.borderRadius10,
+                child: (cartItem.image != null && cartItem.image!.isNotEmpty)
+                    ? (cartItem.image![0] is Map<String, dynamic>
+                        ? ExtendedImage.network(
+                            url + cartItem.image![0]['url']!,
+                            height: 160.h,
+                            width: 160.h,
+                            fit: BoxFit.cover,
+                          )
+                        : ExtendedImage.network(
+                            url + cartItem.image![0].url,
+                            height: 160.h,
+                            width: 160.h,
+                            fit: BoxFit.cover,
+                          ))
+                    : Container(
+                        height: 160.h,
+                        width: 160.h,
+                        color: AppColors.lightPurpleColor,
+                        child: const Center(child: Text('No Image')),
+                      ),
+              ),
             ),
             // price, previous price and discount
 
             Row(
               children: [
                 favItem.price == null
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : Text(
                         '${favItem.price!.toString()} ${favItem.coin == null ? '' : '.${favItem.coin}'}',
                         style: TextStyle(
@@ -98,7 +106,7 @@ class ProductLargeCard extends StatelessWidget {
                         ),
                       ),
                 favItem.discount?.percent == null
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : Text(
                         '${favItem.discount?.percent}%',
                         style: TextStyle(
